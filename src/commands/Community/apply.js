@@ -34,15 +34,15 @@ function getApplicationStatusPresentation(statusValue) {
 export default {
     data: new SlashCommandBuilder()
         .setName("apply")
-        .setDescription("Manage role applications")
+        .setDescription("Gérer les candidatures de rôles")
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("submit")
-                .setDescription("Submit an application for a role")
+                .setDescription("Soumettre une candidature pour un rôle")
                 .addStringOption((option) =>
                     option
                         .setName("application")
-                        .setDescription("The application you want to submit")
+                        .setDescription("La candidature que vous souhaitez soumettre")
                         .setRequired(true)
                         .setAutocomplete(true),
                 ),
@@ -50,18 +50,18 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("status")
-                .setDescription("Check the status of your application")
+                .setDescription("Vérifier le statut de votre candidature")
                 .addStringOption((option) =>
                     option
                         .setName("id")
-                        .setDescription("Application ID (leave empty to see all)")
+                        .setDescription("ID de la candidature (laisser vide pour tout voir)")
                         .setRequired(false),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("list")
-                .setDescription("List available applications to apply for"),
+                .setDescription("Lister les candidatures disponibles"),
         ),
 
     category: "Community",
@@ -69,7 +69,7 @@ export default {
     execute: withErrorHandling(async (interaction) => {
         if (!interaction.inGuild()) {
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed("This command can only be used in a server.")],
+                embeds: [errorEmbed("Cette commande ne peut être utilisée que dans un serveur.")],
                 flags: ["Ephemeral"],
             });
         }
@@ -97,7 +97,7 @@ export default {
             throw createError(
                 'Applications are disabled',
                 ErrorTypes.CONFIGURATION,
-                'Applications are currently disabled in this server.',
+                'Les candidatures sont actuellement désactivées dans ce serveur.',
                 { guildId: guild.id }
             );
         }
@@ -125,7 +125,7 @@ export async function handleApplicationModal(interaction) {
     
     if (!applicationRole) {
         return InteractionHelper.safeEditReply(interaction, {
-            embeds: [errorEmbed('Application configuration not found.')],
+            embeds: [errorEmbed('Configuration de candidature introuvable.')],
             flags: ["Ephemeral"]
         });
     }
@@ -134,7 +134,7 @@ export async function handleApplicationModal(interaction) {
     
     if (!role) {
         return InteractionHelper.safeEditReply(interaction, {
-            embeds: [errorEmbed('Role not found.')],
+            embeds: [errorEmbed('Rôle introuvable.')],
             flags: ["Ephemeral"]
         });
     }
@@ -169,10 +169,10 @@ export async function handleApplicationModal(interaction) {
         });
         
         const embed = successEmbed(
-            'Application Submitted',
-            `Your application for **${applicationRole.name}** has been submitted successfully!\n\n` +
-            `Application ID: \`${application.id}\`\n` +
-            `You can check the status with \`/apply status id:${application.id}\``
+            'Candidature soumise',
+            `Votre candidature pour **${applicationRole.name}** a été soumise avec succès !\n\n` +
+            `ID de candidature : \`${application.id}\`\n` +
+            `Vous pouvez vérifier le statut avec \`/apply status id:${application.id}\``
         );
         
         await InteractionHelper.safeEditReply(interaction, { embeds: [embed], flags: ["Ephemeral"] });
@@ -187,12 +187,12 @@ export async function handleApplicationModal(interaction) {
             const logChannel = interaction.guild.channels.cache.get(logChannelId);
             if (logChannel) {
                 const logEmbed = createEmbed({
-                    title: '📝 New Application',
-                    description: `**User:** <@${interaction.user.id}> (${interaction.user.tag})\n` +
-                        `**Application:** ${applicationRole.name}\n` +
-                        `**Role:** ${role.name}\n` +
-                        `**Application ID:** \`${application.id}\`\n` +
-                        `**Status:** 🟡 In Progress`
+                    title: '📝 Nouvelle candidature',
+                    description: `**Utilisateur :** <@${interaction.user.id}> (${interaction.user.tag})\n` +
+                        `**Candidature :** ${applicationRole.name}\n` +
+                        `**Rôle :** ${role.name}\n` +
+                        `**ID de candidature :** \`${application.id}\`\n` +
+                        `**Statut :** 🟡 En cours`
                 }).setColor(getColor('warning'));
                 
                 const logMessage = await logChannel.send({ embeds: [logEmbed] });
@@ -226,27 +226,27 @@ async function handleList(interaction) {
         
         if (applicationRoles.length === 0) {
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed("No applications are currently available.")],
+                embeds: [errorEmbed("Aucune candidature n'est actuellement disponible.")],
             });
         }
 
         const embed = createEmbed({
-            title: "Available Applications",
-            description: "Here are the roles you can apply for:"
+            title: "Candidatures disponibles",
+            description: "Voici les rôles pour lesquels vous pouvez postuler :"
         });
 
         applicationRoles.forEach((appRole, index) => {
             const role = interaction.guild.roles.cache.get(appRole.roleId);
             embed.addFields({
                 name: `${index + 1}. ${appRole.name}`,
-                value: `**Role:** ${role ? `<@&${appRole.roleId}>` : 'Role not found'}\n` +
-                       `**Apply with:** \`/apply submit application:"${appRole.name}"\``,
+                value: `**Rôle :** ${role ? `<@&${appRole.roleId}>` : 'Rôle introuvable'}\n` +
+                       `**Postuler avec :** \`/apply submit application:"${appRole.name}"\``,
                 inline: false
             });
         });
 
         embed.setFooter({
-            text: "Use /apply submit application:<name> to apply for any of these roles."
+            text: "Utilisez /apply submit application:<nom> pour postuler à l'un de ces rôles."
         });
 
         return InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
@@ -260,7 +260,7 @@ async function handleList(interaction) {
         throw createError(
             'Failed to load applications',
             ErrorTypes.DATABASE,
-            'Failed to load applications. Please try again later.',
+            'Impossible de charger les candidatures. Veuillez réessayer plus tard.',
             { guildId: interaction.guild.id }
         );
     }
@@ -280,8 +280,8 @@ async function handleSubmit(interaction, settings) {
         return InteractionHelper.safeEditReply(interaction, {
             embeds: [
                 errorEmbed(
-                    "Application not found.",
-                    "Use `/apply list` to see available applications."
+                    "Candidature introuvable.",
+                    "Utilisez `/apply list` pour voir les candidatures disponibles."
                 ),
             ],
             flags: ["Ephemeral"],
@@ -299,7 +299,7 @@ async function handleSubmit(interaction, settings) {
         return InteractionHelper.safeEditReply(interaction, {
             embeds: [
                 errorEmbed(
-                    `You already have a pending application. Please wait for it to be reviewed.`,
+                    `Vous avez déjà une candidature en attente. Veuillez attendre qu'elle soit examinée.`,
                 ),
             ],
             flags: ["Ephemeral"],
@@ -309,14 +309,14 @@ async function handleSubmit(interaction, settings) {
     const role = interaction.guild.roles.cache.get(applicationRole.roleId);
     if (!role) {
         return InteractionHelper.safeEditReply(interaction, {
-            embeds: [errorEmbed('The role for this application no longer exists.')],
+            embeds: [errorEmbed('Le rôle pour cette candidature n\'existe plus.')],
             flags: ["Ephemeral"]
         });
     }
 
     const modal = new ModalBuilder()
         .setCustomId(`app_modal_${applicationRole.roleId}`)
-        .setTitle(`Application for ${applicationRole.name}`);
+        .setTitle(`Candidature pour ${applicationRole.name}`);
 
     // Get questions - use per-application questions if they exist, otherwise use global
     let questions = settings.questions || ["Why do you want this role?", "What is your experience?"];
@@ -358,7 +358,7 @@ async function handleStatus(interaction) {
             return InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "Application not found or you do not have permission to view it.",
+                        "Candidature introuvable ou vous n'avez pas la permission de la consulter.",
                     ),
                 ],
                 flags: ["Ephemeral"],
@@ -371,11 +371,11 @@ async function handleStatus(interaction) {
             : 'Unknown date';
         const statusView = getApplicationStatusPresentation(application.status);
         const embed = createEmbed({
-            title: `Application #${application.id} - ${application.roleName || 'Unknown Role'}`,
+            title: `Candidature #${application.id} - ${application.roleName || 'Rôle inconnu'}`,
             description:
-                `**Application ID:** \`${application.id}\`\n` +
-                `**Status:** ${statusView.statusEmoji} ${statusView.statusLabel}\n` +
-                `**Submitted:** ${submittedAtDisplay}`
+                `**ID de candidature :** \`${application.id}\`\n` +
+                `**Statut :** ${statusView.statusEmoji} ${statusView.statusLabel}\n` +
+                `**Soumise le :** ${submittedAtDisplay}`
         });
 
         return InteractionHelper.safeEditReply(interaction, { embeds: [embed], flags: ["Ephemeral"] });
@@ -389,7 +389,7 @@ async function handleStatus(interaction) {
         if (applications.length === 0) {
             return InteractionHelper.safeEditReply(interaction, {
                 embeds: [
-                    errorEmbed("You have not submitted any applications yet."),
+                    errorEmbed("Vous n'avez encore soumis aucune candidature."),
                 ],
                 flags: ["Ephemeral"],
             });
@@ -400,8 +400,8 @@ async function handleStatus(interaction) {
             .slice(0, 10);
 
         const embed = createEmbed({
-            title: "Your Applications",
-            description: `Showing ${recentApplications.length} recent application(s).`
+            title: "Vos candidatures",
+            description: `Affichage de ${recentApplications.length} candidature(s) récente(s).`
         });
 
         recentApplications.forEach((application) => {
@@ -414,15 +414,15 @@ async function handleStatus(interaction) {
             embed.addFields({
                 name: `${statusView.statusEmoji} ${application.roleName || 'Unknown Role'} (${statusView.statusLabel})`,
                 value:
-                    `**ID:** \`${application.id}\`\n` +
-                    `**Status:** ${statusView.statusEmoji} ${statusView.statusLabel}\n` +
-                    `**Submitted:** ${submittedAtDisplay}`,
+                    `**ID :** \`${application.id}\`\n` +
+                    `**Statut :** ${statusView.statusEmoji} ${statusView.statusLabel}\n` +
+                    `**Soumise le :** ${submittedAtDisplay}`,
                 inline: true,
             });
         });
 
         if (applications.length > recentApplications.length) {
-            embed.setFooter({ text: `Showing latest ${recentApplications.length} of ${applications.length} applications.` });
+            embed.setFooter({ text: `Affichage des ${recentApplications.length} dernières sur ${applications.length} candidatures.` });
         }
 
         return InteractionHelper.safeEditReply(interaction, { embeds: [embed], flags: ["Ephemeral"] });

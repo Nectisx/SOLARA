@@ -8,7 +8,7 @@ export default {
     async execute(interaction, config, client) {
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Permission Denied', 'You need **Manage Server** permissions to configure the birthday channel.')],
+                embeds: [errorEmbed('Permission refusée', 'Vous avez besoin des permissions **Gérer le serveur** pour configurer le salon d\'anniversaire.')],
                 flags: MessageFlags.Ephemeral,
             });
         }
@@ -22,21 +22,21 @@ export default {
                 guildConfig.birthdayChannelId = channel.id;
                 await setGuildConfig(client, guildId, guildConfig);
                 return InteractionHelper.safeReply(interaction, {
-                    embeds: [successEmbed('🎂 Birthday Announcements Enabled', `Birthday announcements will now be posted in ${channel}.`)],
+                    embeds: [successEmbed('🎂 Annonces d\'anniversaire activées', `Les annonces d'anniversaire seront désormais publiées dans ${channel}.`)],
                     flags: MessageFlags.Ephemeral,
                 });
             } else {
                 guildConfig.birthdayChannelId = null;
                 await setGuildConfig(client, guildId, guildConfig);
                 return InteractionHelper.safeReply(interaction, {
-                    embeds: [successEmbed('🎂 Birthday Announcements Disabled', 'No channel provided — birthday announcements have been disabled.')],
+                    embeds: [successEmbed('🎂 Annonces d\'anniversaire désactivées', 'Aucun salon fourni — les annonces d\'anniversaire ont été désactivées.')],
                     flags: MessageFlags.Ephemeral,
                 });
             }
         } catch (error) {
             logger.error('birthday_setchannel error:', error);
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Configuration Error', 'Could not save the birthday channel configuration.')],
+                embeds: [errorEmbed('Erreur de configuration', 'Impossible de sauvegarder la configuration du salon d\'anniversaire.')],
                 flags: MessageFlags.Ephemeral,
             });
         }

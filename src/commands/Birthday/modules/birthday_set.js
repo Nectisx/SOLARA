@@ -20,8 +20,8 @@ export default {
             
             await InteractionHelper.safeEditReply(interaction, {
                 embeds: [successEmbed(
-                    `Your birthday has been set to **${result.data.monthName} ${result.data.day}**!`,
-                    "Birthday Set! 🎂"
+                    `Votre anniversaire a été défini au **${result.data.monthName} ${result.data.day}** !`,
+                    "Anniversaire défini ! 🎂"
                 )]
             });
         } catch (error) {

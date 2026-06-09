@@ -12,11 +12,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('rank')
-    .setDescription("Check your or another user's rank and level")
+    .setDescription("Voir votre rang et niveau ou ceux d'un autre utilisateur")
     .addUserOption((option) =>
       option
         .setName('user')
-        .setDescription('The user to check the rank of')
+        .setDescription('L\'utilisateur dont vérifier le rang')
         .setRequired(false)
     )
     .setDMPermission(false),
@@ -38,7 +38,7 @@ export default {
           embeds: [
             new EmbedBuilder()
               .setColor('#f1c40f')
-              .setDescription('The leveling system is currently disabled on this server.')
+              .setDescription('Le système de niveaux est actuellement désactivé sur ce serveur.')
           ],
           flags: MessageFlags.Ephemeral
         });
@@ -54,7 +54,7 @@ export default {
         throw new TitanBotError(
           `User ${targetUser.id} not found in guild`,
           ErrorTypes.USER_INPUT,
-          'Could not find the specified user in this server.'
+          'Impossible de trouver l\'utilisateur spécifié dans ce serveur.'
         );
       }
 
@@ -71,11 +71,11 @@ export default {
       const progressBar = createProgressBar(progress, 20);
 
       const embed = new EmbedBuilder()
-        .setTitle(`${member.displayName}'s Rank`)
+        .setTitle(`Rang de ${member.displayName}`)
         .setThumbnail(member.displayAvatarURL({ dynamic: true }))
         .addFields(
           {
-            name: '📊 Level',
+            name: '📊 Niveau',
             value: safeUserData.level.toString(),
             inline: true
           },
@@ -85,12 +85,12 @@ export default {
             inline: true
           },
           {
-            name: '✨ Total XP',
+            name: '✨ XP total',
             value: safeUserData.totalXp.toString(),
             inline: true
           },
           {
-            name: `Progress to Level ${safeUserData.level + 1}`,
+            name: `Progression vers le niveau ${safeUserData.level + 1}`,
             value: `${progressBar} ${progress}%`
           }
         )

@@ -18,8 +18,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         createEmbed({
-                            title: '❌ No Birthdays Found',
-                            description: 'No birthdays have been set up in this server yet. Use `/birthday set` to add birthdays!',
+                            title: '❌ Aucun anniversaire trouvé',
+                            description: 'Aucun anniversaire n\'a encore été défini dans ce serveur. Utilisez `/birthday set` pour en ajouter !',
                             color: 'error'
                         })
                     ]
@@ -27,8 +27,8 @@ export default {
             }
 
             const embed = createEmbed({
-                title: '🎂 Next 5 Upcoming Birthdays',
-                description: `Here are the next 5 birthdays in ${interaction.guild.name}:`,
+                title: '🎂 Les 5 prochains anniversaires',
+                description: `Voici les 5 prochains anniversaires dans ${interaction.guild.name} :`,
                 color: 'info'
             });
 
@@ -43,16 +43,16 @@ export default {
 
                 let timeUntil = '';
                 if (birthday.daysUntil === 0) {
-                    timeUntil = '🎉 **Today!**';
+                    timeUntil = '🎉 **Aujourd\'hui !**';
                 } else if (birthday.daysUntil === 1) {
-                    timeUntil = '📅 **Tomorrow!**';
+                    timeUntil = '📅 **Demain !**';
                 } else {
-                    timeUntil = `In ${birthday.daysUntil} day${birthday.daysUntil > 1 ? 's' : ''}`;
+                    timeUntil = `Dans ${birthday.daysUntil} jour${birthday.daysUntil > 1 ? 's' : ''}`;
                 }
 
                 embed.addFields({
                     name: `${displayIndex}. ${member.displayName}`,
-                    value: `<@${birthday.userId}>\n📅 **Date:** ${birthday.monthName} ${birthday.day}\n⏰ **Time:** ${timeUntil}`,
+                    value: `<@${birthday.userId}>\n📅 **Date :** ${birthday.monthName} ${birthday.day}\n⏰ **Délai :** ${timeUntil}`,
                     inline: false
                 });
             }
@@ -61,8 +61,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         createEmbed({
-                            title: '❌ No Upcoming Birthdays',
-                            description: 'No upcoming birthdays found for current server members.',
+                            title: '❌ Aucun anniversaire à venir',
+                            description: 'Aucun anniversaire à venir trouvé pour les membres actuels du serveur.',
                             color: 'error'
                         })
                     ]
@@ -70,7 +70,7 @@ export default {
             }
 
             embed.setFooter({
-                text: 'Use /birthday set to add your birthday!',
+                text: 'Utilisez /birthday set pour ajouter votre anniversaire !',
                 iconURL: interaction.guild.iconURL()
             });
 

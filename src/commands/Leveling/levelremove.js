@@ -14,17 +14,17 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('levelremove')
-    .setDescription('Remove levels from a user')
+    .setDescription('Retirer des niveaux à un utilisateur')
     .addUserOption((option) =>
       option
         .setName('user')
-        .setDescription('The user to remove levels from')
+        .setDescription('L\'utilisateur auquel retirer des niveaux')
         .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName('levels')
-        .setDescription('Number of levels to remove')
+        .setDescription('Nombre de niveaux à retirer')
         .setRequired(true)
         .setMinValue(1)
     )
@@ -46,7 +46,7 @@ export default {
       const hasPermission = await checkUserPermissions(
         interaction,
         PermissionFlagsBits.ManageGuild,
-        'You need ManageGuild permission to use this command.'
+        'Vous avez besoin de la permission Gérer le serveur pour utiliser cette commande.'
       );
       if (!hasPermission) return;
 
@@ -56,7 +56,7 @@ export default {
           embeds: [
             new EmbedBuilder()
               .setColor('#f1c40f')
-              .setDescription('The leveling system is currently disabled on this server.')
+              .setDescription('Le système de niveaux est actuellement désactivé sur ce serveur.')
           ],
           flags: MessageFlags.Ephemeral
         });
@@ -72,7 +72,7 @@ export default {
         throw new TitanBotError(
           `User ${targetUser.id} not found in this guild`,
           ErrorTypes.USER_INPUT,
-          'The specified user is not in this server.'
+          'L\'utilisateur spécifié n\'est pas dans ce serveur.'
         );
       }
 
@@ -82,7 +82,7 @@ export default {
         throw new TitanBotError(
           `User ${targetUser.id} is already at minimum level`,
           ErrorTypes.VALIDATION,
-          `${targetUser.tag} is already at level 0 and cannot have levels removed.`
+          `${targetUser.tag} est déjà au niveau 0 et ne peut pas perdre de niveaux.`
         );
       }
 
@@ -92,8 +92,8 @@ export default {
       await InteractionHelper.safeEditReply(interaction, {
         embeds: [
           createEmbed({
-            title: '✅ Levels Removed',
-            description: `Successfully removed ${levelsToRemove} levels from ${targetUser.tag}.\n**New Level:** ${updatedData.level}`,
+            title: '✅ Niveaux retirés',
+            description: `${levelsToRemove} niveau(x) ont été retirés à ${targetUser.tag}.\n**Nouveau niveau :** ${updatedData.level}`,
             color: 'success'
           })
         ]

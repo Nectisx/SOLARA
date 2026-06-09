@@ -13,11 +13,11 @@ const FINE_PERCENTAGE = 0.1;
 export default {
     data: new SlashCommandBuilder()
         .setName('rob')
-        .setDescription('Attempt to rob another user (very risky)')
+        .setDescription('Tenter de voler un autre utilisateur (très risqué)')
         .addUserOption(option =>
             option
                 .setName('user')
-                .setDescription('User to rob')
+                .setDescription('Utilisateur à voler')
                 .setRequired(true)
         ),
 
@@ -34,7 +34,7 @@ export default {
                 throw createError(
                     "Cannot rob self",
                     ErrorTypes.VALIDATION,
-                    "You cannot rob yourself.",
+                    "Vous ne pouvez pas vous voler vous-même.",
                     { robberId, victimId: victimUser.id }
                 );
             }
@@ -43,7 +43,7 @@ export default {
                 throw createError(
                     "Cannot rob bot",
                     ErrorTypes.VALIDATION,
-                    "You cannot rob a bot.",
+                    "Vous ne pouvez pas voler un bot.",
                     { victimId: victimUser.id, isBot: true }
                 );
             }
@@ -55,7 +55,7 @@ export default {
                 throw createError(
                     "Failed to load economy data",
                     ErrorTypes.DATABASE,
-                    "Failed to load economy data. Please try again later.",
+                    "Impossible de charger les données économiques. Veuillez réessayer plus tard.",
                     { robberId: !!robberData, victimId: !!victimData, guildId }
                 );
             }
@@ -70,7 +70,7 @@ export default {
                 throw createError(
                     "Robbery cooldown active",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to lay low. Wait **${hours}h ${minutes}m** before attempting another robbery.`,
+                    `Vous devez vous faire discret. Attendez **${hours}h ${minutes}m** avant de tenter un autre vol.`,
                     { remaining, hours, minutes, cooldownType: 'rob' }
                 );
             }
@@ -79,7 +79,7 @@ export default {
                 throw createError(
                     "Victim too poor",
                     ErrorTypes.VALIDATION,
-                    `${victimUser.username} is too poor. They need at least $500 cash to be worth robbing.`,
+                    `${victimUser.username} est trop pauvre. Il lui faut au moins $500 en espèces pour que ça vaille le coup de le voler.`,
                     { victimWallet: victimData.wallet, required: 500 }
                 );
             }
@@ -94,7 +94,7 @@ export default {
                     embeds: [
                         MessageTemplates.ERRORS.CONFIGURATION_REQUIRED(
                             "robbery protection",
-                            `${victimUser.username} was prepared! Your attempt failed because they own a **Personal Safe**. You got away clean but didn't gain anything.`
+                            `${victimUser.username} était préparé ! Votre tentative a échoué car il possède un **Coffre-fort Personnel**. Vous vous en êtes sorti sans encombre mais sans rien gagner.`
                         )
                     ],
                 });
@@ -111,7 +111,7 @@ export default {
 
                 resultEmbed = MessageTemplates.SUCCESS.DATA_UPDATED(
                     "robbery",
-                    `You successfully stole **$${amountStolen.toLocaleString()}** from ${victimUser.username}!`
+                    `Vous avez réussi à voler **$${amountStolen.toLocaleString()}** à ${victimUser.username} !`
                 );
             } else {
                 const fineAmount = Math.floor((robberData.wallet || 0) * FINE_PERCENTAGE);
@@ -124,7 +124,7 @@ export default {
 
                 resultEmbed = MessageTemplates.ERRORS.INSUFFICIENT_PERMISSIONS(
                     "robbery failed",
-                    `You failed the robbery and were caught! You were fined **$${fineAmount.toLocaleString()}** of your own cash.`
+                    `Vous avez échoué le vol et avez été attrapé ! Vous avez été condamné à une amende de **$${fineAmount.toLocaleString()}** sur vos propres espèces.`
                 );
             }
 
@@ -136,17 +136,17 @@ export default {
             resultEmbed
                 .addFields(
                     {
-                        name: `Your New Cash (${interaction.user.username})`,
+                        name: `Vos nouvelles espèces (${interaction.user.username})`,
                         value: `$${robberData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: `Victim's New Cash (${victimUser.username})`,
+                        name: `Nouvelles espèces de la victime (${victimUser.username})`,
                         value: `$${victimData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                 )
-                .setFooter({ text: `Next robbery available in 4 hours.` });
+                .setFooter({ text: `Prochain vol disponible dans 4 heures.` });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [resultEmbed] });
     }, { command: 'rob' })

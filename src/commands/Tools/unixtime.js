@@ -6,7 +6,7 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('unixtime')
-        .setDescription('Get the current Unix timestamp'),
+        .setDescription('Obtenir le timestamp Unix actuel'),
 
     async execute(interaction) {
         await InteractionHelper.safeExecute(
@@ -16,11 +16,11 @@ export default {
                 const unixTimestamp = Math.floor(now.getTime() / 1000);
 
                 const embed = successEmbed(
-                    '⏱️ Current Unix Timestamp',
-                    `**Seconds since Unix Epoch:** \`${unixTimestamp}\`\n` +
-                    `**Milliseconds since Unix Epoch:** \`${now.getTime()}\`\n\n` +
-                    `**Human-readable (UTC):** ${now.toUTCString()}\n` +
-                    `**ISO String:** ${now.toISOString()}`
+                    '⏱️ Timestamp Unix actuel',
+                    `**Secondes depuis l\'époque Unix :** \`${unixTimestamp}\`\n` +
+                    `**Millisecondes depuis l\'époque Unix :** \`${now.getTime()}\`\n\n` +
+                    `**Lisible (UTC) :** ${now.toUTCString()}\n` +
+                    `**Chaîne ISO :** ${now.toISOString()}`
                 );
                 embed.setColor(getColor('success'));
 
@@ -28,7 +28,7 @@ export default {
                     embeds: [embed],
                 });
             },
-            'Failed to get unix timestamp. Please try again.',
+            'Impossible d\'obtenir le timestamp Unix. Veuillez réessayer.',
             {
                 autoDefer: true,
                 deferOptions: { flags: MessageFlags.Ephemeral }

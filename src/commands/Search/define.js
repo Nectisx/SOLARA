@@ -9,10 +9,10 @@ import { getColor } from '../../config/bot.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('define')
-        .setDescription('Look up a word definition')
-        .addStringOption(option => 
+        .setDescription('Rechercher la définition d\'un mot')
+        .addStringOption(option =>
             option.setName('word')
-                .setDescription('The word to look up')
+                .setDescription('Le mot à rechercher')
                 .setRequired(true)),
     async execute(interaction) {
         try {
@@ -31,7 +31,7 @@ export default {
                     guildId: interaction.guildId
                 });
                 return await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Error', 'Please enter a word with at least 2 characters.')],
+                    embeds: [errorEmbed('Erreur', 'Veuillez entrer un mot d\'au moins 2 caractères.')],
                     flags: MessageFlags.Ephemeral
                 });
             }
@@ -43,7 +43,7 @@ export default {
             
             if (!response.data || response.data.length === 0) {
                 return await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Not Found', `No definitions found for "${word}".`)]
+                    embeds: [errorEmbed('Introuvable', `Aucune définition trouvée pour "${word}".`)]
                 });
             }
             
@@ -60,7 +60,7 @@ export default {
                     .map((def, idx) => {
                         let text = `${idx + 1}. ${def.definition}`;
                         if (def.example) {
-                            text += `\n   *Example: ${def.example}*`;
+                            text += `\n   *Exemple : ${def.example}*`;
                         }
                         return text;
                     })
@@ -68,14 +68,14 @@ export default {
                 
                 if (definitions) {
                     embed.addFields({
-                        name: `**${meaning.partOfSpeech || 'Definition'}**`,
+                        name: `**${meaning.partOfSpeech || 'Définition'}**`,
                         value: definitions,
                         inline: false
                     });
                 }
             });
             
-            embed.setFooter({ text: 'Powered by Free Dictionary API' });
+            embed.setFooter({ text: 'Propulsé par Free Dictionary API' });
             
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
             
@@ -99,7 +99,7 @@ export default {
             
             if (error.response?.status === 404) {
                 await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Not Found', `No definitions found for "${interaction.options.getString('word')}".`)]
+                    embeds: [errorEmbed('Introuvable', `Aucune définition trouvée pour "${interaction.options.getString('word')}".`)]
                 });
             } else {
                 await handleInteractionError(interaction, error, {

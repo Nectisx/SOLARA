@@ -36,7 +36,7 @@ function getCategoryStatus(enabledEvents, category, auditEnabled) {
 }
 
 async function formatChannelMention(guild, id) {
-    if (!id) return '`Not configured`';
+    if (!id) return '`Non configuré`';
     const channel = guild.channels.cache.get(id) ?? await guild.channels.fetch(id).catch(() => null);
     return channel ? channel.toString() : `⚠️ Missing (${id})`;
 }
@@ -62,13 +62,13 @@ export async function buildLoggingDashboardView(interaction, client) {
     }).join('\n');
 
     const embed = new EmbedBuilder()
-        .setTitle('📋 Logging Dashboard')
-        .setDescription(`Manage audit logging for **${interaction.guild.name}**. Category buttons toggle logging instantly.`)
+        .setTitle('📋 Tableau de bord de journalisation')
+        .setDescription(`Gérez la journalisation d\'audit pour **${interaction.guild.name}**. Les boutons de catégorie basculent la journalisation instantanément.`)
         .setColor(auditEnabled ? getColor('success') : getColor('warning'))
         .addFields(
             {
-                name: '🧾 Audit Logging',
-                value: auditEnabled ? '✅ Enabled' : '❌ Disabled',
+                name: '🧾 Journalisation d\'audit',
+                value: auditEnabled ? '✅ Activée' : '❌ Désactivée',
                 inline: true,
             },
             {
@@ -82,31 +82,31 @@ export async function buildLoggingDashboardView(interaction, client) {
                 inline: true,
             },
             {
-                name: '📡 Log Channels',
+                name: '📡 Canaux de logs',
                 value: [
-                    `**Audit:** ${auditChannel}`,
-                    `**Ticket Logs:** ${lifecycleChannel}`,
-                    `**Ticket Transcripts:** ${transcriptChannel}`,
+                    `**Audit :** ${auditChannel}`,
+                    `**Logs tickets :** ${lifecycleChannel}`,
+                    `**Transcripts tickets :** ${transcriptChannel}`,
                 ].join('\n'),
                 inline: false,
             },
             {
-                name: '📋 Event Categories',
+                name: '📋 Catégories d\'événements',
                 value: categoryLines,
                 inline: false,
             },
             {
-                name: '🧹 Ignore Filters',
-                value: `Users: **${ignoredUsers.length}**\nChannels: **${ignoredChannels.length}**`,
+                name: '🧹 Filtres d\'exclusion',
+                value: `Utilisateurs : **${ignoredUsers.length}**\nCanaux : **${ignoredChannels.length}**`,
                 inline: true,
             },
             {
-                name: '🕒 Last Refresh',
+                name: '🕒 Dernière actualisation',
                 value: `<t:${Math.floor(Date.now() / 1000)}:R>`,
                 inline: true,
             },
         )
-        .setFooter({ text: 'Use /logging setchannel to configure the audit channel  •  /ticket setup or /ticket dashboard to configure ticket channels' })
+        .setFooter({ text: 'Utilisez /logging setchannel pour configurer le canal d\'audit  •  /ticket setup ou /ticket dashboard pour configurer les canaux de tickets' })
         .setTimestamp();
 
     const components = createLoggingDashboardComponents(loggingStatus.enabledEvents, auditEnabled);
@@ -118,7 +118,7 @@ export default {
         try {
             if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
                 return InteractionHelper.safeReply(interaction, {
-                    embeds: [errorEmbed('Permission Denied', 'You need **Manage Server** permissions to view the logging dashboard.')],
+                    embeds: [errorEmbed('Permission refusée', 'Vous avez besoin des permissions **Gérer le serveur** pour voir le tableau de bord de journalisation.')],
                 });
             }
 

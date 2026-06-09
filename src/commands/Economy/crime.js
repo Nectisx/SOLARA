@@ -22,11 +22,11 @@ const CRIME_TYPES = [
 export default {
     data: new SlashCommandBuilder()
         .setName('crime')
-        .setDescription('Commit a crime to earn money (risky)')
+        .setDescription('Commettre un crime pour gagner de l\'argent (risqué)')
         .addStringOption(option =>
             option
                 .setName('type')
-                .setDescription('Type of crime to commit')
+                .setDescription('Type de crime à commettre')
                 .setRequired(true)
                 .addChoices(
                     { name: 'Pickpocketing', value: 'pickpocketing' },
@@ -53,7 +53,7 @@ export default {
                 throw createError(
                     "User is in jail",
                     ErrorTypes.RATE_LIMIT,
-                    `You're in jail for ${timeLeft} more minutes!`,
+                    `Vous êtes en prison pour encore ${timeLeft} minutes !`,
                     { jailTimeRemaining: userData.jailedUntil - now }
                 );
             }
@@ -63,7 +63,7 @@ export default {
                 throw createError(
                     "Crime cooldown active",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to wait ${timeLeft} more minutes before committing another crime.`,
+                    `Vous devez attendre encore ${timeLeft} minutes avant de commettre un autre crime.`,
                     { remaining: lastCrime + CRIME_COOLDOWN - now, cooldownType: 'crime' }
                 );
             }
@@ -77,7 +77,7 @@ export default {
                 throw createError(
                     "Invalid crime type",
                     ErrorTypes.VALIDATION,
-                    "Please select a valid crime type.",
+                    "Veuillez sélectionner un type de crime valide.",
                     { crimeType }
                 );
             }
@@ -96,8 +96,8 @@ export default {
                 await setEconomyData(client, guildId, userId, userData);
                 
                 const embed = successEmbed(
-                    "Crime Successful!",
-                    `You successfully committed ${crime.name} and earned **${amountEarned}** coins!`
+                    "Crime réussi !",
+                    `Vous avez commis ${crime.name} avec succès et gagné **${amountEarned}** pièces !`
                 );
                 
                 await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
@@ -109,9 +109,9 @@ export default {
                 await setEconomyData(client, guildId, userId, userData);
                 
                 const embed = errorEmbed(
-                    "Crime Failed!",
-                    `You were caught while attempting ${crime.name} and have been sent to jail! ` +
-                    `You were fined ${fine} coins and will be in jail for 2 hours.`
+                    "Crime échoué !",
+                    `Vous avez été attrapé en tentant ${crime.name} et avez été envoyé en prison ! ` +
+                    `Vous avez été condamné à une amende de ${fine} pièces et serez en prison pendant 2 heures.`
                 );
                 
                 await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });

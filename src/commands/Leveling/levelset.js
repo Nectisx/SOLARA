@@ -14,17 +14,17 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('levelset')
-    .setDescription("Set a user's level to a specific value")
+    .setDescription("Définir le niveau d'un utilisateur à une valeur précise")
     .addUserOption((option) =>
       option
         .setName('user')
-        .setDescription('The user to set the level for')
+        .setDescription('L\'utilisateur pour lequel définir le niveau')
         .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName('level')
-        .setDescription('The level to set')
+        .setDescription('Le niveau à définir')
         .setRequired(true)
         .setMinValue(0)
     )
@@ -46,7 +46,7 @@ export default {
       const hasPermission = await checkUserPermissions(
         interaction,
         PermissionFlagsBits.ManageGuild,
-        'You need ManageGuild permission to use this command.'
+        'Vous avez besoin de la permission Gérer le serveur pour utiliser cette commande.'
       );
       if (!hasPermission) return;
 
@@ -56,7 +56,7 @@ export default {
           embeds: [
             new EmbedBuilder()
               .setColor('#f1c40f')
-              .setDescription('The leveling system is currently disabled on this server.')
+              .setDescription('Le système de niveaux est actuellement désactivé sur ce serveur.')
           ],
           flags: MessageFlags.Ephemeral
         });
@@ -72,7 +72,7 @@ export default {
         throw new TitanBotError(
           `User ${targetUser.id} not found in this guild`,
           ErrorTypes.USER_INPUT,
-          'The specified user is not in this server.'
+          'L\'utilisateur spécifié n\'est pas dans ce serveur.'
         );
       }
 
@@ -82,8 +82,8 @@ export default {
       await InteractionHelper.safeEditReply(interaction, {
         embeds: [
           createEmbed({
-            title: '✅ Level Set',
-            description: `Successfully set ${targetUser.tag}'s level to **${newLevel}**.\n**Total XP:** ${userData.totalXp}`,
+            title: '✅ Niveau défini',
+            description: `Le niveau de ${targetUser.tag} a été défini à **${newLevel}**.\n**XP total :** ${userData.totalXp}`,
             color: 'success'
           })
         ]

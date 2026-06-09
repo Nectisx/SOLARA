@@ -8,11 +8,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("mock")
-    .setDescription("cOnVeRtS yOuR tExT tO sPoNgEbOb CaSe.")
+    .setDescription("cOnVeRtIt VoTrE tExTe En CaS sPoNgEbOb.")
     .addStringOption((option) =>
       option
         .setName("text")
-        .setDescription("The text to mock.")
+        .setDescription("Le texte à moquer.")
         .setRequired(true)
         .setMaxLength(1000),
     ),
@@ -27,7 +27,7 @@ export default {
         throw new TitanBotError(
           'Empty text provided to mock command',
           ErrorTypes.USER_INPUT,
-          'Please provide some text to mock!'
+          'Veuillez fournir du texte à moquer !'
         );
       }
 

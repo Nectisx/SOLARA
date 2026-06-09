@@ -23,17 +23,17 @@ const FISH_TYPES = [
 ];
 
 const CATCH_MESSAGES = [
-    "You cast your line into the crystal clear waters...",
-    "You wait patiently as your bobber floats...",
-    "After a few minutes of waiting, you feel a tug...",
-    "The water ripples as something takes your bait...",
-    "You reel in your catch with expert precision...",
+    "Vous lancez votre ligne dans les eaux cristallines...",
+    "Vous attendez patiemment que votre flotteur dérive...",
+    "Après quelques minutes d'attente, vous sentez une traction...",
+    "L'eau se ride quand quelque chose mord à votre appât...",
+    "Vous remontez votre prise avec une précision d'expert...",
 ];
 
 export default {
     data: new SlashCommandBuilder()
         .setName('fish')
-        .setDescription('Go fishing to catch fish and earn money'),
+        .setDescription('Aller pêcher pour attraper des poissons et gagner de l\'argent'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -57,7 +57,7 @@ export default {
                 throw createError(
                     "Fishing cooldown active",
                     ErrorTypes.RATE_LIMIT,
-                    `You're too tired to fish right now. Rest for **${hours}h ${minutes}m** before fishing again.`,
+                    `Vous êtes trop fatigué pour pêcher maintenant. Reposez-vous pendant **${hours}h ${minutes}m** avant de pêcher à nouveau.`,
                     { remaining, cooldownType: 'fish' }
                 );
             }
@@ -93,7 +93,7 @@ export default {
             
             if (hasFishingRod > 0) {
                 finalEarned = Math.floor(baseEarned * FISHING_ROD_MULTIPLIER);
-                multiplierMessage = `\n🎣 **Fishing Rod Bonus: +50%**`;
+                multiplierMessage = `\n🎣 **Bonus Canne à pêche : +50%**`;
             }
 
             const catchMessage = CATCH_MESSAGES[Math.floor(Math.random() * CATCH_MESSAGES.length)];
@@ -112,23 +112,23 @@ export default {
             };
 
             const embed = createEmbed({
-                title: '🎣 Fishing Success!',
-                description: `${catchMessage}\n\nYou caught a **${fishCaught.emoji} ${fishCaught.name}**! You sold it for **$${finalEarned.toLocaleString()}**!${multiplierMessage}`,
+                title: '🎣 Pêche réussie !',
+                description: `${catchMessage}\n\nVous avez attrapé un **${fishCaught.emoji} ${fishCaught.name}** ! Vous l'avez vendu pour **$${finalEarned.toLocaleString()}** !${multiplierMessage}`,
                 color: rarityColors[fishCaught.rarity]
             })
                 .addFields(
                     {
-                        name: "💵 New Cash Balance",
+                        name: "💵 Nouveau solde en espèces",
                         value: `$${userData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "🐟 Rarity",
+                        name: "🐟 Rareté",
                         value: fishCaught.rarity.charAt(0).toUpperCase() + fishCaught.rarity.slice(1),
                         inline: true,
                     }
                 )
-                .setFooter({ text: `Next fishing trip available in 45 minutes.` });
+                .setFooter({ text: `Prochaine sortie de pêche disponible dans 45 minutes.` });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
     }, { command: 'fish' })

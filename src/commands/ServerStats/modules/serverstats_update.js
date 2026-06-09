@@ -24,15 +24,15 @@ export async function handleUpdate(interaction, client) {
 
     // Check permissions after deferring
     if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) {
-        await InteractionHelper.safeEditReply(interaction, { 
-            embeds: [errorEmbed("You need **Manage Channels** permission to update counters.")]
+        await InteractionHelper.safeEditReply(interaction, {
+            embeds: [errorEmbed("Vous avez besoin de la permission **Gérer les salons** pour mettre à jour des compteurs.")]
         }).catch(logger.error);
         return;
     }
 
     if (!newType) {
         await InteractionHelper.safeEditReply(interaction, {
-            embeds: [errorEmbed("You must provide a new counter type to update.")]
+            embeds: [errorEmbed("Vous devez fournir un nouveau type de compteur pour la mise à jour.")]
         }).catch(logger.error);
         return;
     }
@@ -43,7 +43,7 @@ export async function handleUpdate(interaction, client) {
         const counterIndex = counters.findIndex(c => c.id === counterId);
         if (counterIndex === -1) {
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed(`Counter with ID \`${counterId}\` not found. Use \`/counter list\` to see all counters.`)]
+                embeds: [errorEmbed(`Compteur avec l'ID \`${counterId}\` introuvable. Utilisez \`/counter list\` pour voir tous les compteurs.`)]
             }).catch(logger.error);
             return;
         }
@@ -53,7 +53,7 @@ export async function handleUpdate(interaction, client) {
 
         if (!oldChannel) {
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed("The channel for this counter no longer exists. You cannot update a counter for a deleted channel.")]
+                embeds: [errorEmbed("Le salon associé à ce compteur n'existe plus. Vous ne pouvez pas mettre à jour un compteur pour un salon supprimé.")]
             }).catch(logger.error);
             return;
         }
@@ -63,7 +63,7 @@ export async function handleUpdate(interaction, client) {
             if (existingTypeCounter) {
                 const existingChannel = guild.channels.cache.get(existingTypeCounter.channelId);
                 await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed(`A **${getCounterTypeLabel(newType)}** counter already exists for this server${existingChannel ? ` in ${existingChannel}` : ''}. Delete it first before reusing that type.`)]
+                    embeds: [errorEmbed(`Un compteur **${getCounterTypeLabel(newType)}** existe déjà pour ce serveur${existingChannel ? ` dans ${existingChannel}` : ''}. Supprimez-le avant de réutiliser ce type.`)]
                 }).catch(logger.error);
                 return;
             }
@@ -77,7 +77,7 @@ export async function handleUpdate(interaction, client) {
         const saved = await saveServerCounters(client, guild.id, counters);
         if (!saved) {
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed("Failed to save updated counter data. Please try again.")]
+                embeds: [errorEmbed("Échec de la sauvegarde des données du compteur mis à jour. Veuillez réessayer.")]
             }).catch(logger.error);
             return;
         }
@@ -86,7 +86,7 @@ export async function handleUpdate(interaction, client) {
         const updated = await updateCounter(client, guild, updatedCounter);
         if (!updated) {
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed("Counter updated but failed to update channel name. The counter will update on the next scheduled run.")]
+                embeds: [errorEmbed("Compteur mis à jour mais échec de la mise à jour du nom du salon. Le compteur se mettra à jour lors de la prochaine exécution planifiée.")]
             }).catch(logger.error);
             return;
         }
@@ -94,13 +94,13 @@ export async function handleUpdate(interaction, client) {
         const finalChannel = guild.channels.cache.get(updatedCounter.channelId);
 
         await InteractionHelper.safeEditReply(interaction, {
-            embeds: [successEmbed(`✅ **Counter Updated Successfully!**\n\n**Counter ID:** \`${counterId}\`\n**Type Changed:** ${getCounterEmoji(oldType)} ${getCounterTypeLabel(oldType)} → ${getCounterEmoji(newType)} ${getCounterTypeLabel(newType)}\n\n**Current Settings:**\n**Type:** ${getCounterEmoji(updatedCounter.type)} ${getCounterTypeLabel(updatedCounter.type)}\n**Channel:** ${finalChannel}\n**Channel Name:** ${finalChannel.name}\n\nThe counter will automatically update every 15 minutes.`)]
+            embeds: [successEmbed(`✅ **Compteur mis à jour avec succès !**\n\n**ID du compteur :** \`${counterId}\`\n**Type modifié :** ${getCounterEmoji(oldType)} ${getCounterTypeLabel(oldType)} → ${getCounterEmoji(newType)} ${getCounterTypeLabel(newType)}\n\n**Paramètres actuels :**\n**Type :** ${getCounterEmoji(updatedCounter.type)} ${getCounterTypeLabel(updatedCounter.type)}\n**Salon :** ${finalChannel}\n**Nom du salon :** ${finalChannel.name}\n\nLe compteur se mettra à jour automatiquement toutes les 15 minutes.`)]
         }).catch(logger.error);
 
     } catch (error) {
         logger.error("Error updating counter:", error);
         await InteractionHelper.safeEditReply(interaction, {
-            embeds: [errorEmbed("An error occurred while updating the counter. Please try again.")]
+            embeds: [errorEmbed("Une erreur s'est produite lors de la mise à jour du compteur. Veuillez réessayer.")]
         }).catch(logger.error);
     }
 }

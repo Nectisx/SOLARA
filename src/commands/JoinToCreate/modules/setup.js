@@ -15,7 +15,7 @@ export default {
 
         try {
             const triggerChannel = await interaction.guild.channels.create({
-                name: 'Join to Create',
+                name: 'Rejoindre pour créer',
                 type: ChannelType.GuildVoice,
                 parent: category?.id,
                 userLimit: userLimit,
@@ -36,14 +36,14 @@ export default {
             });
 
             const embed = successEmbed(
-                `Created trigger channel: ${triggerChannel}\n\n` +
-                `**Settings:**\n` +
-                `• Temporary Channel Name Template: \`${nameTemplate}\`\n` +
-                `• User Limit: ${userLimit === 0 ? 'No limit' : userLimit + ' users'}\n` +
-                `• Bitrate: ${bitrate} kbps\n` +
-                `${category ? `• Category: ${category.name}` : '• Category: None (root level)'}\n\n` +
-                `When users join this channel, a temporary voice channel will be created for them.`,
-                '✅ Join to Create Setup Complete'
+                `Salon déclencheur créé : ${triggerChannel}\n\n` +
+                `**Paramètres :**\n` +
+                `• Modèle de nom de salon temporaire : \`${nameTemplate}\`\n` +
+                `• Limite d'utilisateurs : ${userLimit === 0 ? 'Aucune limite' : userLimit + ' utilisateurs'}\n` +
+                `• Débit binaire : ${bitrate} kbps\n` +
+                `${category ? `• Catégorie : ${category.name}` : '• Catégorie : Aucune (niveau racine)'}\n\n` +
+                `Lorsque des utilisateurs rejoignent ce salon, un salon vocal temporaire sera créé pour eux.`,
+                '✅ Configuration Rejoindre pour créer terminée'
             );
 
             try {
@@ -71,7 +71,7 @@ export default {
             throw new TitanBotError(
                 `Setup failed: ${error.message}`,
                 ErrorTypes.DISCORD_API,
-                'Failed to set up Join to Create system.'
+                'Impossible de configurer le système Rejoindre pour créer.'
             );
         }
     }

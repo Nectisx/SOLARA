@@ -5,25 +5,25 @@ import { handleInteractionError, TitanBotError, ErrorTypes } from '../../utils/e
 
 import { InteractionHelper } from '../../utils/interactionHelper.js';
 const facts = [
-  "A day on Venus is longer than a year on Venus.",
-  "The shortest war in history was between Britain and Zanzibar on August 27, 1896. It lasted 38 to 45 minutes.",
-  "The word 'Strengths' is the longest word in the English language with only one vowel.",
-  "Octopuses have three hearts and blue blood.",
-  "There are more trees on Earth than stars in the Milky Way galaxy.",
-  "The total weight of all the ants on Earth is thought to be about the same as the total weight of all humans.",
+  "Un jour sur Vénus est plus long qu'une année sur Vénus.",
+  "La guerre la plus courte de l'histoire s'est déroulée entre la Grande-Bretagne et Zanzibar le 27 août 1896. Elle a duré entre 38 et 45 minutes.",
+  "Le mot 'Strengths' est le plus long mot de la langue anglaise ne contenant qu'une seule voyelle.",
+  "Les pieuvres ont trois cœurs et du sang bleu.",
+  "Il y a plus d'arbres sur Terre que d'étoiles dans la Voie lactée.",
+  "Le poids total de toutes les fourmis sur Terre serait à peu près égal au poids total de tous les humains.",
 ];
 
 export default {
     data: new SlashCommandBuilder()
     .setName("fact")
-    .setDescription("Shares a random, interesting fact."),
+    .setDescription("Partage un fait aléatoire et intéressant."),
   category: 'Fun',
 
   async execute(interaction, config, client) {
     try {
       const randomFact = facts[Math.floor(Math.random() * facts.length)];
 
-      const embed = successEmbed("🧠 Did You Know?", `💡 **${randomFact}**`);
+      const embed = successEmbed("🧠 Le saviez-vous ?", `💡 **${randomFact}**`);
 
       await InteractionHelper.safeReply(interaction, { embeds: [embed] });
       logger.debug(`Fact command executed by user ${interaction.user.id} in guild ${interaction.guildId}`);

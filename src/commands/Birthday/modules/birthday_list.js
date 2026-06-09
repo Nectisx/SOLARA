@@ -19,15 +19,15 @@ export default {
             if (sortedBirthdays.length === 0) {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [createEmbed({
-                        title: '❌ No Birthdays',
-                        description: 'No birthdays have been set in this server yet.',
+                        title: '❌ Aucun anniversaire',
+                        description: 'Aucun anniversaire n\'a encore été défini dans ce serveur.',
                         color: 'error'
                     })]
                 });
             }
 
             const embed = createEmbed({
-                title: "🎂 Server Birthdays",
+                title: "🎂 Anniversaires du serveur",
                 color: 'info'
             });
 
@@ -58,17 +58,17 @@ export default {
             if (displayIndex === 0) {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [createEmbed({
-                        title: '❌ No Birthdays',
-                        description: 'No birthdays have been set by current server members.',
+                        title: '❌ Aucun anniversaire',
+                        description: 'Aucun anniversaire n\'a été défini par les membres actuels du serveur.',
                         color: 'error'
                     })]
                 });
             }
 
-            birthdayList = `**${displayIndex} birthday${displayIndex !== 1 ? 's' : ''} in ${interaction.guild.name}**\n\n` + birthdayList;
+            birthdayList = `**${displayIndex} anniversaire${displayIndex !== 1 ? 's' : ''} dans ${interaction.guild.name}**\n\n` + birthdayList;
 
             embed.setDescription(birthdayList);
-            embed.setFooter({ text: `Total: ${displayIndex} birthday${displayIndex !== 1 ? 's' : ''}` });
+            embed.setFooter({ text: `Total : ${displayIndex} anniversaire${displayIndex !== 1 ? 's' : ''}` });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
             

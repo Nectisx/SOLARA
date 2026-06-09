@@ -9,13 +9,13 @@ export default {
     async execute(interaction, config, client) {
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Permission Denied', 'You need **Administrator** permissions to change log channels.')],
+                embeds: [errorEmbed('Permission refusée', 'Vous avez besoin des permissions **Administrateur** pour modifier les canaux de logs.')],
             });
         }
 
         if (!client.db) {
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Database Error', 'Database not initialized.')],
+                embeds: [errorEmbed('Erreur de base de données', 'Base de données non initialisée.')],
             });
         }
 
@@ -36,7 +36,7 @@ export default {
                 };
                 await setGuildConfig(client, guildId, currentConfig);
                 return InteractionHelper.safeEditReply(interaction, {
-                    embeds: [successEmbed('Logging Disabled 🚫', 'Audit logging has been disabled for this server.')],
+                    embeds: [successEmbed('Logs désactivés 🚫', 'Les logs d\'audit ont été désactivés pour ce serveur.')],
                 });
             }
 
@@ -44,7 +44,7 @@ export default {
                 const perms = logChannel.permissionsFor(interaction.guild.members.me);
                 if (!perms.has(PermissionsBitField.Flags.SendMessages) || !perms.has(PermissionsBitField.Flags.EmbedLinks)) {
                     return InteractionHelper.safeEditReply(interaction, {
-                        embeds: [errorEmbed('Bot Permission Error', `I need **Send Messages** and **Embed Links** permissions in ${logChannel}.`)],
+                        embeds: [errorEmbed('Erreur de permission du bot', `J'ai besoin des permissions **Envoyer des messages** et **Intégrer des liens** dans ${logChannel}.`)],
                     });
                 }
 
@@ -58,7 +58,7 @@ export default {
                 await setGuildConfig(client, guildId, currentConfig);
 
                 await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [successEmbed('Log Channel Set 📝', `Audit logs will be sent to ${logChannel}.`)],
+                    embeds: [successEmbed('Canal de logs défini 📝', `Les logs d'audit seront envoyés dans ${logChannel}.`)],
                 });
 
                 await logEvent({
@@ -76,12 +76,12 @@ export default {
             }
 
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('No Option Provided', 'Provide one of: `channel` or `disable: True`.\n\n> Ticket transcript and logs channels are managed via `/ticket setup` or `/ticket dashboard`.')],
+                embeds: [errorEmbed('Aucune option fournie', 'Fournissez l\'une des options suivantes : `channel` ou `disable: True`.\n\n> Les canaux de transcription et de logs des tickets sont gérés via `/ticket setup` ou `/ticket dashboard`.')],
             });
         } catch (error) {
             logger.error('logging setchannel error:', error);
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Configuration Error', 'Could not save the configuration.')],
+                embeds: [errorEmbed('Erreur de configuration', 'Impossible de sauvegarder la configuration.')],
             });
         }
     },

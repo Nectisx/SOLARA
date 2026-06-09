@@ -9,7 +9,7 @@ export default {
     data: new SlashCommandBuilder()
         .setName("unlock")
         .setDescription(
-            "Unlocks the current channel (allows @everyone to send messages again).",
+            "Déverrouille le salon actuel (permet à @everyone d'envoyer des messages à nouveau).",
         )
 .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
     category: "moderation",
@@ -33,8 +33,8 @@ export default {
             return await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "Permission Denied",
-                        "You need the `Manage Channels` permission to unlock channels.",
+                        "Permission refusée",
+                        "Vous avez besoin de la permission `Gérer les salons` pour déverrouiller les salons.",
                     ),
                 ],
             });
@@ -53,8 +53,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Channel Already Unlocked",
-                            `${channel} is not explicitly locked (everyone can already send messages).`,
+                            "Salon déjà déverrouillé",
+                            `${channel} n'est pas explicitement verrouillé (tout le monde peut déjà envoyer des messages).`,
                         ),
                     ],
                 });
@@ -70,18 +70,18 @@ export default {
             );
 
             const unlockEmbed = createEmbed(
-                "🔓 Channel Unlocked (Action Log)",
-                `${channel} has been unlocked by ${interaction.user}.`,
+                "🔓 Salon déverrouillé (Journal d'action)",
+                `${channel} a été déverrouillé par ${interaction.user}.`,
             )
 .setColor(getColor('success'))
                 .addFields(
                     {
-                        name: "Channel",
+                        name: "Salon",
                         value: channel.toString(),
                         inline: true,
                     },
                     {
-                        name: "Moderator",
+                        name: "Modérateur",
                         value: `${interaction.user.tag} (${interaction.user.id})`,
                         inline: true,
                     },
@@ -104,8 +104,8 @@ export default {
             await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `🔓 **Channel Unlocked**`,
-                        `${channel} is now unlocked. You may speak now.`,
+                        `🔓 **Salon déverrouillé**`,
+                        `${channel} est maintenant déverrouillé. Vous pouvez parler.`,
                     ),
                 ],
             });
@@ -114,7 +114,7 @@ export default {
             await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "An unexpected error occurred while trying to unlock the channel. Check my permissions (I need 'Manage Channels').",
+                        "Une erreur inattendue s'est produite lors du déverrouillage du salon. Vérifiez mes permissions (j'ai besoin de 'Gérer les salons').",
                     ),
                 ],
             });

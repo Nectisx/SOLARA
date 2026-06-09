@@ -10,25 +10,25 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 import { logger } from '../../utils/logger.js';
 
 function pill(enabled) {
-    return enabled ? '✅ On' : '❌ Off';
+    return enabled ? '✅ Activé' : '❌ Désactivé';
 }
 
 async function formatChannelMention(guild, id) {
-    if (!id) return '`Not configured`';
+    if (!id) return '`Non configuré`';
     const channel = guild.channels.cache.get(id) ?? await guild.channels.fetch(id).catch(() => null);
-    return channel ? channel.toString() : `⚠️ Missing (${id})`;
+    return channel ? channel.toString() : `⚠️ Introuvable (${id})`;
 }
 
 function formatRoleMention(guild, id) {
-    if (!id) return '`Not configured`';
+    if (!id) return '`Non configuré`';
     const role = guild.roles.cache.get(id);
-    return role ? role.toString() : `⚠️ Missing (${id})`;
+    return role ? role.toString() : `⚠️ Introuvable (${id})`;
 }
 
 export default {
     data: new SlashCommandBuilder()
         .setName('overview')
-        .setDescription('Read-only snapshot of all server system statuses.')
+        .setDescription('Aperçu en lecture seule de tous les statuts des systèmes du serveur.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false),
 
@@ -61,54 +61,54 @@ export default {
                 ]);
 
             const embed = new EmbedBuilder()
-                .setTitle('🖥️ System Overview')
-                .setDescription(`Read-only snapshot for **${interaction.guild.name}**. Use the relevant command's dashboard to make changes.`)
+                .setTitle('🖥️ Aperçu du système')
+                .setDescription(`Aperçu en lecture seule pour **${interaction.guild.name}**. Utilisez le tableau de bord de la commande correspondante pour effectuer des modifications.`)
                 .setColor(getColor('primary'))
                 .addFields(
                     // ── Core systems ──
                     {
-                        name: '⚙️ Core Systems',
+                        name: '⚙️ Systèmes principaux',
                         value: [
-                            `🧾 **Audit Logging** — ${pill(Boolean(loggingStatus.enabled))}`,
-                            `📈 **Leveling** — ${pill(Boolean(levelingConfig?.enabled))}`,
-                            `👋 **Welcome** — ${pill(Boolean(welcomeConfig?.enabled))}`,
-                            `👋 **Goodbye** — ${pill(Boolean(welcomeConfig?.goodbyeEnabled))}`,
-                            `🎂 **Birthdays** — ${pill(Boolean(guildConfig.birthdayChannelId))}`,
-                            `📋 **Applications** — ${pill(Boolean(applicationConfig?.enabled))}`,
-                            `✅ **Verification** — ${pill(verificationEnabled)}`,
-                            `🤖 **Auto-Verify** — ${pill(autoVerifyEnabled)}`,
-                            `🎧 **Join to Create** — ${pill(Boolean(joinToCreateConfig?.enabled))}`,
-                            `🛡️ **Auto Role** — ${autoRoleId ? `✅ ${formatRoleMention(interaction.guild, autoRoleId)}` : '❌ Off'}`,
+                            `🧾 **Journal d'audit** — ${pill(Boolean(loggingStatus.enabled))}`,
+                            `📈 **Niveaux** — ${pill(Boolean(levelingConfig?.enabled))}`,
+                            `👋 **Bienvenue** — ${pill(Boolean(welcomeConfig?.enabled))}`,
+                            `👋 **Au revoir** — ${pill(Boolean(welcomeConfig?.goodbyeEnabled))}`,
+                            `🎂 **Anniversaires** — ${pill(Boolean(guildConfig.birthdayChannelId))}`,
+                            `📋 **Candidatures** — ${pill(Boolean(applicationConfig?.enabled))}`,
+                            `✅ **Vérification** — ${pill(verificationEnabled)}`,
+                            `🤖 **Vérification auto** — ${pill(autoVerifyEnabled)}`,
+                            `🎧 **Rejoindre pour créer** — ${pill(Boolean(joinToCreateConfig?.enabled))}`,
+                            `🛡️ **Rôle auto** — ${autoRoleId ? `✅ ${formatRoleMention(interaction.guild, autoRoleId)}` : '❌ Désactivé'}`,
                         ].join('\n'),
                         inline: false,
                     },
                     // ── Channels ──
                     {
-                        name: '📡 Configured Channels',
+                        name: '📡 Salons configurés',
                         value: [
-                            `**Audit Log:** ${auditChannel}`,
-                            `**Ticket Lifecycle:** ${lifecycleChannel}`,
-                            `**Ticket Transcripts:** ${transcriptChannel}`,
-                            `**Reports:** ${reportChannel}`,
-                            `**Birthdays:** ${birthdayChannel}`,
+                            `**Journal d'audit :** ${auditChannel}`,
+                            `**Cycle de vie des tickets :** ${lifecycleChannel}`,
+                            `**Transcriptions des tickets :** ${transcriptChannel}`,
+                            `**Signalements :** ${reportChannel}`,
+                            `**Anniversaires :** ${birthdayChannel}`,
                         ].join('\n'),
                         inline: false,
                     },
                     // ── Refresh stamp ──
                     {
-                        name: '🕒 Snapshot Taken',
+                        name: '🕒 Aperçu pris le',
                         value: `<t:${Math.floor(Date.now() / 1000)}:R>`,
                         inline: true,
                     },
                 )
-                .setFooter({ text: 'Read-only — run /logging dashboard to manage audit settings' })
+                .setFooter({ text: 'Lecture seule — exécutez /logging dashboard pour gérer les paramètres d\'audit' })
                 .setTimestamp();
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
         } catch (error) {
             logger.error('overview command error:', error);
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Overview Error', 'Failed to load the system overview.')],
+                embeds: [errorEmbed('Erreur d\'aperçu', 'Impossible de charger l\'aperçu du système.')],
             });
         }
     },

@@ -9,13 +9,13 @@ export default {
     async execute(interaction, config, client) {
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Permission Denied', 'You need **Administrator** permissions to manage log filters.')],
+                embeds: [errorEmbed('Permission refusée', 'Vous avez besoin des permissions **Administrateur** pour gérer les filtres de logs.')],
             });
         }
 
         if (!client.db) {
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Database Error', 'Database not initialized.')],
+                embeds: [errorEmbed('Erreur de base de données', 'Base de données non initialisée.')],
             });
         }
 
@@ -35,17 +35,17 @@ export default {
 
         if (type === 'user') {
             targetArray = currentConfig.logIgnore.users;
-            entityType = 'User';
+            entityType = 'Utilisateur';
             const member = await interaction.guild.members.fetch(entityId).catch(() => null);
             entityName = member ? member.user.tag : `ID: ${entityId}`;
         } else if (type === 'channel') {
             targetArray = currentConfig.logIgnore.channels;
-            entityType = 'Channel';
+            entityType = 'Salon';
             const channel = interaction.guild.channels.cache.get(entityId);
             entityName = channel ? `#${channel.name}` : `ID: ${entityId}`;
         } else {
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Invalid Type', "Choose `user` or `channel`.")],
+                embeds: [errorEmbed('Type invalide', "Choisissez `user` ou `channel`.")],
             });
         }
 
@@ -54,20 +54,20 @@ export default {
         if (subcommand === 'add') {
             if (targetArray.includes(entityId)) {
                 return InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Already Filtered', `${entityType} **${entityName}** is already on the ignore list.`)],
+                    embeds: [errorEmbed('Déjà filtré', `${entityType} **${entityName}** est déjà dans la liste d'exclusion.`)],
                 });
             }
             targetArray.push(entityId);
-            successMessage = `${entityType} **${entityName}** added to the log ignore list. Events from them will not be logged.`;
+            successMessage = `${entityType} **${entityName}** ajouté à la liste d'exclusion des logs. Les événements associés ne seront plus enregistrés.`;
         } else if (subcommand === 'remove') {
             const index = targetArray.indexOf(entityId);
             if (index === -1) {
                 return InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Not Filtered', `${entityType} **${entityName}** was not on the ignore list.`)],
+                    embeds: [errorEmbed('Non filtré', `${entityType} **${entityName}** n'était pas dans la liste d'exclusion.`)],
                 });
             }
             targetArray.splice(index, 1);
-            successMessage = `${entityType} **${entityName}** removed from the log ignore list. Events will now be logged.`;
+            successMessage = `${entityType} **${entityName}** retiré de la liste d'exclusion des logs. Les événements seront désormais enregistrés.`;
         } else {
             return;
         }
@@ -87,12 +87,12 @@ export default {
             });
 
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [successEmbed('Filter Updated', successMessage)],
+                embeds: [successEmbed('Filtre mis à jour', successMessage)],
             });
         } catch (error) {
             logger.error('logging filter error:', error);
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Database Error', 'Failed to save the filter change.')],
+                embeds: [errorEmbed('Erreur de base de données', 'Impossible de sauvegarder la modification du filtre.')],
             });
         }
     },
