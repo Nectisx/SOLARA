@@ -22,37 +22,37 @@ export default {
 
         if (!reportChannelId) {
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Setup Required', 'The report channel has not been set up. Please ask a moderator to use `/report setchannel` first.')],
+                embeds: [errorEmbed('Configuration requise', 'Le salon de signalement n\'a pas été configuré. Demandez à un modérateur d\'utiliser `/report setchannel` d\'abord.')],
             });
         }
 
         const reportChannel = interaction.guild.channels.cache.get(reportChannelId);
         if (!reportChannel) {
             return InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Channel Missing', 'The configured report channel is missing or inaccessible. Please ask a moderator to reset it.')],
+                embeds: [errorEmbed('Salon introuvable', 'Le salon de signalement configuré est manquant ou inaccessible. Demandez à un modérateur de le reconfigurer.')],
             });
         }
 
         try {
             const reportEmbed = createEmbed({
-                title: `🚨 NEW USER REPORT: ${targetUser.tag}`,
-                description: `**Reported By:** ${interaction.user.tag} (\`${interaction.user.id}\`)\n**Reported User:** ${targetUser.tag} (\`${targetUser.id}\`)`,
+                title: `🚨 NOUVEAU SIGNALEMENT : ${targetUser.tag}`,
+                description: `**Signalé par :** ${interaction.user.tag} (\`${interaction.user.id}\`)\n**Utilisateur signalé :** ${targetUser.tag} (\`${targetUser.id}\`)`,
             })
                 .setColor(getColor('error'))
                 .setThumbnail(targetUser.displayAvatarURL())
                 .addFields(
-                    { name: 'Reason', value: reason },
-                    { name: 'Reported In Channel', value: interaction.channel.toString(), inline: true },
-                    { name: 'Time', value: new Date().toUTCString(), inline: true },
+                    { name: 'Raison', value: reason },
+                    { name: 'Signalé dans le salon', value: interaction.channel.toString(), inline: true },
+                    { name: 'Heure', value: new Date().toUTCString(), inline: true },
                 );
 
             await reportChannel.send({
-                content: `<@&${interaction.guild.ownerId}> New Report!`,
+                content: `<@&${interaction.guild.ownerId}> Nouveau signalement !`,
                 embeds: [reportEmbed],
             });
 
             await InteractionHelper.safeEditReply(interaction, {
-                embeds: [createEmbed({ title: '✅ Report Submitted', description: `Your report against **${targetUser.tag}** has been successfully filed and sent to the moderation team. Thank you!` })],
+                embeds: [createEmbed({ title: '✅ Signalement envoyé', description: `Votre signalement concernant **${targetUser.tag}** a bien été transmis à l'équipe de modération. Merci !` })],
             });
 
             logger.info('Report submitted', {

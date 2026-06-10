@@ -29,7 +29,7 @@ export class ModerationService {
     if (moderator.roles.highest.position <= target.roles.highest.position) {
       return {
         valid: false,
-        error: `You cannot ${action} a user with an equal or higher role than you.`
+        error: `Vous ne pouvez pas ${action} un utilisateur avec un rôle égal ou supérieur au vôtre.`
       };
     }
 
@@ -57,7 +57,7 @@ export class ModerationService {
     if (botMember.roles.highest.position <= target.roles.highest.position) {
       return {
         valid: false,
-        error: `I cannot ${action} a user with an equal or higher role than me.`
+        error: `Je ne peux pas ${action} un utilisateur avec un rôle égal ou supérieur au mien.`
       };
     }
 
@@ -73,7 +73,7 @@ export class ModerationService {
     guild,
     user,
     moderator,
-    reason = 'No reason provided',
+    reason = 'Aucune raison fournie',
     deleteDays = 0
   }) {
     try {
@@ -117,7 +117,7 @@ export class ModerationService {
             throw new TitanBotError(
                 'You do not have sufficient permissions to ban users who are not in the server.',
                 ErrorTypes.PERMISSION,
-                'You need "Manage Server" or "Administrator" permissions to ban users not currently in the guild.'
+                'Vous avez besoin des permissions « Gérer le serveur » ou « Administrateur » pour bannir des utilisateurs qui ne sont pas dans le serveur.'
             );
         }
       }
@@ -131,7 +131,7 @@ export class ModerationService {
         client: guild.client,
         guild,
         event: {
-          action: 'Member Banned',
+          action: 'Membre banni',
           target: `${user.tag} (${user.id})`,
           executor: `${moderator.user.tag} (${moderator.id})`,
           reason,
@@ -167,7 +167,7 @@ export class ModerationService {
     guild,
     member,
     moderator,
-    reason = 'No reason provided'
+    reason = 'Aucune raison fournie'
   }) {
     try {
       if (!guild || !member || !moderator) {
@@ -194,7 +194,7 @@ export class ModerationService {
         throw new TitanBotError(
           'Cannot kick member',
           ErrorTypes.PERMISSION,
-          'I do not have permission to kick this member'
+          'Je n\'ai pas la permission d\'expulser ce membre'
         );
       }
 
@@ -206,7 +206,7 @@ export class ModerationService {
         client: guild.client,
         guild,
         event: {
-          action: 'Member Kicked',
+          action: 'Membre expulsé',
           target: `${member.user.tag} (${member.id})`,
           executor: `${moderator.user.tag} (${moderator.id})`,
           reason,
@@ -241,7 +241,7 @@ export class ModerationService {
     member,
     moderator,
     durationMs,
-    reason = 'No reason provided'
+    reason = 'Aucune raison fournie'
   }) {
     try {
       if (!guild || !member || !moderator || !durationMs) {
@@ -268,7 +268,7 @@ export class ModerationService {
         throw new TitanBotError(
           'Cannot timeout member',
           ErrorTypes.PERMISSION,
-          'I cannot timeout this member'
+          'Je ne peux pas mettre ce membre en sourdine'
         );
       }
 
@@ -281,11 +281,11 @@ export class ModerationService {
         client: guild.client,
         guild,
         event: {
-          action: 'Member Timed Out',
+          action: 'Membre mis en sourdine',
           target: `${member.user.tag} (${member.id})`,
           executor: `${moderator.user.tag} (${moderator.id})`,
           reason,
-          duration: `${durationMinutes} minutes`,
+          duration: `${durationMinutes} minute(s)`,
           metadata: {
             userId: member.id,
             moderatorId: moderator.id,
@@ -318,7 +318,7 @@ export class ModerationService {
     guild,
     member,
     moderator,
-    reason = 'Timeout removed by moderator'
+    reason = 'Sourdine retirée par le modérateur'
   }) {
     try {
       if (!guild || !member || !moderator) {
@@ -334,7 +334,7 @@ export class ModerationService {
         throw new TitanBotError(
           'Cannot modify member',
           ErrorTypes.PERMISSION,
-          'I cannot modify this member'
+          'Je ne peux pas modifier ce membre'
         );
       }
 
@@ -343,7 +343,7 @@ export class ModerationService {
         throw new TitanBotError(
           'User not timed out',
           ErrorTypes.VALIDATION,
-          `${member.user.tag} is not currently timed out`
+          `${member.user.tag} n'est pas actuellement en sourdine`
         );
       }
 
@@ -355,7 +355,7 @@ export class ModerationService {
         client: guild.client,
         guild,
         event: {
-          action: 'Member Untimeouted',
+          action: 'Sourdine retirée du membre',
           target: `${member.user.tag} (${member.id})`,
           executor: `${moderator.user.tag} (${moderator.id})`,
           reason,
@@ -387,7 +387,7 @@ export class ModerationService {
     guild,
     user,
     moderator,
-    reason = 'No reason provided'
+    reason = 'Aucune raison fournie'
   }) {
     try {
       if (!guild || !user || !moderator) {
@@ -398,7 +398,7 @@ export class ModerationService {
         );
       }
 
-      
+
       const bans = await guild.bans.fetch();
       const banInfo = bans.get(user.id);
 
@@ -406,7 +406,7 @@ export class ModerationService {
         throw new TitanBotError(
           'User not banned',
           ErrorTypes.VALIDATION,
-          `${user.tag} is not currently banned from this server`
+          `${user.tag} n'est pas actuellement banni de ce serveur`
         );
       }
 
@@ -418,7 +418,7 @@ export class ModerationService {
         client: guild.client,
         guild,
         event: {
-          action: 'Member Unbanned',
+          action: 'Membre débanni',
           target: `${user.tag} (${user.id})`,
           executor: `${moderator.user.tag} (${moderator.id})`,
           reason,

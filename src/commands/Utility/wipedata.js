@@ -8,23 +8,23 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('wipedata')
-        .setDescription('Delete all your personal data from the bot (irreversible)'),
+        .setDescription('Supprimer toutes vos données personnelles du bot (irréversible)'),
 
     async execute(interaction, guildConfig, client) {
         try {
-            const warningMessage = 
-                `⚠️ **THIS ACTION IS IRREVERSIBLE!** ⚠️\n\n` +
-                `This will permanently delete **ALL** your data from this server including:\n` +
-                `• 💰 Economy balance (wallet & bank)\n` +
-                `• 📊 Levels and XP\n` +
-                `• 🎒 Inventory items\n` +
-                `• 🛍️ Shop purchases\n` +
-                `• 🎂 Birthday information\n` +
-                `• 🔢 Counter data\n` +
-                `• 📋 All other personal data\n\n` +
-                `**This cannot be undone. Are you absolutely sure?**`;
+            const warningMessage =
+                `⚠️ **CETTE ACTION EST IRRÉVERSIBLE !** ⚠️\n\n` +
+                `Cela supprimera définitivement **TOUTES** vos données de ce serveur, notamment :\n` +
+                `• 💰 Solde économique (portefeuille & banque)\n` +
+                `• 📊 Niveaux et XP\n` +
+                `• 🎒 Objets d'inventaire\n` +
+                `• 🛍️ Achats en boutique\n` +
+                `• 🎂 Informations d'anniversaire\n` +
+                `• 🔢 Données de compteur\n` +
+                `• 📋 Toutes les autres données personnelles\n\n` +
+                `**Cela ne peut pas être annulé. Êtes-vous absolument certain ?**`;
 
-            const embed = warningEmbed(warningMessage, '🗑️ Wipe All Data');
+            const embed = warningEmbed(warningMessage, '🗑️ Supprimer toutes les données');
 
             const confirmButtons = getConfirmationButtons('wipedata');
 

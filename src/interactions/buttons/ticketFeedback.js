@@ -5,10 +5,10 @@ import { getColor } from '../../config/bot.js';
 import { getGuildConfig } from '../../services/guildConfig.js';
 
 const STAR_LABELS = {
-    '1': '⭐ 1 — Poor',
-    '2': '⭐⭐ 2 — Below Average',
-    '3': '⭐⭐⭐ 3 — Average',
-    '4': '⭐⭐⭐⭐ 4 — Good',
+    '1': '⭐ 1 — Médiocre',
+    '2': '⭐⭐ 2 — En dessous de la moyenne',
+    '3': '⭐⭐⭐ 3 — Moyen',
+    '4': '⭐⭐⭐⭐ 4 — Bien',
     '5': '⭐⭐⭐⭐⭐ 5 — Excellent',
 };
 
@@ -23,8 +23,8 @@ const feedbackHandler = {
             await interaction.update({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle('⚠️ Invalid Feedback Link')
-                        .setDescription('This feedback link appears to be malformed.')
+                        .setTitle('⚠️ Lien d\'avis invalide')
+                        .setDescription('Ce lien d\'avis semble être malformé.')
                         .setColor(getColor('error')),
                 ],
                 components: [],
@@ -43,8 +43,8 @@ const feedbackHandler = {
             await interaction.update({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle('⚠️ Ticket Not Found')
-                        .setDescription('Could not find the ticket associated with this survey.')
+                        .setTitle('⚠️ Ticket introuvable')
+                        .setDescription('Impossible de trouver le ticket associé à cette enquête.')
                         .setColor(getColor('error')),
                 ],
                 components: [],
@@ -56,8 +56,8 @@ const feedbackHandler = {
             await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle('❌ Not Allowed')
-                        .setDescription('Only the ticket creator can submit feedback for this ticket.')
+                        .setTitle('❌ Non autorisé')
+                        .setDescription('Seul le créateur du ticket peut soumettre un avis pour ce ticket.')
                         .setColor(getColor('error')),
                 ],
                 ephemeral: true,
@@ -69,8 +69,8 @@ const feedbackHandler = {
             await interaction.update({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle('✅ Already Submitted')
-                        .setDescription(`You already rated this ticket **${STAR_LABELS[String(ticketData.feedback.rating)]}**.\nThank you for your feedback!`)
+                        .setTitle('✅ Déjà soumis')
+                        .setDescription(`Vous avez déjà noté ce ticket **${STAR_LABELS[String(ticketData.feedback.rating)]}**.\nMerci pour votre avis !`)
                         .setColor(getColor('success')),
                 ],
                 components: [],
@@ -98,14 +98,14 @@ const feedbackHandler = {
                 const logsChannel = await interaction.client.channels.fetch(guildConfig.ticketLogsChannelId).catch(() => null);
                 if (logsChannel && logsChannel.isSendable()) {
                     const feedbackEmbed = new EmbedBuilder()
-                        .setTitle('📋 Ticket Feedback Received')
-                        .setDescription('User submitted feedback for a ticket')
+                        .setTitle('📋 Avis de ticket reçu')
+                        .setDescription('L\'utilisateur a soumis un avis pour un ticket')
                         .setColor(getColor('info'))
                         .addFields(
-                            { name: 'Ticket ID', value: `\`${channelId}\``, inline: true },
-                            { name: 'Rating', value: ratingLabel, inline: true },
-                            { name: 'User', value: `<@${interaction.user.id}>`, inline: true },
-                            { name: 'Submitted', value: `<t:${Math.floor(Date.now() / 1000)}:R>`, inline: true },
+                            { name: 'ID du ticket', value: `\`${channelId}\``, inline: true },
+                            { name: 'Note', value: ratingLabel, inline: true },
+                            { name: 'Utilisateur', value: `<@${interaction.user.id}>`, inline: true },
+                            { name: 'Soumis', value: `<t:${Math.floor(Date.now() / 1000)}:R>`, inline: true },
                         )
                         .setThumbnail(interaction.user.displayAvatarURL())
                         .setFooter({ text: `User ID: ${interaction.user.id}` })
@@ -121,10 +121,10 @@ const feedbackHandler = {
         await interaction.update({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('✅ Thanks for your feedback!')
-                    .setDescription(`You rated your support experience **${ratingLabel}**.\n\nYour feedback has been recorded and helps us improve!`)
+                    .setTitle('✅ Merci pour votre avis !')
+                    .setDescription(`Vous avez noté votre expérience d'assistance **${ratingLabel}**.\n\nVotre avis a été enregistré et nous aide à nous améliorer !`)
                     .setColor(getColor('success'))
-                    .setFooter({ text: 'Thank you for using our support system.' })
+                    .setFooter({ text: 'Merci d\'utiliser notre système d\'assistance.' })
                     .setTimestamp(),
             ],
             components: [],
@@ -146,8 +146,8 @@ const declineHandler = {
         await interaction.update({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('👋 No problem!')
-                    .setDescription('You can always reach out again if you need further support.')
+                    .setTitle('👋 Pas de problème !')
+                    .setDescription('Vous pouvez toujours nous contacter si vous avez besoin d\'une aide supplémentaire.')
                     .setColor(getColor('default')),
             ],
             components: [],

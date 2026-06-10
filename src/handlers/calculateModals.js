@@ -14,7 +14,7 @@ async function calculateModalHandler(interaction, client, args) {
         
         if (!contextKey) {
             return await interaction.reply({
-                embeds: [errorEmbed('❌ Error', 'Failed to retrieve calculation context.')],
+                embeds: [errorEmbed('❌ Erreur', 'Impossible de récupérer le contexte du calcul.')],
                 flags: ['Ephemeral']
             });
         }
@@ -24,7 +24,7 @@ async function calculateModalHandler(interaction, client, args) {
         
         if (!context) {
             return await interaction.reply({
-                embeds: [errorEmbed('❌ Expired', 'This calculation has expired. Please start a new calculation.')],
+                embeds: [errorEmbed('❌ Expiré', 'Ce calcul a expiré. Veuillez démarrer un nouveau calcul.')],
                 flags: ['Ephemeral']
             });
         }
@@ -35,7 +35,7 @@ async function calculateModalHandler(interaction, client, args) {
         
         if (!operand || isNaN(operand)) {
             return await interaction.editReply({
-                embeds: [errorEmbed('❌ Invalid Input', 'Please provide a valid number.')]
+                embeds: [errorEmbed('❌ Entrée invalide', 'Veuillez fournir un nombre valide.')]
             });
         }
 
@@ -63,10 +63,10 @@ async function calculateModalHandler(interaction, client, args) {
             }
 
             const updatedEmbed = successEmbed(
-                "🧮 Calculation Result",
-                `**Expression:** \`${newExpression.replace(/`/g, "\`")}\`\n` +
-                    `**Result:** \`${formattedNewResult}\`\n\n` +
-                    `*Use the buttons in the channel message to perform more operations.*`,
+                "🧮 Résultat du calcul",
+                `**Expression :** \`${newExpression.replace(/`/g, "\`")}\`\n` +
+                    `**Résultat :** \`${formattedNewResult}\`\n\n` +
+                    `*Utilisez les boutons dans le message du salon pour effectuer d'autres opérations.*`,
             );
 
             try {
@@ -84,13 +84,13 @@ async function calculateModalHandler(interaction, client, args) {
             calculationContexts.delete(contextKey);
 
             await interaction.editReply({
-                embeds: [successEmbed('✅ Calculated', `\`${newExpression}\` = \`${formattedNewResult}\``)],
+                embeds: [successEmbed('✅ Calculé', `\`${newExpression}\` = \`${formattedNewResult}\``)],
             });
 
         } catch (calcError) {
             logger.error('Calculate evaluation error:', calcError);
             await interaction.editReply({
-                embeds: [errorEmbed("❌ Calculation Error", "Failed to evaluate the expression.")],
+                embeds: [errorEmbed("❌ Erreur de calcul", "Impossible d'évaluer l'expression.")],
             });
         }
     } catch (error) {
@@ -98,12 +98,12 @@ async function calculateModalHandler(interaction, client, args) {
         try {
             if (!interaction.replied && !interaction.deferred) {
                 await interaction.reply({
-                    embeds: [errorEmbed('Error', 'An error occurred processing your calculation.')],
+                    embeds: [errorEmbed('Erreur', 'Une erreur s\'est produite lors du traitement de votre calcul.')],
                     flags: ['Ephemeral']
                 });
             } else {
                 await interaction.editReply({
-                    embeds: [errorEmbed('Error', 'An error occurred processing your calculation.')]
+                    embeds: [errorEmbed('Erreur', 'Une erreur s\'est produite lors du traitement de votre calcul.')]
                 });
             }
         } catch (err) {

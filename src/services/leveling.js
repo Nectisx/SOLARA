@@ -152,12 +152,12 @@ export async function getLeaderboard(client, guildId, limit = 10) {
 
 export function createLeaderboardEmbed(leaderboard, guild) {
   const embed = new EmbedBuilder()
-    .setTitle(`🏆 ${guild.name} Leaderboard`)
+    .setTitle(`🏆 Classement de ${guild.name}`)
     .setColor('#2ecc71')
     .setTimestamp();
-    
+
   if (!leaderboard || leaderboard.length === 0) {
-    embed.setDescription('No users on the leaderboard yet!');
+    embed.setDescription('Aucun utilisateur dans le classement pour l\'instant !');
     return embed;
   }
   
@@ -166,15 +166,15 @@ export function createLeaderboardEmbed(leaderboard, guild) {
   
   const top3Text = top3.map((user, index) => {
     const medal = ['🥇', '🥈', '🥉'][index];
-    return `${medal} **#${user.rank}** ${user.username} - Level ${user.level} (${user.totalXp} XP)`;
+    return `${medal} **#${user.rank}** ${user.username} - Niveau ${user.level} (${user.totalXp} XP)`;
   }).join('\n');
-  
+
   const restText = rest.map(user => {
-    return `**#${user.rank}** ${user.username} - Level ${user.level} (${user.totalXp} XP)`;
+    return `**#${user.rank}** ${user.username} - Niveau ${user.level} (${user.totalXp} XP)`;
   }).join('\n');
-  
+
   embed.setDescription(
-    `**Top Members**\n${top3Text}${restText ? '\n\n' + restText : ''}`
+    `**Meilleurs Membres**\n${top3Text}${restText ? '\n\n' + restText : ''}`
   );
   
   return embed;
@@ -193,7 +193,7 @@ export async function getLevelingConfig(client, guildId) {
       enabled: true,
       xpPerMessage: { min: 15, max: 25 },
       xpCooldown: 20,
-      levelUpMessage: '{user} has leveled up to level {level}!',
+      levelUpMessage: '{user} a atteint le niveau {level} !',
       levelUpChannel: null,
       ignoredChannels: [],
       ignoredRoles: [],
@@ -208,7 +208,7 @@ export async function getLevelingConfig(client, guildId) {
       enabled: true,
       xpPerMessage: { min: 15, max: 25 },
       xpCooldown: 20,
-      levelUpMessage: '{user} has leveled up to level {level}!',
+      levelUpMessage: '{user} a atteint le niveau {level} !',
       levelUpChannel: null,
       ignoredChannels: [],
       ignoredRoles: [],

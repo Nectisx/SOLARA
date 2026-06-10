@@ -14,7 +14,7 @@ export default {
 
       
       fields.push({
-        name: '👤 Member',
+        name: '👤 Membre',
         value: `${newMember.user.tag} (${newMember.user.id})`,
         inline: true
       });
@@ -22,14 +22,14 @@ export default {
       
       if (oldMember.nickname !== newMember.nickname) {
         fields.push({
-          name: '🏷️ Old Nickname',
-          value: oldMember.nickname || '*(no nickname)*',
+          name: '🏷️ Ancien surnom',
+          value: oldMember.nickname || '*(aucun surnom)*',
           inline: true
         });
 
         fields.push({
-          name: '🏷️ New Nickname',
-          value: newMember.nickname || '*(no nickname)*',
+          name: '🏷️ Nouveau surnom',
+          value: newMember.nickname || '*(aucun surnom)*',
           inline: true
         });
 
@@ -38,7 +38,7 @@ export default {
           guildId: newMember.guild.id,
           eventType: EVENT_TYPES.MEMBER_NAME_CHANGE,
           data: {
-            description: `Member nickname changed: ${newMember.user.tag}`,
+            description: `Surnom du membre modifié : ${newMember.user.tag}`,
             userId: newMember.user.id,
             fields
           }

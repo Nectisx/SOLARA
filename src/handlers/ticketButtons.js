@@ -26,7 +26,7 @@ async function ensureGuildContext(interaction) {
 
   if (!interaction.replied && !interaction.deferred) {
     await interaction.reply({
-      embeds: [errorEmbed('Guild Only', 'This action can only be used in a server.')],
+      embeds: [errorEmbed('Serveur uniquement', 'Cette action ne peut être utilisée que dans un serveur.')],
       flags: MessageFlags.Ephemeral,
     });
   }
@@ -46,23 +46,23 @@ async function checkTicketPermissionWithTimeout(interaction, client, actionLabel
     const context = await Promise.race([contextPromise, timeoutPromise]);
 
     if (!context.ticketData) {
-      return { success: false, error: 'Not a Ticket Channel', details: 'This action can only be used in a valid ticket channel.' };
+      return { success: false, error: 'Pas un salon de ticket', details: 'Cette action ne peut être utilisée que dans un salon de ticket valide.' };
     }
 
     const allowed = allowTicketCreator ? context.canCloseTicket : context.canManageTicket;
     if (!allowed) {
       const permissionMessage = allowTicketCreator
-        ? 'You must have **Manage Channels**, the configured **Ticket Staff Role**, or be the **ticket creator**.'
-        : 'You must have **Manage Channels** or the configured **Ticket Staff Role**.';
-      return { success: false, error: 'Permission Denied', details: `${permissionMessage}\n\nYou cannot ${actionLabel}.` };
+        ? 'Vous devez avoir **Gérer les salons**, le **Rôle du staff des tickets** configuré, ou être le **créateur du ticket**.'
+        : 'Vous devez avoir **Gérer les salons** ou le **Rôle du staff des tickets** configuré.';
+      return { success: false, error: 'Permission refusée', details: `${permissionMessage}\n\nVous ne pouvez pas ${actionLabel}.` };
     }
 
     return { success: true, context };
   } catch (error) {
     if (error.message === 'Timeout') {
-      return { success: false, error: 'Request Timeout', details: 'The permission check took too long. Please try again.' };
+      return { success: false, error: 'Délai dépassé', details: 'La vérification des permissions a pris trop de temps. Veuillez réessayer.' };
     }
-    return { success: false, error: 'Error', details: `Failed to check permissions: ${error.message}` };
+    return { success: false, error: 'Erreur', details: `Impossible de vérifier les permissions : ${error.message}` };
   }
 }
 
@@ -73,7 +73,7 @@ async function ensureTicketPermission(interaction, client, actionLabel, options 
 
   if (!context.ticketData) {
     await interaction.reply({
-      embeds: [errorEmbed('Not a Ticket Channel', 'This action can only be used in a valid ticket channel.')],
+      embeds: [errorEmbed('Pas un salon de ticket', 'Cette action ne peut être utilisée que dans un salon de ticket valide.')],
       flags: MessageFlags.Ephemeral
     });
     return null;
@@ -82,11 +82,11 @@ async function ensureTicketPermission(interaction, client, actionLabel, options 
   const allowed = allowTicketCreator ? context.canCloseTicket : context.canManageTicket;
   if (!allowed) {
     const permissionMessage = allowTicketCreator
-      ? 'You must have **Manage Channels**, the configured **Ticket Staff Role**, or be the **ticket creator**.'
-      : 'You must have **Manage Channels** or the configured **Ticket Staff Role**.';
+      ? 'Vous devez avoir **Gérer les salons**, le **Rôle du staff des tickets** configuré, ou être le **créateur du ticket**.'
+      : 'Vous devez avoir **Gérer les salons** ou le **Rôle du staff des tickets** configuré.';
 
     await interaction.reply({
-      embeds: [errorEmbed('Permission Denied', `${permissionMessage}\n\nYou cannot ${actionLabel}.`)],
+      embeds: [errorEmbed('Permission refusée', `${permissionMessage}\n\nVous ne pouvez pas ${actionLabel}.`)],
       flags: MessageFlags.Ephemeral
     });
     return null;
@@ -105,7 +105,7 @@ const createTicketHandler = {
       const allowed = await checkRateLimit(rateLimitKey, 3, 60000);
       if (!allowed) {
         await interaction.reply({
-          embeds: [errorEmbed('Rate Limited', 'You are creating tickets too quickly. Please wait a minute and try again.')],
+          embeds: [errorEmbed('Limite de requêtes', 'Vous créez des tickets trop rapidement. Veuillez attendre une minute et réessayer.')],
           flags: MessageFlags.Ephemeral
         });
         return;
@@ -121,8 +121,8 @@ const createTicketHandler = {
         return await interaction.reply({
           embeds: [
             errorEmbed(
-              '🎫 Ticket Limit Reached',
-              `You have reached the maximum number of open tickets (${maxTicketsPerUser}).\n\nPlease close your existing tickets before creating a new one.\n\n**Current Tickets:** ${currentTicketCount}/${maxTicketsPerUser}`
+              '🎫 Limite de tickets atteinte',
+              `Vous avez atteint le nombre maximum de tickets ouverts (${maxTicketsPerUser}).\n\nVeuillez fermer vos tickets existants avant d'en créer un nouveau.\n\n**Tickets actuels :** ${currentTicketCount}/${maxTicketsPerUser}`
             )
           ],
           flags: MessageFlags.Ephemeral
@@ -131,13 +131,13 @@ const createTicketHandler = {
       
       const modal = new ModalBuilder()
         .setCustomId('create_ticket_modal')
-        .setTitle('Create a Ticket');
+        .setTitle('Créer un ticket');
 
       const reasonInput = new TextInputBuilder()
         .setCustomId('reason')
-        .setLabel('Why are you creating this ticket?')
+        .setLabel('Pourquoi créez-vous ce ticket ?')
         .setStyle(TextInputStyle.Paragraph)
-        .setPlaceholder('Describe your issue...')
+        .setPlaceholder('Décrivez votre problème...')
         .setRequired(true)
         .setMaxLength(1000);
 
@@ -150,7 +150,7 @@ const createTicketHandler = {
       logger.error('Error creating ticket modal:', error);
       if (!interaction.replied && !interaction.deferred) {
         await interaction.reply({
-          embeds: [errorEmbed('Error', 'Could not open ticket creation form.')],
+          embeds: [errorEmbed('Erreur', 'Impossible d\'ouvrir le formulaire de création de ticket.')],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -181,20 +181,20 @@ const createTicketModalHandler = {
       if (result.success) {
         await interaction.editReply({
           embeds: [successEmbed(
-            'Ticket Created',
-            `Your ticket has been created in ${result.channel}!`
+            'Ticket créé',
+            `Votre ticket a été créé dans ${result.channel} !`
           )]
         });
       } else {
         await interaction.editReply({
-          embeds: [errorEmbed('Error', result.error || 'Failed to create ticket.')],
+          embeds: [errorEmbed('Erreur', result.error || 'Impossible de créer le ticket.')],
           flags: MessageFlags.Ephemeral
         });
       }
     } catch (error) {
       logger.error('Error creating ticket:', error);
       await interaction.editReply({
-        embeds: [errorEmbed('Error', 'An error occurred while creating your ticket.')],
+        embeds: [errorEmbed('Erreur', 'Une erreur s\'est produite lors de la création de votre ticket.')],
         flags: MessageFlags.Ephemeral
       });
     }
@@ -228,13 +228,13 @@ const closeTicketHandler = {
 
       const modal = new ModalBuilder()
         .setCustomId('ticket_close_modal')
-        .setTitle('Close Ticket');
+        .setTitle('Fermer le ticket');
 
       const reasonInput = new TextInputBuilder()
         .setCustomId('reason')
-        .setLabel('Reason for closing (optional)')
+        .setLabel('Raison de fermeture (optionnel)')
         .setStyle(TextInputStyle.Paragraph)
-        .setPlaceholder('Add an optional reason for closing this ticket...')
+        .setPlaceholder('Ajoutez une raison optionnelle pour fermer ce ticket...')
         .setRequired(false)
         .setMaxLength(1000);
 
@@ -248,7 +248,7 @@ const closeTicketHandler = {
 
       if (!interaction.replied && !interaction.deferred) {
         await interaction.reply({
-          embeds: [errorEmbed('Error', 'Could not open ticket close form.')],
+          embeds: [errorEmbed('Erreur', 'Impossible d\'ouvrir le formulaire de fermeture du ticket.')],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -285,18 +285,18 @@ const closeTicketModalHandler = {
       if (!deferSuccess) return;
 
       const providedReason = interaction.fields.getTextInputValue('reason')?.trim();
-      const reason = providedReason || 'Closed via ticket button without a specific reason.';
+      const reason = providedReason || 'Fermé via le bouton de ticket sans raison spécifique.';
 
       const result = await closeTicket(interaction.channel, interaction.user, reason);
 
       if (result.success) {
         await interaction.editReply({
-          embeds: [successEmbed('Ticket Closed', 'This ticket has been closed.')],
+          embeds: [successEmbed('Ticket fermé', 'Ce ticket a été fermé.')],
           flags: MessageFlags.Ephemeral
         });
       } else {
         await interaction.editReply({
-          embeds: [errorEmbed('Error', result.error || 'Failed to close ticket.')],
+          embeds: [errorEmbed('Erreur', result.error || 'Impossible de fermer le ticket.')],
           flags: MessageFlags.Ephemeral
         });
       }

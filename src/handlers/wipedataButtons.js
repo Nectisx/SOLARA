@@ -105,13 +105,13 @@ const wipedataConfirmHandler = {
       }
 
       const successMessage =
-        `✅ **Your data has been successfully wiped!**\n\n` +
-        `**Records Deleted:** ${deletedCount}\n\n` +
-        `Your account has been reset to default values. You can now start fresh!\n\n` +
-        `*All your economy balance, levels, items, and personal data have been removed.*`;
+        `✅ **Vos données ont été supprimées avec succès !**\n\n` +
+        `**Enregistrements supprimés :** ${deletedCount}\n\n` +
+        `Votre compte a été réinitialisé aux valeurs par défaut. Vous pouvez repartir de zéro !\n\n` +
+        `*Votre solde d'économie, vos niveaux, vos objets et vos données personnelles ont été supprimés.*`;
 
       await interaction.editReply({
-        embeds: [successEmbed(successMessage, '🗑️ Data Wipe Complete')],
+        embeds: [successEmbed(successMessage, '🗑️ Suppression des données terminée')],
         components: []
       });
 
@@ -124,7 +124,7 @@ const wipedataConfirmHandler = {
       logger.error('Wipedata confirm button handler error:', error);
       
       await interaction.editReply({
-        embeds: [errorEmbed('Data Wipe Failed', 'An error occurred while wiping your data. Please try again later or contact support.')],
+        embeds: [errorEmbed('Suppression échouée', 'Une erreur est survenue lors de la suppression de vos données. Veuillez réessayer plus tard ou contacter le support.')],
         components: []
       });
     }
@@ -142,8 +142,8 @@ const wipedataCancelHandler = {
       await interaction.update({
         embeds: [
           createEmbed({
-            title: '❌ Data Wipe Cancelled',
-            description: 'Your data has been preserved. Your account remains unchanged.',
+            title: '❌ Suppression annulée',
+            description: 'Vos données ont été préservées. Votre compte reste inchangé.',
             color: 'info'
           })
         ],
@@ -156,7 +156,7 @@ const wipedataCancelHandler = {
       
       if (!interaction.replied && !interaction.deferred) {
         await interaction.reply({
-          embeds: [errorEmbed('Error', 'Could not cancel data wipe.')],
+          embeds: [errorEmbed('Erreur', 'Impossible d\'annuler la suppression des données.')],
           flags: MessageFlags.Ephemeral
         });
       }

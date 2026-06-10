@@ -169,7 +169,7 @@ export async function handleReactionRoles(interaction) {
             if (subcommand === 'create') {
                 if (!member.permissions.has(PermissionFlagsBits.ManageRoles)) {
                     await interaction.reply({
-                        embeds: [errorEmbed('You need the `Manage Roles` permission to use this command.')],
+                        embeds: [errorEmbed('Vous avez besoin de la permission `Gérer les rôles` pour utiliser cette commande.')],
                         flags: MessageFlags.Ephemeral
                     });
                     return true;
@@ -181,7 +181,7 @@ export async function handleReactionRoles(interaction) {
 
                 if (!guild || !member) {
                     await interaction.reply({
-                        embeds: [errorEmbed('This command can only be used in a server.')],
+                        embeds: [errorEmbed('Cette commande ne peut être utilisée que dans un serveur.')],
                         flags: MessageFlags.Ephemeral
                     });
                     return true;
@@ -189,7 +189,7 @@ export async function handleReactionRoles(interaction) {
 
                 if (!messageId || !/^\d{17,20}$/.test(messageId)) {
                     await interaction.reply({
-                        embeds: [errorEmbed('Invalid message ID. Please provide a valid Discord message ID.')],
+                        embeds: [errorEmbed('ID de message invalide. Veuillez fournir un ID de message Discord valide.')],
                         flags: MessageFlags.Ephemeral
                     });
                     return true;
@@ -197,7 +197,7 @@ export async function handleReactionRoles(interaction) {
 
                 if (!emoji || emoji.length > 100) {
                     await interaction.reply({
-                        embeds: [errorEmbed('Invalid emoji. Please provide a valid emoji value.')],
+                        embeds: [errorEmbed('Emoji invalide. Veuillez fournir une valeur d\'emoji valide.')],
                         flags: MessageFlags.Ephemeral
                     });
                     return true;
@@ -205,7 +205,7 @@ export async function handleReactionRoles(interaction) {
 
                 if (!role) {
                     await interaction.reply({
-                        embeds: [errorEmbed('Invalid role selection.')],
+                        embeds: [errorEmbed('Sélection de rôle invalide.')],
                         flags: MessageFlags.Ephemeral
                     });
                     return true;
@@ -236,7 +236,7 @@ export async function handleReactionRoles(interaction) {
                 await interaction.reply({
                     embeds: [
                         new EmbedBuilder()
-                            .setDescription(`✅ Added reaction role for ${emoji} to <@&${role.id}>`)
+                            .setDescription(`✅ Rôle de réaction ajouté pour ${emoji} vers <@&${role.id}>`)
                             .setColor('#00ff00')
                     ],
                     flags: MessageFlags.Ephemeral
@@ -251,12 +251,12 @@ export async function handleReactionRoles(interaction) {
         logger.error('Error in handleReactionRoles:', error);
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({
-                embeds: [errorEmbed('An error occurred while processing your request.')],
+                embeds: [errorEmbed('Une erreur s\'est produite lors du traitement de votre requête.')],
                 flags: MessageFlags.Ephemeral
             });
         } else {
             await interaction.reply({
-                embeds: [errorEmbed('An error occurred while processing your request.')],
+                embeds: [errorEmbed('Une erreur s\'est produite lors du traitement de votre requête.')],
                 flags: MessageFlags.Ephemeral
             });
         }

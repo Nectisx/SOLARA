@@ -42,7 +42,7 @@ class EconomyService {
       throw createError(
         "Invalid balance state",
         ErrorTypes.VALIDATION,
-        "Operation would create an invalid account balance.",
+        "L'opération créerait un solde de compte invalide.",
         { value, ...context }
       );
     }
@@ -64,7 +64,7 @@ class EconomyService {
       throw createError(
         "Failed to load economy data",
         ErrorTypes.DATABASE,
-        "Failed to load your economy data. Please try again later.",
+        "Impossible de charger vos données économiques. Veuillez réessayer plus tard.",
         { userId, guildId }
       );
     }
@@ -81,7 +81,7 @@ class EconomyService {
       throw createError(
         "Daily cooldown active",
         ErrorTypes.RATE_LIMIT,
-        `You need to wait before claiming daily again. Try again in **${this.formatDuration(remaining)}**.`,
+        `Vous devez patienter avant de réclamer votre récompense quotidienne. Réessayez dans **${this.formatDuration(remaining)}**.`,
         { remaining, cooldownType: 'daily' }
       );
     }
@@ -118,7 +118,7 @@ class EconomyService {
       throw createError(
         "Failed to save daily claim",
         ErrorTypes.DATABASE,
-        "Failed to process your daily. Please try again.",
+        "Impossible de traiter votre récompense quotidienne. Veuillez réessayer.",
         { userId, guildId }
       );
     }
@@ -146,7 +146,7 @@ class EconomyService {
       throw createError(
         "Invalid transfer amount",
         ErrorTypes.VALIDATION,
-        "Amount must be greater than zero.",
+        "Le montant doit être supérieur à zéro.",
         { amount, senderId }
       );
     }
@@ -155,7 +155,7 @@ class EconomyService {
       throw createError(
         "Cannot pay self",
         ErrorTypes.VALIDATION,
-        "You cannot pay yourself.",
+        "Vous ne pouvez pas vous payer vous-même.",
         { senderId, receiverId }
       );
     }
@@ -176,7 +176,7 @@ class EconomyService {
       throw createError(
         "Failed to load economy data",
         ErrorTypes.DATABASE,
-        "Failed to load economy data. Please try again later.",
+        "Impossible de charger les données économiques. Veuillez réessayer plus tard.",
         { senderId, receiverId, guildId }
       );
     }
@@ -191,7 +191,7 @@ class EconomyService {
       throw createError(
         "Insufficient funds",
         ErrorTypes.VALIDATION,
-        `You only have **$${senderData.wallet.toLocaleString()}** in cash.`,
+        `Vous n'avez que **$${senderData.wallet.toLocaleString()}** en espèces.`,
         { required: amount, available: senderData.wallet, senderId }
       );
     }
@@ -259,7 +259,7 @@ class EconomyService {
       throw createError(
         "Failed to save transfer",
         ErrorTypes.DATABASE,
-        "Failed to process transfer. Please try again.",
+        "Impossible de traiter le transfert. Veuillez réessayer.",
         { senderId, receiverId, amount }
       );
     }
@@ -279,7 +279,7 @@ class EconomyService {
       throw createError(
         "Invalid amount",
         ErrorTypes.VALIDATION,
-        "Amount must be positive",
+        "Le montant doit être positif",
         { amount, userId, source }
       );
     }
@@ -322,7 +322,7 @@ class EconomyService {
       throw createError(
         "Invalid amount",
         ErrorTypes.VALIDATION,
-        "Amount must be positive",
+        "Le montant doit être positif",
         { amount, userId, reason }
       );
     }
@@ -336,7 +336,7 @@ class EconomyService {
       throw createError(
         "Insufficient funds",
         ErrorTypes.VALIDATION,
-        `You only have **$${balanceBefore.toLocaleString()}**.`,
+        `Vous n'avez que **$${balanceBefore.toLocaleString()}**.`,
         { required: amount, available: balanceBefore, reason }
       );
     }
@@ -377,7 +377,7 @@ class EconomyService {
       throw createError(
         "Insufficient cash",
         ErrorTypes.VALIDATION,
-        `You only have **$${userData.wallet.toLocaleString()}** in cash.`,
+        `Vous n'avez que **$${userData.wallet.toLocaleString()}** en espèces.`,
         { required: amount, available: userData.wallet }
       );
     }
@@ -387,7 +387,7 @@ class EconomyService {
       throw createError(
         "Bank capacity exceeded",
         ErrorTypes.VALIDATION,
-        `Your bank can only hold **$${maxBank.toLocaleString()}**. You would exceed capacity by **$${(currentBank + amount - maxBank).toLocaleString()}**.`,
+        `Votre banque ne peut contenir que **$${maxBank.toLocaleString()}**. Vous dépasseriez la capacité de **$${(currentBank + amount - maxBank).toLocaleString()}**.`,
         { capacity: maxBank, current: currentBank, requested: amount }
       );
     }
@@ -433,7 +433,7 @@ class EconomyService {
       throw createError(
         "Insufficient bank balance",
         ErrorTypes.VALIDATION,
-        `You only have **$${bank.toLocaleString()}** in your bank.`,
+        `Vous n'avez que **$${bank.toLocaleString()}** dans votre banque.`,
         { required: amount, available: bank }
       );
     }
@@ -492,7 +492,7 @@ class EconomyService {
       throw createError(
         "Invalid amount - not an integer",
         ErrorTypes.VALIDATION,
-        "Amount must be a whole number",
+        "Le montant doit être un nombre entier",
         context
       );
     }
@@ -501,7 +501,7 @@ class EconomyService {
       throw createError(
         "Invalid amount - not positive",
         ErrorTypes.VALIDATION,
-        "Amount must be positive",
+        "Le montant doit être positif",
         context
       );
     }
@@ -511,7 +511,7 @@ class EconomyService {
       throw createError(
         "Amount too large",
         ErrorTypes.VALIDATION,
-        "The amount is too large to process",
+        "Le montant est trop élevé pour être traité",
         context
       );
     }
@@ -552,7 +552,7 @@ wrapServiceClassMethods(EconomyService, (methodName) => ({
   service: 'EconomyService',
   operation: methodName,
   message: `Economy service operation failed: ${methodName}`,
-  userMessage: 'An economy operation failed. Please try again in a moment.'
+  userMessage: 'Une opération économique a échoué. Veuillez réessayer dans un instant.'
 }));
 
 export default EconomyService;

@@ -46,24 +46,24 @@ function buildDashboardEmbed(cfg, guild, conflictSummary = '') {
     }
 
     const embed = new EmbedBuilder()
-        .setTitle('🤖 Auto-Verification Dashboard')
+        .setTitle('🤖 Tableau de bord — Vérification automatique')
         .setDescription(`Manage auto-verification settings for **${guild.name}**.\nSelect an option below to modify a setting.`)
         .setColor(getColor('info'))
         .addFields(
-            { name: '⚙️ System Status', value: autoVerify?.enabled ? '✅ Enabled' : '❌ Disabled', inline: true },
-            { name: '🏷️ Target Role', value: autoVerifyRole ? autoVerifyRole.toString() : '`Not set`', inline: true },
-            { name: '🎯 Criteria', value: criteriaDescription, inline: true },
-            { name: '📅 Account Age', value: autoVerify?.accountAgeDays ? `\`${autoVerify.accountAgeDays}\` days` : '`N/A`', inline: true },
+            { name: '⚙️ Statut du système', value: autoVerify?.enabled ? '✅ Activé' : '❌ Désactivé', inline: true },
+            { name: '🏷️ Rôle cible', value: autoVerifyRole ? autoVerifyRole.toString() : '`Non défini`', inline: true },
+            { name: '🎯 Critère', value: criteriaDescription, inline: true },
+            { name: '📅 Âge du compte', value: autoVerify?.accountAgeDays ? `\`${autoVerify.accountAgeDays}\` jours` : '`N/A`', inline: true },
             { name: '\u200B', value: '\u200B', inline: true },
             { name: '\u200B', value: '\u200B', inline: true },
         );
 
     if (conflictSummary) {
-        embed.addFields({ name: '⚠️ Setup Conflicts', value: conflictSummary, inline: false });
+        embed.addFields({ name: '⚠️ Conflits de configuration', value: conflictSummary, inline: false });
     }
 
     return embed
-        .setFooter({ text: 'Dashboard closes after 10 minutes of inactivity' })
+        .setFooter({ text: 'Le tableau de bord se ferme après 10 minutes d'inactivité' })
         .setTimestamp();
 }
 
@@ -167,10 +167,10 @@ export default {
                 return await InteractionHelper.safeReply(interaction, {
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle('🤖 Auto-Verification Dashboard')
+                            .setTitle('🤖 Tableau de bord — Vérification automatique')
                             .setDescription(`Auto-verification is not yet configured.${blockingText}\n\nUse \`/autoverify setup\` to configure it.`)
                             .setColor(getColor('warning'))
-                            .setFooter({ text: 'Dashboard closes after 10 minutes of inactivity' })
+                            .setFooter({ text: 'Le tableau de bord se ferme après 10 minutes d'inactivité' })
                             .setTimestamp()
                     ],
                     flags: MessageFlags.Ephemeral

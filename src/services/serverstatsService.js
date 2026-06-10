@@ -3,17 +3,17 @@ import { logEvent, EVENT_TYPES } from './loggingService.js';
 
 export const COUNTER_TYPE_CONFIG = {
   members: {
-    label: 'Members + Bots',
-    baseName: 'Members & Bots',
+    label: 'Membres + Bots',
+    baseName: 'Membres & Bots',
     emoji: '👥'
   },
   members_only: {
-    label: 'Members Only',
-    baseName: 'Members',
+    label: 'Membres seulement',
+    baseName: 'Membres',
     emoji: '👤'
   },
   bots: {
-    label: 'Bots Only',
+    label: 'Bots seulement',
     baseName: 'Bots',
     emoji: '🤖'
   }
@@ -21,8 +21,8 @@ export const COUNTER_TYPE_CONFIG = {
 
 function getCounterConfig(type) {
   return COUNTER_TYPE_CONFIG[type] || {
-    label: 'Unknown',
-    baseName: 'Counter',
+    label: 'Inconnu',
+    baseName: 'Compteur',
     emoji: '❓'
   };
 }
@@ -171,17 +171,17 @@ export async function updateCounter(client, guild, counter) {
               channelId: channel.id,
               fields: [
                 {
-                  name: '📊 Counter Type',
+                  name: '📊 Type de compteur',
                   value: getCounterTypeLabel(type),
                   inline: true
                 },
                 {
-                  name: '🔢 New Count',
+                  name: '🔢 Nouveau total',
                   value: count.toString(),
                   inline: true
                 },
                 {
-                  name: '📍 Channel',
+                  name: '📍 Salon',
                   value: channel.toString(),
                   inline: true
                 }

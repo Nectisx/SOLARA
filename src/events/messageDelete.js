@@ -25,22 +25,22 @@ export default {
               guildId: message.guild.id,
               eventType: EVENT_TYPES.REACTION_ROLE_DELETE,
               data: {
-                description: `Reaction role message was deleted manually and removed from database.`,
+                description: `Le message de rôle par réaction a été supprimé manuellement et retiré de la base de données.`,
                 channelId: message.channel?.id,
                 fields: [
                   {
-                    name: '🗑️ Message ID',
+                    name: '🗑️ ID du message',
                     value: message.id,
                     inline: true
                   },
                   {
-                    name: '📍 Channel',
-                    value: message.channel ? `${message.channel.toString()} (${message.channel.id})` : 'Unknown',
+                    name: '📍 Salon',
+                    value: message.channel ? `${message.channel.toString()} (${message.channel.id})` : 'Inconnu',
                     inline: true
                   },
                   {
-                    name: '🧹 Cleanup',
-                    value: 'Database entry removed automatically',
+                    name: '🧹 Nettoyage',
+                    value: 'Entrée de la base de données supprimée automatiquement',
                     inline: false
                   }
                 ]
@@ -61,7 +61,7 @@ export default {
       
       if (message.author) {
         fields.push({
-          name: '👤 Author',
+          name: '👤 Auteur',
           value: `${message.author.tag} (${message.author.id})`,
           inline: true
         });
@@ -69,7 +69,7 @@ export default {
 
       
       fields.push({
-        name: '💬 Channel',
+        name: '💬 Salon',
         value: `${message.channel.toString()} (${message.channel.id})`,
         inline: true
       });
@@ -80,22 +80,22 @@ export default {
           ? message.content.substring(0, MAX_LOGGED_MESSAGE_CONTENT_LENGTH - 3) + '...' 
           : message.content;
         fields.push({
-          name: '📝 Content',
-          value: content || '*(empty message)*',
+          name: '📝 Contenu',
+          value: content || '*(message vide)*',
           inline: false
         });
       }
 
       
       fields.push({
-        name: '🆔 Message ID',
+        name: '🆔 ID du message',
         value: message.id,
         inline: true
       });
 
       
       fields.push({
-        name: '📅 Created',
+        name: '📅 Créé',
         value: `<t:${Math.floor(message.createdTimestamp / 1000)}:R>`,
         inline: true
       });
@@ -103,7 +103,7 @@ export default {
       
       if (message.attachments.size > 0) {
         fields.push({
-          name: '📎 Attachments',
+          name: '📎 Pièces jointes',
           value: message.attachments.size.toString(),
           inline: true
         });
@@ -114,7 +114,7 @@ export default {
         guildId: message.guild.id,
         eventType: EVENT_TYPES.MESSAGE_DELETE,
         data: {
-          description: `A message was deleted in ${message.channel.toString()}`,
+          description: `Un message a été supprimé dans ${message.channel.toString()}`,
           userId: message.author?.id,
           channelId: message.channel.id,
           fields

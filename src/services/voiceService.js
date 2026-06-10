@@ -144,7 +144,7 @@ class VoiceService {
             throw createError(
                 'Invalid activity type',
                 ErrorTypes.VALIDATION,
-                'Activity type must be a non-empty string.',
+                'Le type d\'activité doit être une chaîne non vide.',
                 { provided: typeof activityType }
             );
         }
@@ -155,7 +155,7 @@ class VoiceService {
             throw createError(
                 'Unknown activity',
                 ErrorTypes.VALIDATION,
-                `The activity **${activityType}** does not exist. Available activities: ${validActivities}`,
+                `L'activité **${activityType}** n'existe pas. Activités disponibles : ${validActivities}`,
                 { activityType, validActivities: Object.keys(ACTIVITIES) }
             );
         }
@@ -178,7 +178,7 @@ class VoiceService {
             throw createError(
                 'Not in voice channel',
                 ErrorTypes.VALIDATION,
-                'You must be in a voice channel to start an activity.',
+                'Vous devez être dans un salon vocal pour démarrer une activité.',
                 { userId: member.id }
             );
         }
@@ -189,7 +189,7 @@ class VoiceService {
             throw createError(
                 'Invalid channel type',
                 ErrorTypes.VALIDATION,
-                'You must be in a voice or stage channel.',
+                'Vous devez être dans un salon vocal ou de scène.',
                 { channelId: channel.id, channelType: channel.type }
             );
         }
@@ -218,7 +218,7 @@ class VoiceService {
             throw createError(
                 'Bot not found',
                 ErrorTypes.VALIDATION,
-                'I cannot be found in this guild.',
+                'Je suis introuvable sur ce serveur.',
                 { guildId: voiceChannel.guildId }
             );
         }
@@ -229,7 +229,7 @@ class VoiceService {
             throw createError(
                 'Cannot check permissions',
                 ErrorTypes.VALIDATION,
-                'I cannot determine permissions for this channel.',
+                'Je ne peux pas déterminer les permissions pour ce salon.',
                 { channelId: voiceChannel.id }
             );
         }
@@ -247,7 +247,7 @@ class VoiceService {
             throw createError(
                 'Missing permission',
                 ErrorTypes.VALIDATION,
-                'I need the **Create Invite** permission in this voice channel to start an activity.',
+                'J\'ai besoin de la permission **Créer une invitation** dans ce salon vocal pour démarrer une activité.',
                 {
                     channelId: voiceChannel.id,
                     missingPermission: 'CreateInstantInvite'
@@ -311,7 +311,7 @@ class VoiceService {
             throw createError(
                 'Rate limited',
                 ErrorTypes.RATE_LIMIT,
-                `Please wait **${Math.ceil(remaining / 1000)}** seconds before creating another activity invite.`,
+                `Veuillez attendre **${Math.ceil(remaining / 1000)}** seconde(s) avant de créer une autre invitation d'activité.`,
                 { remaining, cooldown: INVITE_CREATION_COOLDOWN }
             );
         }
@@ -377,7 +377,7 @@ class VoiceService {
         throw createError(
             'Failed to create activity',
             ErrorTypes.DISCORD_API_ERROR,
-            `Could not create the **${activityName}** activity. Please try again in a moment.`,
+            `Impossible de créer l'activité **${activityName}**. Veuillez réessayer dans un moment.`,
             {
                 channelId,
                 activityId,
@@ -413,7 +413,7 @@ class VoiceService {
             throw createError(
                 'Permission denied',
                 ErrorTypes.VALIDATION,
-                'You do not have permission to connect to this voice channel.',
+                'Vous n\'avez pas la permission de rejoindre ce salon vocal.',
                 { channelId: voiceStatus.channelId }
             );
         }

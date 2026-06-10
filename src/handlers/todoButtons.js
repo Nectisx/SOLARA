@@ -20,25 +20,25 @@ function buildSharedTodoViewPayload(listData, listId, guild) {
       embeds: [
         successEmbed(
           `📋 **${listData.name}**\n\n` +
-          `👑 **Owner:** ${ownerName}\n` +
-          `👥 **Members:** ${memberList}\n\n` +
-          '*This list is currently empty. Use the "Add Task" button to add tasks!*',
-          `Shared List (ID: \`${listId}\`)`
+          `👑 **Propriétaire :** ${ownerName}\n` +
+          `👥 **Membres :** ${memberList}\n\n` +
+          '*Cette liste est actuellement vide. Utilisez le bouton "Ajouter une tâche" pour ajouter des tâches !*',
+          `Liste partagée (ID : \`${listId}\`)`
         )
       ],
       components: [
         new ActionRowBuilder().addComponents(
           new ButtonBuilder()
             .setCustomId(`shared_todo_add_${listId}`)
-            .setLabel('Add Task')
+            .setLabel('Ajouter une tâche')
             .setStyle(ButtonStyle.Primary),
           new ButtonBuilder()
             .setCustomId(`shared_todo_complete_${listId}`)
-            .setLabel('Complete Task')
+            .setLabel('Terminer une tâche')
             .setStyle(ButtonStyle.Success),
           new ButtonBuilder()
             .setCustomId(`shared_todo_remove_${listId}`)
-            .setLabel('Remove Task')
+            .setLabel('Supprimer une tâche')
             .setStyle(ButtonStyle.Danger)
         )
       ]
@@ -49,7 +49,7 @@ function buildSharedTodoViewPayload(listData, listId, guild) {
     .map(task =>
       `${task.completed ? '✅' : '📝'} #${task.id} ${task.text} ` +
       `\`[${new Date(task.createdAt).toLocaleDateString()}]` +
-      (task.completed ? ` • Completed by <@${task.completedBy}>` : '') + '`'
+      (task.completed ? ` • Terminée par <@${task.completedBy}>` : '') + '`'
     )
     .join('\n');
 
@@ -57,25 +57,25 @@ function buildSharedTodoViewPayload(listData, listId, guild) {
     embeds: [
       successEmbed(
         `📋 **${listData.name}**\n\n` +
-        `👑 **Owner:** ${ownerName}\n` +
-        `👥 **Members:** ${memberList}\n\n` +
-        `**Tasks:**\n${taskList}`,
-        `Shared List (ID: \`${listId}\`)`
+        `👑 **Propriétaire :** ${ownerName}\n` +
+        `👥 **Membres :** ${memberList}\n\n` +
+        `**Tâches :**\n${taskList}`,
+        `Liste partagée (ID : \`${listId}\`)`
       )
     ],
     components: [
       new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId(`shared_todo_add_${listId}`)
-          .setLabel('Add Task')
+          .setLabel('Ajouter une tâche')
           .setStyle(ButtonStyle.Primary),
         new ButtonBuilder()
           .setCustomId(`shared_todo_complete_${listId}`)
-          .setLabel('Complete Task')
+          .setLabel('Terminer une tâche')
           .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
           .setCustomId(`shared_todo_remove_${listId}`)
-          .setLabel('Remove Task')
+          .setLabel('Supprimer une tâche')
           .setStyle(ButtonStyle.Danger)
       )
     ]
@@ -120,19 +120,19 @@ const sharedTodoAddHandler = {
 
     if (!listId || !/^[a-zA-Z0-9_-]{1,64}$/.test(listId)) {
       await interaction.reply({
-        embeds: [errorEmbed('Error', 'Invalid shared list ID.')],
+        embeds: [errorEmbed('Erreur', 'Identifiant de liste partagée invalide.')],
         flags: MessageFlags.Ephemeral
       });
       return;
     }
-    
+
     const modal = new ModalBuilder()
       .setCustomId(`shared_todo_add_modal:${listId}:${sourceMessageId || ''}`)
-      .setTitle('Add Task to Shared List');
+      .setTitle('Ajouter une tâche à la liste partagée');
 
     const taskInput = new TextInputBuilder()
       .setCustomId('task_text')
-      .setLabel('Enter the task description')
+      .setLabel('Entrez la description de la tâche')
       .setStyle(TextInputStyle.Short)
       .setRequired(true)
       .setMaxLength(200);
@@ -152,22 +152,22 @@ const sharedTodoCompleteHandler = {
 
     if (!listId || !/^[a-zA-Z0-9_-]{1,64}$/.test(listId)) {
       await interaction.reply({
-        embeds: [errorEmbed('Error', 'Invalid shared list ID.')],
+        embeds: [errorEmbed('Erreur', 'Identifiant de liste partagée invalide.')],
         flags: MessageFlags.Ephemeral
       });
       return;
     }
-    
+
     const modal = new ModalBuilder()
       .setCustomId(`shared_todo_complete_modal:${listId}:${sourceMessageId || ''}`)
-      .setTitle('Complete Task in Shared List');
+      .setTitle('Terminer une tâche dans la liste partagée');
 
     const taskIdInput = new TextInputBuilder()
       .setCustomId('task_id')
-      .setLabel('Enter the task ID to complete')
+      .setLabel('Entrez l\'ID de la tâche à terminer')
       .setStyle(TextInputStyle.Short)
       .setRequired(true)
-      .setPlaceholder('e.g., 1, 2, 3');
+      .setPlaceholder('ex. : 1, 2, 3');
 
     const actionRow = new ActionRowBuilder().addComponents(taskIdInput);
     modal.addComponents(actionRow);
@@ -184,7 +184,7 @@ const sharedTodoRemoveHandler = {
 
     if (!listId || !/^[a-zA-Z0-9_-]{1,64}$/.test(listId)) {
       await interaction.reply({
-        embeds: [errorEmbed('Error', 'Invalid shared list ID.')],
+        embeds: [errorEmbed('Erreur', 'Identifiant de liste partagée invalide.')],
         flags: MessageFlags.Ephemeral
       });
       return;
@@ -192,14 +192,14 @@ const sharedTodoRemoveHandler = {
 
     const modal = new ModalBuilder()
       .setCustomId(`shared_todo_remove_modal:${listId}:${sourceMessageId || ''}`)
-      .setTitle('Remove Task from Shared List');
+      .setTitle('Supprimer une tâche de la liste partagée');
 
     const taskIdInput = new TextInputBuilder()
       .setCustomId('task_id')
-      .setLabel('Enter the task ID to remove')
+      .setLabel('Entrez l\'ID de la tâche à supprimer')
       .setStyle(TextInputStyle.Short)
       .setRequired(true)
-      .setPlaceholder('e.g., 1, 2, 3');
+      .setPlaceholder('ex. : 1, 2, 3');
 
     const actionRow = new ActionRowBuilder().addComponents(taskIdInput);
     modal.addComponents(actionRow);
@@ -220,21 +220,21 @@ const sharedTodoAddModalHandler = {
       const allowed = await checkRateLimit(`${userId}:shared_todo_add`, 5, 30000);
       if (!allowed) {
         return interaction.reply({
-          embeds: [errorEmbed('Rate Limited', 'You are adding tasks too quickly. Please wait and try again.')],
+          embeds: [errorEmbed('Limite atteinte', 'Vous ajoutez des tâches trop rapidement. Veuillez patienter et réessayer.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!listId || !/^[a-zA-Z0-9_-]{1,64}$/.test(listId)) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Invalid shared list ID.')],
+          embeds: [errorEmbed('Erreur', 'Identifiant de liste partagée invalide.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!taskText || taskText.trim().length === 0) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Task text cannot be empty.')],
+          embeds: [errorEmbed('Erreur', 'Le texte de la tâche ne peut pas être vide.')],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -244,14 +244,14 @@ const sharedTodoAddModalHandler = {
       
       if (!listData) {
         return interaction.reply({
-          embeds: [errorEmbed("Error", "Shared list not found.")],
+          embeds: [errorEmbed("Erreur", "Liste partagée introuvable.")],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!listData.members || !listData.members.includes(userId)) {
         return interaction.reply({
-          embeds: [errorEmbed("Error", "You don't have access to this list.")],
+          embeds: [errorEmbed("Erreur", "Vous n'avez pas accès à cette liste.")],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -273,14 +273,14 @@ const sharedTodoAddModalHandler = {
       await refreshSharedTodoMessage(interaction, listId, sourceMessageId);
 
       return interaction.reply({
-        embeds: [successEmbed("Task Added", `Added "${taskText}" to the shared list.`)],
+        embeds: [successEmbed("Tâche ajoutée", `"${taskText}" a été ajoutée à la liste partagée.`)],
         flags: MessageFlags.Ephemeral
       });
 
     } catch (error) {
       logger.error('Error in shared todo add modal:', error);
       return interaction.reply({
-        embeds: [errorEmbed("Error", "An error occurred while adding the task.")],
+        embeds: [errorEmbed("Erreur", "Une erreur est survenue lors de l'ajout de la tâche.")],
         flags: MessageFlags.Ephemeral
       });
     }
@@ -299,38 +299,38 @@ const sharedTodoCompleteModalHandler = {
       const allowed = await checkRateLimit(`${userId}:shared_todo_complete`, 5, 30000);
       if (!allowed) {
         return interaction.reply({
-          embeds: [errorEmbed('Rate Limited', 'You are completing tasks too quickly. Please wait and try again.')],
+          embeds: [errorEmbed('Limite atteinte', 'Vous terminez des tâches trop rapidement. Veuillez patienter et réessayer.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!listId || !/^[a-zA-Z0-9_-]{1,64}$/.test(listId)) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Invalid shared list ID.')],
+          embeds: [errorEmbed('Erreur', 'Identifiant de liste partagée invalide.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!Number.isInteger(taskId) || taskId <= 0) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Task ID must be a positive number.')],
+          embeds: [errorEmbed('Erreur', 'L\'ID de la tâche doit être un nombre positif.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       const listKey = `shared_todo_${listId}`;
       let listData = await getFromDb(listKey, null);
-      
+
       if (!listData) {
         return interaction.reply({
-          embeds: [errorEmbed("Error", "Shared list not found.")],
+          embeds: [errorEmbed("Erreur", "Liste partagée introuvable.")],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!listData.members || !listData.members.includes(userId)) {
         return interaction.reply({
-          embeds: [errorEmbed("Error", "You don't have access to this list.")],
+          embeds: [errorEmbed("Erreur", "Vous n'avez pas accès à cette liste.")],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -338,17 +338,17 @@ const sharedTodoCompleteModalHandler = {
       if (!listData.tasks) listData.tasks = [];
 
       const task = listData.tasks.find(t => t.id === taskId);
-      
+
       if (!task) {
         return interaction.reply({
-          embeds: [errorEmbed("Error", "Task not found.")],
+          embeds: [errorEmbed("Erreur", "Tâche introuvable.")],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (task.completed) {
         return interaction.reply({
-          embeds: [errorEmbed("Task Already Completed", `Task #${task.id} is already completed.`)],
+          embeds: [errorEmbed("Tâche déjà terminée", `La tâche #${task.id} est déjà terminée.`)],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -362,14 +362,14 @@ const sharedTodoCompleteModalHandler = {
       await refreshSharedTodoMessage(interaction, listId, sourceMessageId);
       
       return interaction.reply({
-        embeds: [successEmbed("Task Completed", `Marked "${task.text}" as complete!`)],
+        embeds: [successEmbed("Tâche terminée", `"${task.text}" a été marquée comme terminée !`)],
         flags: MessageFlags.Ephemeral
       });
 
     } catch (error) {
       logger.error('Error in shared todo complete modal:', error);
       return interaction.reply({
-        embeds: [errorEmbed("Error", "An error occurred while completing the task.")],
+        embeds: [errorEmbed("Erreur", "Une erreur est survenue lors de la validation de la tâche.")],
         flags: MessageFlags.Ephemeral
       });
     }
@@ -388,21 +388,21 @@ const sharedTodoRemoveModalHandler = {
       const allowed = await checkRateLimit(`${userId}:shared_todo_remove`, 5, 30000);
       if (!allowed) {
         return interaction.reply({
-          embeds: [errorEmbed('Rate Limited', 'You are removing tasks too quickly. Please wait and try again.')],
+          embeds: [errorEmbed('Limite atteinte', 'Vous supprimez des tâches trop rapidement. Veuillez patienter et réessayer.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!listId || !/^[a-zA-Z0-9_-]{1,64}$/.test(listId)) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Invalid shared list ID.')],
+          embeds: [errorEmbed('Erreur', 'Identifiant de liste partagée invalide.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!Number.isInteger(taskId) || taskId <= 0) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Task ID must be a positive number.')],
+          embeds: [errorEmbed('Erreur', 'L\'ID de la tâche doit être un nombre positif.')],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -412,14 +412,14 @@ const sharedTodoRemoveModalHandler = {
 
       if (!listData) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Shared list not found.')],
+          embeds: [errorEmbed('Erreur', 'Liste partagée introuvable.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       if (!listData.members || !listData.members.includes(userId)) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', "You don't have access to this list.")],
+          embeds: [errorEmbed('Erreur', "Vous n'avez pas accès à cette liste.")],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -431,7 +431,7 @@ const sharedTodoRemoveModalHandler = {
       const taskIndex = listData.tasks.findIndex(task => task.id === taskId);
       if (taskIndex === -1) {
         return interaction.reply({
-          embeds: [errorEmbed('Error', 'Task not found.')],
+          embeds: [errorEmbed('Erreur', 'Tâche introuvable.')],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -442,13 +442,13 @@ const sharedTodoRemoveModalHandler = {
       await refreshSharedTodoMessage(interaction, listId, sourceMessageId);
 
       return interaction.reply({
-        embeds: [successEmbed('Task Removed', `Removed "${removedTask.text}" from the shared list.`)],
+        embeds: [successEmbed('Tâche supprimée', `"${removedTask.text}" a été supprimée de la liste partagée.`)],
         flags: MessageFlags.Ephemeral
       });
     } catch (error) {
       logger.error('Error in shared todo remove modal:', error);
       return interaction.reply({
-        embeds: [errorEmbed('Error', 'An error occurred while removing the task.')],
+        embeds: [errorEmbed('Erreur', 'Une erreur est survenue lors de la suppression de la tâche.')],
         flags: MessageFlags.Ephemeral
       });
     }

@@ -7,12 +7,12 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("avatar")
-    .setDescription("Display a user's avatar image")
+    .setDescription("Afficher l'image d'avatar d'un utilisateur")
     .addUserOption((option) =>
       option
         .setName("target")
         .setDescription(
-          "The user whose avatar you want to see (defaults to you)",
+          "L'utilisateur dont vous souhaitez voir l'avatar (vous par défaut)",
         ),
     ),
 
@@ -22,8 +22,8 @@ export default {
       const avatarUrl = user.displayAvatarURL({ size: 2048, dynamic: true });
 
       const embed = createEmbed({ 
-        title: `${user.username}'s Avatar`, 
-        description: `[Download Link](${avatarUrl})` 
+        title: `Avatar de ${user.username}`,
+        description: `[Lien de téléchargement](${avatarUrl})`
       })
         .setImage(avatarUrl);
 

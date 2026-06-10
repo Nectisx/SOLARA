@@ -58,7 +58,7 @@ class UtilityService {
             throw createError(
                 'Cannot report self',
                 ErrorTypes.VALIDATION,
-                'You cannot report yourself.',
+                'Vous ne pouvez pas vous signaler vous-même.',
                 { reportedUserId, reportingUserId }
             );
         }
@@ -68,7 +68,7 @@ class UtilityService {
             throw createError(
                 'Invalid reason',
                 ErrorTypes.VALIDATION,
-                'Report reason must be a non-empty string.',
+                'La raison du signalement doit être une chaîne non vide.',
                 { provided: typeof reason }
             );
         }
@@ -78,7 +78,7 @@ class UtilityService {
             throw createError(
                 'Empty reason',
                 ErrorTypes.VALIDATION,
-                'Please provide a detailed reason for your report.',
+                'Veuillez fournir une raison détaillée pour votre signalement.',
                 { length: trimmedReason.length }
             );
         }
@@ -87,7 +87,7 @@ class UtilityService {
             throw createError(
                 'Reason too short',
                 ErrorTypes.VALIDATION,
-                'Please be more detailed. Reason must be at least **10 characters**.',
+                'Soyez plus précis. La raison doit comporter au moins **10 caractères**.',
                 { length: trimmedReason.length }
             );
         }
@@ -96,7 +96,7 @@ class UtilityService {
             throw createError(
                 'Reason too long',
                 ErrorTypes.VALIDATION,
-                'Report reason cannot exceed **500 characters**.',
+                'La raison du signalement ne peut pas dépasser **500 caractères**.',
                 { length: trimmedReason.length }
             );
         }
@@ -148,7 +148,7 @@ class UtilityService {
             throw createError(
                 'Report cooldown active',
                 ErrorTypes.RATE_LIMIT,
-                `You can only report the same user once every **10 minutes**. Please wait **${timeRemaining}** more minutes.`,
+                `Vous ne pouvez signaler le même utilisateur qu'une fois toutes les **10 minutes**. Veuillez attendre **${timeRemaining}** minute(s) supplémentaire(s).`,
                 { timeRemaining, cooldown: REPORT_USER_COOLDOWN }
             );
         }
@@ -305,7 +305,7 @@ class UtilityService {
             throw createError(
                 'Wipedata confirmation required',
                 ErrorTypes.VALIDATION,
-                'This action permanently deletes your stored data. Run the wipe command again within 2 minutes to confirm.',
+                'Cette action supprime définitivement vos données stockées. Relancez la commande de suppression dans les 2 minutes pour confirmer.',
                 {
                     confirmationRequired: true,
                     expiresAt: new Date(now + WIPEDATA_CONFIRM_WINDOW).toISOString()
@@ -321,7 +321,7 @@ class UtilityService {
             throw createError(
                 'Wipedata cooldown active',
                 ErrorTypes.RATE_LIMIT,
-                `You can only wipe your data once every **24 hours**. Please wait **${Math.ceil(cooldown.cooldownRemaining / 3600)}** hours.`,
+                `Vous ne pouvez supprimer vos données qu'une fois toutes les **24 heures**. Veuillez attendre **${Math.ceil(cooldown.cooldownRemaining / 3600)}** heure(s).`,
                 { ...cooldown }
             );
         }
@@ -438,7 +438,7 @@ class UtilityService {
             throw createError(
                 'Invalid task',
                 ErrorTypes.VALIDATION,
-                'Task must be a non-empty string.',
+                'La tâche doit être une chaîne non vide.',
                 { provided: typeof taskContent }
             );
         }
@@ -448,7 +448,7 @@ class UtilityService {
             throw createError(
                 'Empty task',
                 ErrorTypes.VALIDATION,
-                'Please provide a task description.',
+                'Veuillez fournir une description de la tâche.',
                 { length: trimmed.length }
             );
         }
@@ -457,7 +457,7 @@ class UtilityService {
             throw createError(
                 'Task too long',
                 ErrorTypes.VALIDATION,
-                `Task cannot exceed **${TODO_MAX_LENGTH}** characters.`,
+                `La tâche ne peut pas dépasser **${TODO_MAX_LENGTH}** caractères.`,
                 { length: trimmed.length, max: TODO_MAX_LENGTH }
             );
         }
@@ -471,7 +471,7 @@ class UtilityService {
             throw createError(
                 'Too many tasks',
                 ErrorTypes.VALIDATION,
-                `You cannot have more than **${TODO_MAX_TASKS}** tasks.`,
+                `Vous ne pouvez pas avoir plus de **${TODO_MAX_TASKS}** tâches.`,
                 { current: todoList.tasks.length, max: TODO_MAX_TASKS }
             );
         }
@@ -521,7 +521,7 @@ class UtilityService {
             throw createError(
                 'Task not found',
                 ErrorTypes.VALIDATION,
-                'The task does not exist.',
+                'La tâche n\'existe pas.',
                 { taskId, userId }
             );
         }
@@ -559,7 +559,7 @@ class UtilityService {
             throw createError(
                 'Task not found',
                 ErrorTypes.VALIDATION,
-                'The task does not exist.',
+                'La tâche n\'existe pas.',
                 { taskId, userId }
             );
         }
@@ -617,7 +617,7 @@ class UtilityService {
             throw createError(
                 'Invalid list name',
                 ErrorTypes.VALIDATION,
-                'List name cannot be empty.',
+                'Le nom de la liste ne peut pas être vide.',
                 { listName }
             );
         }
@@ -673,7 +673,7 @@ class UtilityService {
             throw createError(
                 'List not found',
                 ErrorTypes.VALIDATION,
-                'The shared list does not exist.',
+                'La liste partagée n\'existe pas.',
                 { listId }
             );
         }
@@ -683,7 +683,7 @@ class UtilityService {
             throw createError(
                 'Permission denied',
                 ErrorTypes.VALIDATION,
-                'Only the list creator can add members.',
+                'Seul le créateur de la liste peut ajouter des membres.',
                 { listId, creatorId: list.creatorId }
             );
         }
@@ -693,7 +693,7 @@ class UtilityService {
             throw createError(
                 'Too many members',
                 ErrorTypes.VALIDATION,
-                `Shared lists can have a maximum of **${SHARED_TODO_MAX_MEMBERS}** members.`,
+                `Les listes partagées peuvent avoir au maximum **${SHARED_TODO_MAX_MEMBERS}** membres.`,
                 { current: list.members.length, max: SHARED_TODO_MAX_MEMBERS }
             );
         }

@@ -62,7 +62,20 @@ export async function logEvent({ client, guild, guildId, event }) {
       'Case Created': { color: getColor('info'), icon: '📋' },
       'Case Updated': { color: getColor('moderation'), icon: '📝' },
       'DM Sent': { color: getColor('info'), icon: '✉️' },
-      'Log Channel Activated': { color: getColor('success'), icon: '📝' }
+      'Log Channel Activated': { color: getColor('success'), icon: '📝' },
+      'Membre banni': { color: getColor('error'), icon: '🔨' },
+      'Membre expulsé': { color: getColor('warning'), icon: '👢' },
+      'Membre en sourdine': { color: getColor('warning'), icon: '⏳' },
+      'Sourdine levée': { color: getColor('success'), icon: '✅' },
+      'Utilisateur averti': { color: getColor('warning'), icon: '⚠️' },
+      'Avertissements consultés': { color: getColor('info'), icon: '👁️' },
+      'Messages supprimés': { color: getColor('moderation'), icon: '🗑️' },
+      'Salon verrouillé': { color: getColor('moderation'), icon: '🔒' },
+      'Salon déverrouillé': { color: getColor('success'), icon: '🔓' },
+      'Dossier créé': { color: getColor('info'), icon: '📋' },
+      'Dossier mis à jour': { color: getColor('moderation'), icon: '📝' },
+      'MP envoyé': { color: getColor('info'), icon: '✉️' },
+      'Salon de logs activé': { color: getColor('success'), icon: '📝' }
     };
 
     const style = actionStyles[event.action] || { color: getColor('primary'), icon: '🔨' };
@@ -71,8 +84,8 @@ export async function logEvent({ client, guild, guildId, event }) {
       .setColor(event.color || style.color)
       .setTitle(`${style.icon} ${event.action}`)
       .addFields(
-        { name: "Target", value: event.target, inline: true },
-        { name: "Moderator", value: event.executor, inline: true }
+        { name: "Cible", value: event.target, inline: true },
+        { name: "Modérateur", value: event.executor, inline: true }
       )
       .setTimestamp()
       .setFooter({ 
@@ -82,7 +95,7 @@ export async function logEvent({ client, guild, guildId, event }) {
 
     if (event.reason) {
       embed.addFields({
-        name: "Reason",
+        name: "Raison",
         value: event.reason.length > 1024 ? event.reason.substring(0, 1021) + '...' : event.reason,
         inline: false
       });
@@ -90,7 +103,7 @@ export async function logEvent({ client, guild, guildId, event }) {
 
     if (event.duration) {
       embed.addFields({
-        name: "Duration",
+        name: "Durée",
         value: event.duration,
         inline: true
       });
@@ -110,7 +123,7 @@ export async function logEvent({ client, guild, guildId, event }) {
 
     if (event.caseId) {
       embed.addFields({
-        name: "Case ID",
+        name: "ID du dossier",
         value: `#${event.caseId}`,
         inline: true
       });

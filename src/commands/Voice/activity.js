@@ -38,80 +38,80 @@ const ACTIVITY_NAMES = {
 export default {
     data: new SlashCommandBuilder()
         .setName('activity')
-        .setDescription('Start a Discord Activity in your voice channel')
+        .setDescription('Démarrer une activité Discord dans votre salon vocal')
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Connect)
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('youtube')
-                .setDescription('Watch YouTube videos together in a voice channel')
+                .setDescription('Regarder des vidéos YouTube ensemble dans un salon vocal')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('poker')
-                .setDescription('Play Poker Night with friends')
+                .setDescription('Jouer à Poker Night avec des amis')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('chess')
-                .setDescription('Play Chess in the Park')
+                .setDescription('Jouer aux échecs dans le parc')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('checkers')
-                .setDescription('Play Checkers in the Park')
+                .setDescription('Jouer aux dames dans le parc')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('letter-league')
-                .setDescription('Play the word-based game Letter League')
+                .setDescription('Jouer au jeu de mots Letter League')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('spellcast')
-                .setDescription('Play the magical word game SpellCast')
+                .setDescription('Jouer au jeu de mots magique SpellCast')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('sketch')
-                .setDescription('Play Sketch Heads (Pictionary style)')
+                .setDescription('Jouer à Sketch Heads (style Pictionary)')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('blazing8s')
-                .setDescription('Play the card game Blazing 8s')
+                .setDescription('Jouer au jeu de cartes Blazing 8s')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('puttparty')
-                .setDescription('Play Putt Party (Mini-golf)')
+                .setDescription('Jouer à Putt Party (Mini-golf)')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('landio')
-                .setDescription('Play the territory game Land-io')
+                .setDescription('Jouer au jeu de territoire Land-io')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('bobble')
-                .setDescription('Play Bobble League')
+                .setDescription('Jouer à Bobble League')
         )
         
         .addSubcommand(subcommand =>
             subcommand
                 .setName('knowwhat')
-                .setDescription('Play Know What I Mean')
+                .setDescription('Jouer à Know What I Mean')
         ),
 
     category: "Voice",
@@ -131,7 +131,7 @@ export default {
 
             if (!member.voice.channel) {
                 return await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Not in Voice Channel', 'You need to be in a voice channel to start an activity!')]
+                    embeds: [errorEmbed('Pas dans un salon vocal', 'Vous devez être dans un salon vocal pour démarrer une activité !')]
                 });
             }
 
@@ -152,7 +152,7 @@ export default {
                     missingPermission: 'CreateInstantInvite'
                 });
                 return await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Missing Permissions', 'I need the `Create Invite` permission to start an activity!')]
+                    embeds: [errorEmbed('Permissions manquantes', 'J\'ai besoin de la permission `Créer une invitation` pour démarrer une activité !')]
                 });
             }
 
@@ -182,7 +182,7 @@ export default {
             await InteractionHelper.safeEditReply(interaction, {
                 embeds: [createEmbed({
                     title: `🎮 ${activityName}`,
-                    description: `Click the link below to start **${activityName}** in ${member.voice.channel.name}!\n\n[Join ${activityName} Activity](https://discord.gg/${invite.code})`,
+                    description: `Cliquez sur le lien ci-dessous pour démarrer **${activityName}** dans ${member.voice.channel.name} !\n\n[Rejoindre l'activité ${activityName}](https://discord.gg/${invite.code})`,
                     color: 'success'
                 })]
             });
@@ -205,7 +205,7 @@ export default {
                 });
             } else {
                 await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Failed to Create Activity', 'An error occurred while trying to create the activity. Please try again later.')]
+                    embeds: [errorEmbed('Échec de création de l\'activité', 'Une erreur s\'est produite lors de la création de l\'activité. Veuillez réessayer plus tard.')]
                 });
             }
         }

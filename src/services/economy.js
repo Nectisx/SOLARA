@@ -111,17 +111,17 @@ export async function setEconomyData(client, guildId, userId, newData) {
 export async function addMoney(client, guildId, userId, amount, type = 'wallet') {
     try {
         if (amount <= 0) {
-            return { success: false, error: 'Amount must be positive' };
+            return { success: false, error: 'Le montant doit être positif' };
         }
 
         const userData = await getEconomyData(client, guildId, userId);
-        
+
         if (type === 'bank') {
             const maxBank = getMaxBankCapacity(userData);
             if ((userData.bank || 0) + amount > maxBank) {
-                return { 
-                    success: false, 
-                    error: 'Bank capacity exceeded',
+                return {
+                    success: false,
+                    error: 'Capacité de la banque dépassée',
                     current: userData.bank || 0,
                     max: maxBank
                 };
@@ -140,7 +140,7 @@ export async function addMoney(client, guildId, userId, amount, type = 'wallet')
         };
     } catch (error) {
         logger.error(`Error adding money to ${type} for user ${userId} in guild ${guildId}:`, error);
-        return { success: false, error: 'An error occurred while processing your request' };
+        return { success: false, error: 'Une erreur s\'est produite lors du traitement de votre demande' };
     }
 }
 
@@ -156,7 +156,7 @@ export async function addMoney(client, guildId, userId, amount, type = 'wallet')
 export async function removeMoney(client, guildId, userId, amount, type = 'wallet') {
     try {
         if (amount <= 0) {
-            return { success: false, error: 'Amount must be positive' };
+            return { success: false, error: 'Le montant doit être positif' };
         }
 
         const userData = await getEconomyData(client, guildId, userId);
@@ -165,7 +165,7 @@ export async function removeMoney(client, guildId, userId, amount, type = 'walle
             if ((userData.bank || 0) < amount) {
                 return { 
                     success: false, 
-                    error: 'Insufficient funds in bank',
+                    error: 'Fonds insuffisants dans la banque',
                     current: userData.bank || 0,
                     required: amount
                 };
@@ -175,7 +175,7 @@ export async function removeMoney(client, guildId, userId, amount, type = 'walle
             if ((userData.wallet || 0) < amount) {
                 return { 
                     success: false, 
-                    error: 'Insufficient funds in wallet',
+                    error: 'Fonds insuffisants dans le portefeuille',
                     current: userData.wallet || 0,
                     required: amount
                 };
@@ -191,7 +191,7 @@ export async function removeMoney(client, guildId, userId, amount, type = 'walle
         };
     } catch (error) {
         logger.error(`Error removing money from ${type} for user ${userId} in guild ${guildId}:`, error);
-        return { success: false, error: 'An error occurred while processing your request' };
+        return { success: false, error: 'Une erreur s\'est produite lors du traitement de votre demande' };
     }
 }
 
@@ -207,7 +207,7 @@ export async function removeMoney(client, guildId, userId, amount, type = 'walle
 export async function transferMoney(client, guildId, userId, amount, direction) {
     try {
         if (amount <= 0) {
-            return { success: false, error: 'Amount must be positive' };
+            return { success: false, error: 'Le montant doit être positif' };
         }
 
         const userData = await getEconomyData(client, guildId, userId);
@@ -216,7 +216,7 @@ export async function transferMoney(client, guildId, userId, amount, direction) 
             if (userData.wallet < amount) {
                 return { 
                     success: false, 
-                    error: 'Insufficient funds in wallet',
+                    error: 'Fonds insuffisants dans le portefeuille',
                     current: userData.wallet,
                     required: amount
                 };
@@ -226,7 +226,7 @@ export async function transferMoney(client, guildId, userId, amount, direction) 
             if (userData.bank + amount > maxBank) {
                 return { 
                     success: false, 
-                    error: 'Bank capacity exceeded',
+                    error: 'Capacité de la banque dépassée',
                     current: userData.bank,
                     max: maxBank,
                     required: amount
@@ -241,7 +241,7 @@ export async function transferMoney(client, guildId, userId, amount, direction) 
             if (userData.bank < amount) {
                 return { 
                     success: false, 
-                    error: 'Insufficient funds in bank',
+                    error: 'Fonds insuffisants dans la banque',
                     current: userData.bank,
                     required: amount
                 };
@@ -252,7 +252,7 @@ export async function transferMoney(client, guildId, userId, amount, direction) 
             userData.lastWithdraw = Date.now();
             
         } else {
-            return { success: false, error: 'Invalid transfer direction' };
+            return { success: false, error: 'Direction de transfert invalide' };
         }
 
         await setEconomyData(client, guildId, userId, userData);
@@ -266,7 +266,7 @@ export async function transferMoney(client, guildId, userId, amount, direction) 
         
     } catch (error) {
         logger.error(`Error transferring money (${direction}) for user ${userId} in guild ${guildId}:`, error);
-        return { success: false, error: 'An error occurred while processing your request' };
+        return { success: false, error: 'Une erreur s\'est produite lors du traitement de votre demande' };
     }
 }
 

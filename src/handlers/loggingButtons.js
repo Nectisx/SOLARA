@@ -21,7 +21,7 @@ export default {
       
       if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return interaction.reply({
-          content: '❌ You need **Manage Server** permissions to use this.',
+          content: '❌ Vous avez besoin des permissions **Gérer le serveur** pour utiliser ceci.',
           ephemeral: true
         });
       }
@@ -45,7 +45,7 @@ export default {
     } catch (error) {
       logger.error('Error in logging button handler:', error);
       await interaction.reply({
-        content: '❌ An error occurred while processing your request.',
+        content: '❌ Une erreur s\'est produite lors du traitement de votre requête.',
         ephemeral: true
       }).catch(() => {});
     }
@@ -57,7 +57,7 @@ async function handleToggle(interaction) {
     const eventType = parseEventTypeFromButton(interaction.customId);
     if (!eventType) {
       return interaction.reply({
-        content: '❌ Invalid event type.',
+        content: '❌ Type d\'événement invalide.',
         ephemeral: true
       });
     }
@@ -99,7 +99,7 @@ async function handleToggle(interaction) {
   } catch (error) {
     logger.error('Error toggling logging:', error);
     await interaction.reply({
-      content: '❌ An error occurred while toggling logging.',
+      content: '❌ Une erreur s\'est produite lors de la bascule des journaux.',
       ephemeral: true
     });
   }
@@ -117,7 +117,7 @@ async function handleRefresh(interaction) {
   } catch (error) {
     logger.error('Error refreshing logging status:', error);
     await interaction.reply({
-      content: '❌ An error occurred while refreshing status.',
+      content: '❌ Une erreur s\'est produite lors du rafraîchissement du statut.',
       ephemeral: true
     });
   }
@@ -151,7 +151,7 @@ async function handleDashboardToggle(interaction) {
     await interaction.update({ embeds: [embed], components });
   } catch (error) {
     logger.error('Error in dashboard toggle:', error);
-    await interaction.reply({ content: '❌ An error occurred while toggling.', ephemeral: true });
+    await interaction.reply({ content: '❌ Une erreur s\'est produite lors de la bascule.', ephemeral: true });
   }
 }
 
@@ -161,6 +161,6 @@ async function handleDashboardRefresh(interaction) {
     await interaction.update({ embeds: [embed], components });
   } catch (error) {
     logger.error('Error refreshing logging dashboard:', error);
-    await interaction.reply({ content: '❌ An error occurred while refreshing the dashboard.', ephemeral: true });
+    await interaction.reply({ content: '❌ Une erreur s\'est produite lors du rafraîchissement du tableau de bord.', ephemeral: true });
   }
 }

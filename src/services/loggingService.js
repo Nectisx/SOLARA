@@ -279,8 +279,8 @@ function createLogEmbed(guild, eventType, data) {
   
   embed.setColor(color);
   embed.setTimestamp();
-  embed.setFooter({ 
-    text: `Guild: ${guild.name}`,
+  embed.setFooter({
+    text: `Serveur : ${guild.name}`,
     iconURL: guild.iconURL()
   });
 
@@ -308,7 +308,7 @@ function createLogEmbed(guild, eventType, data) {
 
 function formatEventType(eventType) {
   if (!eventType || typeof eventType !== 'string') {
-    return 'Unknown Event';
+    return 'Événement inconnu';
   }
 
   return eventType

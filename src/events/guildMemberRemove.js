@@ -31,17 +31,17 @@ export default {
 
                 const formatData = { user, guild, member };
                 const goodbyeMessage = formatWelcomeMessage(
-                    welcomeConfig.leaveMessage || welcomeConfig.leaveEmbed?.description || '{user.tag} has left the server.',
+                    welcomeConfig.leaveMessage || welcomeConfig.leaveEmbed?.description || '{user.tag} a quitté le serveur.',
                     formatData
                 );
 
                 const embedTitle = formatWelcomeMessage(
-                    welcomeConfig.leaveEmbed?.title || '👋 Goodbye',
+                    welcomeConfig.leaveEmbed?.title || '👋 Au revoir',
                     formatData
                 );
                 const embedFooter = welcomeConfig.leaveEmbed?.footer
                     ? formatWelcomeMessage(welcomeConfig.leaveEmbed.footer, formatData)
-                    : `Goodbye from ${guild.name}!`;
+                    : `Au revoir de ${guild.name} !`;
 
                 const canEmbed = permissions.has(PermissionFlagsBits.EmbedLinks);
 
@@ -57,8 +57,8 @@ export default {
                         .setColor(welcomeConfig.leaveEmbed?.color || getColor('error'))
                         .setThumbnail(user.displayAvatarURL())
                         .addFields(
-                            { name: 'User', value: `${user.tag} (${user.id})`, inline: true },
-                            { name: 'Member Count', value: guild.memberCount.toString(), inline: true }
+                            { name: 'Utilisateur', value: `${user.tag} (${user.id})`, inline: true },
+                            { name: 'Nombre de membres', value: guild.memberCount.toString(), inline: true }
                         )
                         .setTimestamp()
                         .setFooter({ text: embedFooter });
@@ -85,21 +85,21 @@ export default {
                 guildId: guild.id,
                 eventType: EVENT_TYPES.MEMBER_LEAVE,
                 data: {
-                    description: `${user.tag} left the server`,
+                    description: `${user.tag} a quitté le serveur`,
                     userId: user.id,
                     fields: [
                         {
-                            name: '👤 Member',
+                            name: '👤 Membre',
                             value: `${user.tag} (${user.id})`,
                             inline: true
                         },
                         {
-                            name: '👥 Member Count',
+                            name: '👥 Nombre de membres',
                             value: guild.memberCount.toString(),
                             inline: true
                         },
                         {
-                            name: '📅 Joined',
+                            name: '📅 A rejoint',
                             value: `<t:${Math.floor((member.joinedTimestamp || 0) / 1000)}:R>`,
                             inline: true
                         }

@@ -6,11 +6,11 @@ function createControlButtons(countdownId, isPaused = false) {
     return new ActionRowBuilder().addComponents(
         new ButtonBuilder()
             .setCustomId(`countdown_pause:${countdownId}`)
-            .setLabel(isPaused ? "▶️ Resume" : "⏸️ Pause")
+            .setLabel(isPaused ? "▶️ Reprendre" : "⏸️ Pause")
             .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
             .setCustomId(`countdown_cancel:${countdownId}`)
-            .setLabel("❌ Cancel")
+            .setLabel("❌ Annuler")
             .setStyle(ButtonStyle.Danger),
     );
 }
@@ -50,7 +50,7 @@ function startCountdown(countdownId, countdownData, activeCountdowns) {
 
                 const embed = successEmbed(
                     `⏱️ ${countdownData.title}`,
-                    `Time remaining: **${formatTime(Math.ceil(remaining / 1000))}**`,
+                    `Temps restant : **${formatTime(Math.ceil(remaining / 1000))}**`,
                 );
 
                 try {
@@ -72,8 +72,8 @@ function startCountdown(countdownId, countdownData, activeCountdowns) {
                 clearInterval(countdownData.interval);
 
                 const finishedEmbed = successEmbed(
-                    `⏱️ ${countdownData.title} (Finished!)`,
-                    "⏰ Time's up!",
+                    `⏱️ ${countdownData.title} (Terminé !)`,
+                    "⏰ Le temps est écoulé !",
                 );
 
                 await countdownData.message.edit({
@@ -107,14 +107,14 @@ async function countdownButtonHandler(interaction, client, args) {
         const countdownData = activeCountdowns.get(countdownId);
         if (!countdownData) {
             return await interaction.reply({
-                content: "This countdown has expired or was cancelled.",
+                content: "Ce compte à rebours a expiré ou a été annulé.",
                 flags: ["Ephemeral"],
             });
         }
 
         if (!interaction.member.permissions.has("MANAGE_MESSAGES")) {
             return await interaction.reply({
-                content: 'You need the "Manage Messages" permission to control countdowns.',
+                content: 'Vous avez besoin de la permission "Gérer les messages" pour contrôler les comptes à rebours.',
                 flags: ["Ephemeral"],
             });
         }
@@ -133,7 +133,7 @@ async function countdownButtonHandler(interaction, client, args) {
                     });
 
                     await interaction.reply({
-                        content: "▶️ Countdown resumed!",
+                        content: "▶️ Compte à rebours repris !",
                         flags: ["Ephemeral"],
                     });
                 } else {
@@ -148,7 +148,7 @@ async function countdownButtonHandler(interaction, client, args) {
                     });
 
                     await interaction.reply({
-                        content: "⏸️ Countdown paused!",
+                        content: "⏸️ Compte à rebours mis en pause !",
                         flags: ["Ephemeral"],
                     });
                 }
@@ -158,8 +158,8 @@ async function countdownButtonHandler(interaction, client, args) {
                 clearInterval(countdownData.interval);
 
                 const embed = successEmbed(
-                    `⏱️ ${countdownData.title} (Cancelled)`,
-                    "The countdown was cancelled.",
+                    `⏱️ ${countdownData.title} (Annulé)`,
+                    "Le compte à rebours a été annulé.",
                 );
 
                 await countdownData.message.edit({
@@ -170,7 +170,7 @@ async function countdownButtonHandler(interaction, client, args) {
                 cleanupCountdown(countdownId, activeCountdowns);
 
                 await interaction.reply({
-                    content: "❌ Countdown cancelled!",
+                    content: "❌ Compte à rebours annulé !",
                     flags: ["Ephemeral"],
                 });
                 break;
@@ -180,7 +180,7 @@ async function countdownButtonHandler(interaction, client, args) {
         try {
             if (!interaction.replied && !interaction.deferred) {
                 await interaction.reply({
-                    embeds: [errorEmbed('Error', 'An error occurred controlling the countdown.')],
+                    embeds: [errorEmbed('Erreur', 'Une erreur s\'est produite lors du contrôle du compte à rebours.')],
                     flags: ['Ephemeral']
                 });
             }

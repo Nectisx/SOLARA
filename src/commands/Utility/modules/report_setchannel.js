@@ -8,7 +8,7 @@ export default {
     async execute(interaction, config, client) {
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Permission Denied', 'You need **Manage Server** permissions to set the report channel.')],
+                embeds: [errorEmbed('Permission refusée', 'Vous avez besoin des permissions **Gérer le serveur** pour définir le salon de signalement.')],
                 ephemeral: true,
             });
         }
@@ -22,13 +22,13 @@ export default {
             await setGuildConfig(client, guildId, guildConfig);
 
             return InteractionHelper.safeReply(interaction, {
-                embeds: [successEmbed('✅ Report Channel Set', `All new reports will now be sent to ${channel}.`)],
+                embeds: [successEmbed('✅ Salon de signalement défini', `Tous les nouveaux signalements seront désormais envoyés dans ${channel}.`)],
                 ephemeral: true,
             });
         } catch (error) {
             logger.error('report_setchannel error:', error);
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Database Error', 'Could not save the channel configuration.')],
+                embeds: [errorEmbed('Erreur base de données', 'Impossible d\'enregistrer la configuration du salon.')],
                 ephemeral: true,
             });
         }

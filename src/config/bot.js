@@ -88,50 +88,50 @@ export const botConfig = {
   embeds: {
     colors: {
       // Main brand colors.
-      primary: "#336699", 
-      secondary: "#2F3136", 
+      primary: "#FFD618",
+      secondary: "#3F0F0F",
 
       // Standard status colors for success/error/warning/info messages.
-      success: "#57F287", 
-      error: "#ED4245", 
-      warning: "#FEE75C", 
-      info: "#3498DB", 
+      success: "#F8DD54",
+      error: "#661F0D",
+      warning: "#BF5A08",
+      info: "#E79D0F",
 
       // Neutral utility colors.
-      light: "#FFFFFF",
-      dark: "#202225",
-      gray: "#99AAB5",
+      light: "#FEE09A",
+      dark: "#3F0F0F",
+      gray: "#E79D0F",
 
       // Discord-style palette shortcuts.
-      blurple: "#5865F2",
-      green: "#57F287",
-      yellow: "#FEE75C",
-      fuchsia: "#EB459E",
-      red: "#ED4245",
-      black: "#000000",
+      blurple: "#FFD618",
+      green: "#F8DD54",
+      yellow: "#FFD618",
+      fuchsia: "#BF5A08",
+      red: "#661F0D",
+      black: "#3F0F0F",
 
       // Feature-specific colors.
       giveaway: {
-        active: "#57F287",
-        ended: "#ED4245",
+        active: "#FFD618",
+        ended: "#BF5A08",
       },
       ticket: {
-        open: "#57F287",
-        claimed: "#FAA61A",
-        closed: "#ED4245",
-        pending: "#99AAB5",
+        open: "#F8DD54",
+        claimed: "#E79D0F",
+        closed: "#661F0D",
+        pending: "#BF5A08",
       },
-      economy: "#F1C40F",
-      birthday: "#E91E63",
-      moderation: "#9B59B6",
+      economy: "#FFD618",
+      birthday: "#E79D0F",
+      moderation: "#BF5A08",
 
       // Ticket priority color mapping.
       priority: {
-        none: "#95A5A6",
-        low: "#3498db",
-        medium: "#2ecc71",
-        high: "#f1c40f",
-        urgent: "#e74c3c",
+        none: "#BF5A08",
+        low: "#F8DD54",
+        medium: "#FFD618",
+        high: "#E79D0F",
+        urgent: "#661F0D",
       },
     },
     footer: {
@@ -289,10 +289,10 @@ export const botConfig = {
   // =========================
   verification: {
     // Message shown when posting the verification panel.
-    defaultMessage: "Click the button below to verify yourself and gain access to the server!",
+    defaultMessage: "Clique sur le bouton ci-dessous pour te vérifier et accéder au serveur !",
 
     // Text on the verification button.
-    defaultButtonText: "Verify",
+    defaultButtonText: "Vérifier",
 
     // Automatic verification behavior.
     autoVerify: {
@@ -359,11 +359,11 @@ export const botConfig = {
     // Welcome template posted when a user joins.
     // Placeholders: {user}, {server}, {memberCount}
     defaultWelcomeMessage:
-      "Welcome {user} to {server}! We now have {memberCount} members!",
+      "Bienvenue {user} sur {server} ! Nous sommes maintenant {memberCount} membres !",
     // Goodbye template posted when a user leaves.
     // Placeholders: {user}, {memberCount}
     defaultGoodbyeMessage:
-      "{user} has left the server. We now have {memberCount} members.",
+      "{user} a quitté le serveur. Nous sommes maintenant {memberCount} membres.",
     // Channel ID for welcome messages.
     defaultWelcomeChannel: null,
     // Channel ID for goodbye messages.
@@ -421,13 +421,12 @@ export const botConfig = {
   // GENERIC BOT MESSAGES
   // =========================
   messages: {
-    noPermission: "You do not have permission to use this command.",
-    cooldownActive: "Please wait {time} before using this command again.",
-    errorOccurred: "An error occurred while executing this command.",
-    missingPermissions:
-      "I am missing required permissions to perform this action.",
-    commandDisabled: "This command has been disabled.",
-    maintenanceMode: "The bot is currently in maintenance mode.",
+    noPermission: "Vous n'avez pas la permission d'utiliser cette commande.",
+    cooldownActive: "Veuillez attendre {time} avant de réutiliser cette commande.",
+    errorOccurred: "Une erreur s'est produite lors de l'exécution de cette commande.",
+    missingPermissions: "Il me manque les permissions nécessaires pour effectuer cette action.",
+    commandDisabled: "Cette commande a été désactivée.",
+    maintenanceMode: "Le bot est actuellement en mode maintenance.",
   },
 
   // =========================

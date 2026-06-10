@@ -135,8 +135,8 @@ transcript: 0x1abc9c
   embed.setTimestamp();
   
   if (event.ticketId || event.ticketNumber) {
-    embed.setFooter({ 
-      text: `Ticket ID: ${event.ticketNumber || event.ticketId || 'Unknown'}` 
+    embed.setFooter({
+      text: `ID du ticket : ${event.ticketNumber || event.ticketId || 'Inconnu'}`
     });
   }
   
@@ -147,14 +147,14 @@ transcript: 0x1abc9c
       const user = await guild.client.users.fetch(event.userId).catch(() => null);
       if (user) {
         fields.push({
-          name: '👤 Ticket User',
+          name: '👤 Utilisateur du ticket',
           value: `${user.tag} (${event.userId})`,
           inline: true
         });
       }
     } catch (error) {
       fields.push({
-        name: '👤 Ticket User',
+        name: '👤 Utilisateur du ticket',
         value: `<@${event.userId}> (${event.userId})`,
         inline: true
       });
@@ -166,14 +166,14 @@ transcript: 0x1abc9c
       const executor = await guild.client.users.fetch(event.executorId).catch(() => null);
       if (executor) {
         fields.push({
-          name: '🔨 Executed By',
+          name: '🔨 Exécuté par',
           value: `${executor.tag} (${event.executorId})`,
           inline: true
         });
       }
     } catch (error) {
       fields.push({
-        name: '🔨 Executed By',
+        name: '🔨 Exécuté par',
         value: `<@${event.executorId}> (${event.executorId})`,
         inline: true
       });
@@ -182,7 +182,7 @@ transcript: 0x1abc9c
   
   if (event.reason) {
     fields.push({
-      name: '📝 Reason',
+      name: '📝 Raison',
       value: event.reason,
       inline: false
     });
@@ -198,7 +198,7 @@ transcript: 0x1abc9c
     };
     
     fields.push({
-      name: '🎯 Priority',
+      name: '🎯 Priorité',
       value: `${priorityEmojis[event.priority] || '⚪'} ${event.priority.charAt(0).toUpperCase() + event.priority.slice(1)}`,
       inline: true
     });
@@ -231,38 +231,38 @@ function getEventDisplayInfo(event) {
   
   const eventMessages = {
     open: {
-      title: '🎫 Ticket Opened',
-      description: `A new ticket has been created: ${ticketRef}`
+      title: '🎫 Ticket ouvert',
+      description: `Un nouveau ticket a été créé : ${ticketRef}`
     },
     close: {
-      title: '🔒 Ticket Closed',
-      description: `Ticket ${ticketRef} has been closed`
+      title: '🔒 Ticket fermé',
+      description: `Le ticket ${ticketRef} a été fermé`
     },
     delete: {
-      title: '🗑️ Ticket Deleted',
-      description: `Ticket ${ticketRef} has been permanently deleted`
+      title: '🗑️ Ticket supprimé',
+      description: `Le ticket ${ticketRef} a été supprimé définitivement`
     },
     claim: {
-      title: '🙋 Ticket Claimed',
-      description: `Ticket ${ticketRef} has been claimed`
+      title: '🙋 Ticket pris en charge',
+      description: `Le ticket ${ticketRef} a été pris en charge`
     },
     unclaim: {
-      title: '🔓 Ticket Unclaimed',
-      description: `Ticket ${ticketRef} has been unclaimed`
+      title: '🔓 Ticket libéré',
+      description: `Le ticket ${ticketRef} a été libéré`
     },
     priority: {
-      title: '🎯 Priority Updated',
-      description: `Priority changed for ticket ${ticketRef}`
+      title: '🎯 Priorité mise à jour',
+      description: `La priorité du ticket ${ticketRef} a été modifiée`
     },
     transcript: {
-      title: '📜 Transcript Created',
-      description: `Transcript generated for ticket ${ticketRef}`
+      title: '📜 Transcription créée',
+      description: `Transcription générée pour le ticket ${ticketRef}`
     }
   };
-  
+
   return eventMessages[event.type] || {
-    title: '🎫 Ticket Event',
-    description: `An event occurred for ticket ${ticketRef}`
+    title: '🎫 Événement ticket',
+    description: `Un événement s'est produit pour le ticket ${ticketRef}`
   };
 }
 
@@ -291,7 +291,7 @@ export function validateLogChannel(channel, botMember) {
   if (!channel || channel.type !== ChannelType.GuildText) {
     return {
       valid: false,
-      error: 'Channel must be a text channel.'
+      error: 'Le salon doit être un salon textuel.'
     };
   }
   
@@ -303,7 +303,7 @@ export function validateLogChannel(channel, botMember) {
   if (missing.length > 0) {
     return {
       valid: false,
-      error: `Missing permissions: ${missing.join(', ')}`
+      error: `Permissions manquantes : ${missing.join(', ')}`
     };
   }
   

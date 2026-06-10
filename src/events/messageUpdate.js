@@ -20,7 +20,7 @@ export default {
       
       if (newMessage.author) {
         fields.push({
-          name: '👤 Author',
+          name: '👤 Auteur',
           value: `${newMessage.author.tag} (${newMessage.author.id})`,
           inline: true
         });
@@ -28,36 +28,36 @@ export default {
 
       
       fields.push({
-        name: '💬 Channel',
+        name: '💬 Salon',
         value: `${newMessage.channel.toString()} (${newMessage.channel.id})`,
         inline: true
       });
 
       
-      const oldContent = oldMessage.content || '*(empty message)*';
+      const oldContent = oldMessage.content || '*(message vide)*';
       const oldContentTruncated = oldContent.length > MAX_LOGGED_EDIT_CONTENT_LENGTH 
         ? oldContent.substring(0, MAX_LOGGED_EDIT_CONTENT_LENGTH - 3) + '...' 
         : oldContent;
       fields.push({
-        name: '📝 Old Content',
+        name: '📝 Ancien contenu',
         value: oldContentTruncated,
         inline: false
       });
 
       
-      const newContent = newMessage.content || '*(empty message)*';
+      const newContent = newMessage.content || '*(message vide)*';
       const newContentTruncated = newContent.length > MAX_LOGGED_EDIT_CONTENT_LENGTH 
         ? newContent.substring(0, MAX_LOGGED_EDIT_CONTENT_LENGTH - 3) + '...' 
         : newContent;
       fields.push({
-        name: '📝 New Content',
+        name: '📝 Nouveau contenu',
         value: newContentTruncated,
         inline: false
       });
 
       
       fields.push({
-        name: '🆔 Message ID',
+        name: '🆔 ID du message',
         value: newMessage.id,
         inline: true
       });
@@ -67,7 +67,7 @@ export default {
         guildId: newMessage.guild.id,
         eventType: EVENT_TYPES.MESSAGE_EDIT,
         data: {
-          description: `A message was edited in ${newMessage.channel.toString()}`,
+          description: `Un message a été modifié dans ${newMessage.channel.toString()}`,
           userId: newMessage.author?.id,
           channelId: newMessage.channel.id,
           fields

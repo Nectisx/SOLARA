@@ -9,54 +9,54 @@ export const MessageTemplates = {
     SUCCESS: {
         DATA_UPDATED: (action, description) => new EmbedBuilder()
             .setColor(getColor('success'))
-            .setTitle(`✅ ${action.charAt(0).toUpperCase() + action.slice(1)} Successful`)
+            .setTitle(`✅ ${action.charAt(0).toUpperCase() + action.slice(1)} réussi`)
             .setDescription(description)
             .setTimestamp(),
-        
+
         COMMAND_EXECUTED: (command) => new EmbedBuilder()
             .setColor(getColor('success'))
-            .setTitle('✅ Command Executed')
-            .setDescription(`Successfully executed \`${command}\``)
+            .setTitle('✅ Commande exécutée')
+            .setDescription(`Commande \`${command}\` exécutée avec succès`)
             .setTimestamp()
     },
 
     ERRORS: {
         DATABASE_ERROR: (operation) => new EmbedBuilder()
             .setColor(getColor('error'))
-            .setTitle('🗄️ Database Error')
-            .setDescription(`I'm having trouble with my database while ${operation}. Please try again later.`)
+            .setTitle('🗄️ Erreur de base de données')
+            .setDescription(`Un problème est survenu avec la base de données lors de l'opération : ${operation}. Veuillez réessayer plus tard.`)
             .setTimestamp(),
-        
+
         INSUFFICIENT_FUNDS: (currency, description) => new EmbedBuilder()
             .setColor(getColor('warning'))
-            .setTitle('💰 Insufficient Funds')
-            .setDescription(description || `You don't have enough ${currency} for this operation.`)
+            .setTitle('💰 Fonds insuffisants')
+            .setDescription(description || `Vous n'avez pas assez de ${currency} pour cette opération.`)
             .setTimestamp(),
-        
+
         PERMISSION_DENIED: (permission) => new EmbedBuilder()
             .setColor(getColor('error'))
-            .setTitle('🚫 Permission Denied')
-            .setDescription(`You need the \`${permission}\` permission to use this command.`)
+            .setTitle('🚫 Permission refusée')
+            .setDescription(`Vous avez besoin de la permission \`${permission}\` pour utiliser cette commande.`)
             .setTimestamp(),
-        
+
         INVALID_INPUT: (field) => new EmbedBuilder()
             .setColor(getColor('warning'))
-            .setTitle('❌ Invalid Input')
-            .setDescription(`The ${field || 'input'} you provided is invalid. Please check and try again.`)
+            .setTitle('❌ Entrée invalide')
+            .setDescription(`La valeur fournie pour ${field || 'le champ'} est invalide. Veuillez vérifier et réessayer.`)
             .setTimestamp()
     },
 
     INFO: {
         LOADING: (description) => new EmbedBuilder()
             .setColor(getColor('warning'))
-            .setTitle('⏳ Loading...')
-            .setDescription(description || 'Please wait while I process your request.')
+            .setTitle('⏳ Chargement...')
+            .setDescription(description || 'Veuillez patienter pendant le traitement de votre requête.')
             .setTimestamp(),
-        
+
         PROCESSING: (description) => new EmbedBuilder()
             .setColor(getColor('info'))
-            .setTitle('⚙️ Processing')
-            .setDescription(description || 'Processing your request...')
+            .setTitle('⚙️ Traitement en cours')
+            .setDescription(description || 'Traitement de votre requête en cours...')
             .setTimestamp()
     }
 };
@@ -64,7 +64,7 @@ export const MessageTemplates = {
 export const ContextualMessages = {
     configUpdated: (title, configLines) => new EmbedBuilder()
         .setColor(getColor('success'))
-        .setTitle(`✅ ${title} Updated`)
+        .setTitle(`✅ ${title} mis à jour`)
         .setDescription(configLines.join('\n'))
         .setTimestamp()
 };

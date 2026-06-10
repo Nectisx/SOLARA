@@ -9,28 +9,28 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('welcome')
-        .setDescription('Configure the welcome system')
+        .setDescription('Configurer le système de bienvenue')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .addSubcommand(subcommand =>
             subcommand
                 .setName('setup')
-                .setDescription('Set up the welcome message')
+                .setDescription('Configurer le message de bienvenue')
                 .addChannelOption(option =>
                     option.setName('channel')
-                        .setDescription('The channel to send welcome messages to')
+                        .setDescription('Le salon où envoyer les messages de bienvenue')
                         .addChannelTypes(ChannelType.GuildText)
                         .setRequired(true))
                 .addStringOption(option =>
                     option.setName('message')
-                        .setDescription('Welcome message. Variables: {user}, {username}, {server}, {memberCount}')
+                        .setDescription('Message de bienvenue. Variables : {user}, {username}, {server}, {memberCount}')
                         .setRequired(true))
                 .addStringOption(option =>
                     option.setName('image')
-                        .setDescription('URL of the image to include in the welcome message')
+                        .setDescription('URL de l\'image à inclure dans le message de bienvenue')
                         .setRequired(false))
                 .addBooleanOption(option =>
                     option.setName('ping')
-                        .setDescription('Whether to ping the user in the welcome message')
+                        .setDescription('Mentionner l\'utilisateur dans le message de bienvenue')
                         .setRequired(false))),
 
     async execute(interaction) {
@@ -53,7 +53,7 @@ export default {
 
         if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
             return await InteractionHelper.safeEditReply(interaction, {
-                embeds: [errorEmbed('Missing Permissions', 'You need the **Manage Server** permission to use `/welcome`.')],
+                embeds: [errorEmbed('Permissions manquantes', 'Vous avez besoin de la permission **Gérer le serveur** pour utiliser `/welcome`.')],
                 flags: MessageFlags.Ephemeral
             });
         }
@@ -71,8 +71,8 @@ export default {
                 logger.info(`[Welcome] Setup blocked because config already exists in channel ${existingConfig.channelId} for guild ${guild.id}`);
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [errorEmbed(
-                        'Welcome Setup Already Exists',
-                        `Welcome is already configured for <#${existingConfig.channelId}>. Use **/welcome config** to customize channel, message, ping, or image.`
+                        'Configuration Bienvenue déjà existante',
+                        `Bienvenue est déjà configuré pour <#${existingConfig.channelId}>. Utilisez **/welcome config** pour personnaliser le salon, le message, la mention ou l\'image.`
                     )],
                     flags: MessageFlags.Ephemeral
                 });
@@ -81,7 +81,7 @@ export default {
             if (!message || message.trim().length === 0) {
                 logger.warn(`[Welcome] Empty message provided by ${interaction.user.tag} in ${guild.name}`);
                 return await InteractionHelper.safeEditReply(interaction, {
-                    embeds: [errorEmbed('Invalid Input', 'Welcome message cannot be empty')],
+                    embeds: [errorEmbed('Entrée invalide', 'Le message de bienvenue ne peut pas être vide')],
                     flags: MessageFlags.Ephemeral
                 });
             }
@@ -93,7 +93,7 @@ export default {
                 } catch (e) {
                     logger.warn(`[Welcome] Invalid image URL provided by ${interaction.user.tag}: ${image}`);
                     return await InteractionHelper.safeEditReply(interaction, {
-                        embeds: [errorEmbed('Invalid Image URL', 'Please provide a valid image URL (must start with http:// or https://')],
+                        embeds: [errorEmbed('URL d\'image invalide', 'Veuillez fournir une URL d\'image valide (doit commencer par http:// ou https://')],
                         flags: MessageFlags.Ephemeral
                     });
                 }
@@ -117,14 +117,14 @@ export default {
 
                 const embed = new EmbedBuilder()
                     .setColor(getColor('success'))
-                    .setTitle('✅ Welcome System Configured')
-                    .setDescription(`Welcome messages will now be sent to ${channel}`)
+                    .setTitle('✅ Système de bienvenue configuré')
+                    .setDescription(`Les messages de bienvenue seront désormais envoyés dans ${channel}`)
                     .addFields(
-                        { name: 'Message Preview', value: previewMessage },
-                        { name: 'Ping User', value: ping ? '✅ Yes' : '❌ No' },
-                        { name: 'Status', value: '✅ Enabled' }
+                        { name: 'Aperçu du message', value: previewMessage },
+                        { name: 'Mentionner l\'utilisateur', value: ping ? '✅ Oui' : '❌ Non' },
+                        { name: 'Statut', value: '✅ Activé' }
                     )
-                    .setFooter({ text: 'Tip: Use /welcome config to customize welcome settings' });
+                    .setFooter({ text: 'Astuce : Utilisez /welcome config pour personnaliser les paramètres de bienvenue' });
 
                 if (image) {
                     embed.setImage(image);
@@ -135,8 +135,8 @@ export default {
                 logger.error(`[Welcome] Failed to setup welcome system for guild ${guild.id}:`, error);
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [errorEmbed(
-                        'Setup Failed',
-                        'An error occurred while configuring the welcome system. Please try again.',
+                        'Configuration échouée',
+                        'Une erreur s\'est produite lors de la configuration du système de bienvenue. Veuillez réessayer.',
                         { showDetails: true }
                     )],
                     flags: MessageFlags.Ephemeral

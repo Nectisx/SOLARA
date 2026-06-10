@@ -12,19 +12,19 @@ const warningDeleteSpecificHandler = {
       
       if (interaction.user.id !== originalModeratorId) {
         return await interaction.reply({
-          embeds: [errorEmbed('❌ Permission Denied', 'Only the moderator who viewed these warnings can delete them.')],
+          embeds: [errorEmbed('❌ Permission refusée', 'Seul le modérateur qui a consulté ces avertissements peut les supprimer.')],
           flags: MessageFlags.Ephemeral
         });
       }
 
       const modal = new ModalBuilder()
         .setCustomId(`warning_delete_modal:${targetUserId}:${interaction.user.id}`)
-        .setTitle('Delete Warning');
+        .setTitle('Supprimer un avertissement');
 
       const warningNumberInput = new TextInputBuilder()
         .setCustomId('warning_number')
-        .setLabel('Warning Number (#1, #2, etc.)')
-        .setPlaceholder('Enter the warning number to delete')
+        .setLabel('Numéro d\'avertissement (#1, #2, etc.)')
+        .setPlaceholder('Entrez le numéro de l\'avertissement à supprimer')
         .setRequired(true)
         .setStyle(TextInputStyle.Short)
         .setMaxLength(10);
@@ -36,7 +36,7 @@ const warningDeleteSpecificHandler = {
     } catch (error) {
       logger.error('Warning delete specific button error:', error);
       await interaction.reply({
-        embeds: [errorEmbed('❌ Error', 'Failed to open delete warning modal.')],
+        embeds: [errorEmbed('❌ Erreur', 'Impossible d\'ouvrir le formulaire de suppression d\'avertissement.')],
         flags: MessageFlags.Ephemeral
       });
     }
@@ -51,7 +51,7 @@ const warningClearAllHandler = {
       
       if (interaction.user.id !== originalModeratorId) {
         return await interaction.reply({
-          embeds: [errorEmbed('❌ Permission Denied', 'Only the moderator who viewed these warnings can clear them.')],
+          embeds: [errorEmbed('❌ Permission refusée', 'Seul le modérateur qui a consulté ces avertissements peut les effacer.')],
           flags: MessageFlags.Ephemeral
         });
       }
@@ -61,12 +61,12 @@ const warningClearAllHandler = {
 
       const clearModal = new ModalBuilder()
         .setCustomId(`warning_clear_confirm_modal:${targetUserId}:${interaction.user.id}`)
-        .setTitle('Clear All Warnings')
+        .setTitle('Effacer tous les avertissements')
         .addComponents(
           new ActionRowBuilder().addComponents(
             new TextInputBuilder()
               .setCustomId('delete_confirmation')
-              .setLabel(`Type "DELETE" to clear all warnings`)
+              .setLabel(`Tapez "DELETE" pour effacer tous les avertissements`)
               .setStyle(TextInputStyle.Short)
               .setPlaceholder('DELETE')
               .setMaxLength(6)
@@ -79,7 +79,7 @@ const warningClearAllHandler = {
     } catch (error) {
       logger.error('Warning clear all button error:', error);
       await interaction.reply({
-        embeds: [errorEmbed('❌ Error', 'Failed to open confirmation modal.')],
+        embeds: [errorEmbed('❌ Erreur', 'Impossible d\'ouvrir le formulaire de confirmation.')],
         flags: MessageFlags.Ephemeral
       });
     }

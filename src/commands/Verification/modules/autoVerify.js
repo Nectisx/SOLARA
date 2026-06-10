@@ -17,22 +17,22 @@ const defaultAccountAgeDays = autoVerifyDefaults.defaultAccountAgeDays ?? 7;
 export default {
     data: new SlashCommandBuilder()
         .setName("autoverify")
-        .setDescription("Configure automatic verification settings")
+        .setDescription("Configurer les paramètres de vérification automatique")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .addSubcommand(subcommand =>
             subcommand
                 .setName("setup")
-                .setDescription("Set up automatic verification")
+                .setDescription("Configurer la vérification automatique")
                 .addRoleOption(option =>
                     option
                         .setName("role")
-                        .setDescription("Role to assign to users who meet auto-verify criteria")
+                        .setDescription("Rôle à attribuer aux utilisateurs répondant aux critères de vérification automatique")
                         .setRequired(true)
                 )
                 .addStringOption(option =>
                     option
                         .setName("criteria")
-                        .setDescription("Criteria for automatic verification")
+                        .setDescription("Critères pour la vérification automatique")
                         .addChoices(
                             { name: "Account Age", value: "account_age" },
                             { name: "No Criteria", value: "none" }
@@ -42,7 +42,7 @@ export default {
                 .addIntegerOption(option =>
                     option
                         .setName("account_age_days")
-                        .setDescription("Minimum account age in days (required for account age criteria)")
+                        .setDescription("Âge minimum du compte en jours (requis pour le critère d'âge du compte)")
                         .setMinValue(minAccountAgeDays)
                         .setMaxValue(maxAccountAgeDays)
                         .setRequired(false)
@@ -51,7 +51,7 @@ export default {
         .addSubcommand(subcommand =>
             subcommand
                 .setName("dashboard")
-                .setDescription("Open the auto-verification dashboard for customization")
+                .setDescription("Ouvrir le tableau de bord de vérification automatique")
         ),
 
     async execute(interaction, config, client) {
@@ -95,7 +95,7 @@ async function handleSetup(interaction, guild, client) {
             throw createError(
                 'Auto-verify enable blocked by conflicting onboarding system',
                 ErrorTypes.CONFIGURATION,
-                'You cannot enable **AutoVerify** while the verification system or AutoRole is configured. Disable those first.',
+                'Vous ne pouvez pas activer **AutoVerify** tant que le système de vérification ou AutoRole est configuré. Désactivez-les d\'abord.',
                 {
                     guildId: guild.id,
                     verificationEnabled,
@@ -111,7 +111,7 @@ async function handleSetup(interaction, guild, client) {
             throw createError(
                 'Bot member not found in guild cache',
                 ErrorTypes.CONFIGURATION,
-                'I could not verify my permissions in this server. Please try again in a moment.',
+                'Impossible de vérifier mes permissions sur ce serveur. Veuillez réessayer dans un instant.',
                 { guildId: guild.id }
             );
         }
@@ -120,7 +120,7 @@ async function handleSetup(interaction, guild, client) {
             throw createError(
                 'Missing ManageRoles permission',
                 ErrorTypes.PERMISSION,
-                "I need the 'Manage Roles' permission to assign auto-verify roles.",
+                "J'ai besoin de la permission 'Gérer les rôles' pour attribuer des rôles de vérification automatique.",
                 { guildId: guild.id }
             );
         }
@@ -129,7 +129,7 @@ async function handleSetup(interaction, guild, client) {
             throw createError(
                 'Invalid auto-verify role selected',
                 ErrorTypes.VALIDATION,
-                'Please choose a normal assignable role (not @everyone or an integration-managed role).',
+                'Veuillez choisir un rôle assignable normal (pas @everyone ni un rôle géré par une intégration).',
                 { guildId: guild.id, roleId: targetRole.id, managed: targetRole.managed }
             );
         }
@@ -138,7 +138,7 @@ async function handleSetup(interaction, guild, client) {
             throw createError(
                 'Role hierarchy error for auto-verify setup',
                 ErrorTypes.PERMISSION,
-                'The selected auto-verify role must be below my highest role in the server role hierarchy.',
+                'Le rôle de vérification automatique sélectionné doit être en dessous de mon rôle le plus élevé dans la hiérarchie du serveur.',
                 { guildId: guild.id, roleId: targetRole.id, rolePosition: targetRole.position, botRolePosition: botMember.roles.highest.position }
             );
         }
@@ -166,7 +166,7 @@ async function handleSetup(interaction, guild, client) {
                 criteriaDescription = `\`${accountAgeDays} days\` old`;
                 break;
             case "none":
-                criteriaDescription = "All users immediately";
+                criteriaDescription = "Tous les utilisateurs immédiatement";
                 break;
         }
 
@@ -179,8 +179,8 @@ async function handleSetup(interaction, guild, client) {
 
         await InteractionHelper.safeEditReply(interaction, {
             embeds: [successEmbed(
-                "Auto-Verification Configured",
-                `Automatic verification has been configured!\n\n**Role:** ${targetRole}\n**Criteria:** ${criteriaDescription}\n\nUsers who meet these criteria will receive this role when they join the server.`
+                "Vérification automatique configurée",
+                `La vérification automatique a été configurée !\n\n**Rôle :** ${targetRole}\n**Critère :** ${criteriaDescription}\n\nLes utilisateurs répondant à ces critères recevront ce rôle en rejoignant le serveur.`
             )]
         });
 

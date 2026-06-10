@@ -51,15 +51,15 @@ export function createLoggingDashboardComponents(enabledEvents, loggingEnabled =
   const actionRow = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId('log_dash_toggle:audit_enabled')
-      .setLabel(loggingEnabled ? '🧾 Audit: ON' : '🧾 Audit: OFF')
+      .setLabel(loggingEnabled ? '🧾 Audit : ON' : '🧾 Audit : OFF')
       .setStyle(loggingEnabled ? ButtonStyle.Success : ButtonStyle.Danger),
     new ButtonBuilder()
       .setCustomId('log_dash_toggle:all')
-      .setLabel('Toggle All')
+      .setLabel('Tout basculer')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId('log_dash_refresh')
-      .setLabel('🔄 Refresh')
+      .setLabel('🔄 Actualiser')
       .setStyle(ButtonStyle.Primary),
   );
   return [...categoryRows, actionRow];
@@ -75,7 +75,7 @@ export function createLoggingButtons() {
     new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.MODERATION_BAN}`)
-        .setLabel('🔨 Moderation')
+        .setLabel('🔨 Modération')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.TICKET_CREATE}`)
@@ -87,7 +87,7 @@ export function createLoggingButtons() {
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.ROLE_CREATE}`)
-        .setLabel('🏷️ Roles')
+        .setLabel('🏷️ Rôles')
         .setStyle(ButtonStyle.Secondary)
     ),
     
@@ -95,15 +95,15 @@ export function createLoggingButtons() {
     new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.MEMBER_JOIN}`)
-        .setLabel('👋 Join/Leave')
+        .setLabel('👋 Arrivée/Départ')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.LEVELING_LEVELUP}`)
-        .setLabel('📈 Leveling')
+        .setLabel('📈 Niveaux')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.REACTION_ROLE_ADD}`)
-        .setLabel('🎭 Reactions')
+        .setLabel('🎭 Réactions')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId(`logging_toggle:${EVENT_TYPES.GIVEAWAY_CREATE}`)
@@ -115,15 +115,15 @@ export function createLoggingButtons() {
     new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('logging_toggle:counter.*')
-        .setLabel('📊 Counter')
+        .setLabel('📊 Compteur')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('logging_toggle:all')
-        .setLabel('Toggle All')
+        .setLabel('Tout basculer')
         .setStyle(ButtonStyle.Danger),
       new ButtonBuilder()
         .setCustomId('logging_refresh_status')
-        .setLabel('🔄 Refresh')
+        .setLabel('🔄 Actualiser')
         .setStyle(ButtonStyle.Primary)
     )
   ];
@@ -197,15 +197,15 @@ export function createLoggingStatusComponents(enabledEvents, loggingEnabled = fa
   const actionRow = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId('logging_toggle:audit_enabled')
-      .setLabel(loggingEnabled ? '🧾 Audit: ON' : '🧾 Audit: OFF')
+      .setLabel(loggingEnabled ? '🧾 Audit : ON' : '🧾 Audit : OFF')
       .setStyle(loggingEnabled ? ButtonStyle.Success : ButtonStyle.Danger),
     new ButtonBuilder()
       .setCustomId('logging_toggle:all')
-      .setLabel('Toggle Categories')
+      .setLabel('Basculer les catégories')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId('logging_refresh_status')
-      .setLabel('🔄 Refresh')
+      .setLabel('🔄 Actualiser')
       .setStyle(ButtonStyle.Primary)
   );
 

@@ -56,7 +56,7 @@ export async function getUserTicketCount(guildId, userId) {
       service: 'ticketService',
       operation: 'getUserTicketCount',
       message: 'Ticket operation failed: getUserTicketCount',
-      userMessage: 'Failed to count open tickets.',
+      userMessage: 'Impossible de compter les tickets ouverts.',
       context: { guildId, userId }
     });
     logger.error('Error counting user tickets:', {
@@ -69,7 +69,7 @@ export async function getUserTicketCount(guildId, userId) {
   }
 }
 
-export async function createTicket(guild, member, categoryId, reason = 'No reason provided', priority = 'none') {
+export async function createTicket(guild, member, categoryId, reason = 'Aucune raison fournie', priority = 'none') {
   try {
     const config = await getGuildConfig(guild.client, guild.id);
     const ticketConfig = config.tickets || {};
@@ -80,7 +80,7 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
     if (currentTicketCount >= maxTicketsPerUser) {
       return {
         success: false,
-        error: `You have reached the maximum number of open tickets (${maxTicketsPerUser}). Please close your existing tickets before creating a new one.`
+        error: `Vous avez atteint le nombre maximum de tickets ouverts (${maxTicketsPerUser}). Veuillez fermer vos tickets existants avant d'en créer un nouveau.`
       };
     }
     
@@ -162,43 +162,43 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
     
     const embed = createEmbed({
       title: `Ticket #${ticketNumber}`,
-      description: `${member.toString()}, thanks for creating a ticket!\n\n**Reason:** ${reason}\n**Priority:** ${priorityInfo.emoji} ${priorityInfo.label}`,
+      description: `${member.toString()}, merci d'avoir créé un ticket !\n\n**Raison :** ${reason}\n**Priorité :** ${priorityInfo.emoji} ${priorityInfo.label}`,
       color: priorityInfo.color,
       fields: [
-        { name: 'Status', value: '🟢 Open', inline: true },
-        { name: 'Claimed By', value: 'Not claimed', inline: true },
-        { name: 'Created', value: `<t:${Math.floor(Date.now() / 1000)}:R>`, inline: true },
+        { name: 'Statut', value: '🟢 Ouvert', inline: true },
+        { name: 'Pris en charge par', value: 'Non pris en charge', inline: true },
+        { name: 'Créé', value: `<t:${Math.floor(Date.now() / 1000)}:R>`, inline: true },
       ],
     });
     
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('ticket_close')
-        .setLabel('Close Ticket')
+        .setLabel('Fermer le ticket')
         .setStyle(ButtonStyle.Danger)
         .setEmoji('🔒'),
       new ButtonBuilder()
         .setCustomId('ticket_claim')
-        .setLabel('Claim')
+        .setLabel('Prendre en charge')
         .setStyle(ButtonStyle.Primary)
         .setEmoji('🙋'),
       new ButtonBuilder()
         .setCustomId('ticket_pin')
-        .setLabel('Pin')
+        .setLabel('Épingler')
         .setStyle(ButtonStyle.Secondary)
         .setEmoji('📌')
     );
-    
+
     if (ticketConfig.enablePriority) {
       row.addComponents(
         new ButtonBuilder()
           .setCustomId('ticket_priority:low')
-          .setLabel('Low')
+          .setLabel('Faible')
           .setStyle(ButtonStyle.Secondary)
           .setEmoji('🔵'),
         new ButtonBuilder()
           .setCustomId('ticket_priority:high')
-          .setLabel('High')
+          .setLabel('Haute')
           .setStyle(ButtonStyle.Danger)
           .setEmoji('🔴')
       );
@@ -240,7 +240,7 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
       service: 'ticketService',
       operation: 'createTicket',
       message: 'Ticket operation failed: createTicket',
-      userMessage: 'Failed to create ticket. Please try again in a moment.',
+      userMessage: 'Impossible de créer le ticket. Veuillez réessayer dans un moment.',
       context: { guildId: guild?.id, userId: member?.id }
     });
     logger.error('Error creating ticket:', {
@@ -257,11 +257,11 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
   }
 }
 
-export async function closeTicket(channel, closer, reason = 'No reason provided') {
+export async function closeTicket(channel, closer, reason = 'Aucune raison fournie') {
   try {
     const ticketData = await getTicketData(channel.guild.id, channel.id);
     if (!ticketData) {
-      return { success: false, error: 'This is not a ticket channel' };
+      return { success: false, error: 'Ce salon n\'est pas un ticket' };
     }
     
     const config = await getGuildConfig(channel.client, channel.guild.id);
@@ -297,10 +297,10 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
         const ticketCreator = await channel.client.users.fetch(ticketData.userId).catch(() => null);
         if (ticketCreator) {
           const dmEmbed = createEmbed({
-            title: '🎫 Your Ticket Has Been Closed',
-            description: `Your ticket **${channel.name}** has been closed.\n\n**Reason:** ${reason}\n**Closed by:** ${closer.tag}\n**Closed at:** <t:${Math.floor(Date.now() / 1000)}:F>\n\nThank you for using our support system! If you have any further questions, feel free to create a new ticket.`,
+            title: '🎫 Votre ticket a été fermé',
+            description: `Votre ticket **${channel.name}** a été fermé.\n\n**Raison :** ${reason}\n**Fermé par :** ${closer.tag}\n**Fermé le :** <t:${Math.floor(Date.now() / 1000)}:F>\n\nMerci d'avoir utilisé notre système d'assistance ! Si vous avez d'autres questions, n'hésitez pas à créer un nouveau ticket.`,
             color: '#e74c3c',
-            footer: { text: `Ticket ID: ${ticketData.id}` }
+            footer: { text: `ID du ticket : ${ticketData.id}` }
           });
 
           await ticketCreator.send({ embeds: [dmEmbed] });
@@ -308,10 +308,10 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
           // Post-close feedback survey — separate DM message so it can be updated on submit
           try {
             const feedbackEmbed = createEmbed({
-              title: '⭐ How was your support experience?',
-              description: `We'd love to know how we did with **${channel.name}**.\nSelect a rating below — it only takes a second!`,
+              title: '⭐ Comment s\'est passée votre assistance ?',
+              description: `Nous aimerions savoir comment nous nous en sommes sortis avec **${channel.name}**.\nSélectionnez une note ci-dessous — cela ne prend qu'une seconde !`,
               color: '#F1C40F',
-              footer: { text: 'Your feedback helps us improve.' },
+              footer: { text: 'Vos retours nous aident à nous améliorer.' },
             });
 
             const base = `ticket_feedback:${channel.guild.id}:${channel.id}`;
@@ -325,7 +325,7 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
             const declineRow = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
                 .setCustomId(`ticket_feedback_decline:${channel.guild.id}:${channel.id}`)
-                .setLabel('❌ No thanks')
+                .setLabel('❌ Non merci')
                 .setStyle(ButtonStyle.Secondary),
             );
 
@@ -372,15 +372,15 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
     
     if (ticketMessage) {
       const embed = ticketMessage.embeds[0];
-      const statusField = embed.fields?.find(f => f.name === 'Status');
-      
+      const statusField = embed.fields?.find(f => f.name === 'Statut');
+
       if (statusField) {
-        statusField.value = '🔴 Closed';
+        statusField.value = '🔴 Fermé';
       }
-      
+
       const updatedEmbed = createEmbed({
         title: embed.title || 'Ticket',
-        description: embed.description || 'Ticket discussion',
+        description: embed.description || 'Discussion du ticket',
         color: '#e74c3c',
         fields: embed.fields || [],
         footer: embed.footer
@@ -393,21 +393,21 @@ components: []
     }
     
     const closeEmbed = createEmbed({
-      title: 'Ticket Closed',
-      description: `This ticket has been closed by ${closer}.\n**Reason:** ${reason}${dmOnClose ? '\n\n📩 A DM has been sent to the ticket creator.' : ''}`,
+      title: 'Ticket fermé',
+      description: `Ce ticket a été fermé par ${closer}.\n**Raison :** ${reason}${dmOnClose ? '\n\n📩 Un message privé a été envoyé au créateur du ticket.' : ''}`,
       color: '#e74c3c',
-      footer: { text: `Ticket ID: ${ticketData.id}` }
+      footer: { text: `ID du ticket : ${ticketData.id}` }
     });
     
     const controlRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('ticket_reopen')
-        .setLabel('Reopen Ticket')
+        .setLabel('Rouvrir le ticket')
         .setStyle(ButtonStyle.Success)
         .setEmoji('🔓'),
       new ButtonBuilder()
         .setCustomId('ticket_delete')
-        .setLabel('Delete Ticket')
+        .setLabel('Supprimer le ticket')
         .setStyle(ButtonStyle.Danger)
         .setEmoji('🗑️')
     );
@@ -439,7 +439,7 @@ components: []
       service: 'ticketService',
       operation: 'closeTicket',
       message: 'Ticket operation failed: closeTicket',
-      userMessage: 'Failed to close ticket. Please try again in a moment.',
+      userMessage: 'Impossible de fermer le ticket. Veuillez réessayer dans un moment.',
       context: { guildId: channel?.guild?.id, channelId: channel?.id, closerId: closer?.id }
     });
     logger.error('Error closing ticket:', {
@@ -461,13 +461,13 @@ export async function claimTicket(channel, claimer) {
   try {
     const ticketData = await getTicketData(channel.guild.id, channel.id);
     if (!ticketData) {
-      return { success: false, error: 'This is not a ticket channel' };
+      return { success: false, error: 'Ce salon n\'est pas un ticket' };
     }
-    
+
     if (ticketData.claimedBy) {
-      return { 
-        success: false, 
-        error: `This ticket is already claimed by <@${ticketData.claimedBy}>` 
+      return {
+        success: false,
+        error: `Ce ticket est déjà pris en charge par <@${ticketData.claimedBy}>`
       };
     }
     
@@ -484,27 +484,27 @@ export async function claimTicket(channel, claimer) {
     
     if (ticketMessage) {
       const embed = ticketMessage.embeds[0];
-      const claimedField = embed.fields?.find(f => f.name === 'Claimed By');
-      
+      const claimedField = embed.fields?.find(f => f.name === 'Pris en charge par');
+
       if (claimedField) {
         claimedField.value = claimer.toString();
       }
-      
+
       const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId('ticket_close')
-          .setLabel('Close Ticket')
+          .setLabel('Fermer le ticket')
           .setStyle(ButtonStyle.Danger)
           .setEmoji('🔒'),
         new ButtonBuilder()
           .setCustomId('ticket_claim')
-          .setLabel('Claimed')
+          .setLabel('Pris en charge')
           .setStyle(ButtonStyle.Secondary)
           .setEmoji('🙋')
           .setDisabled(true),
         new ButtonBuilder()
           .setCustomId('ticket_pin')
-          .setLabel('Pin')
+          .setLabel('Épingler')
           .setStyle(ButtonStyle.Secondary)
           .setEmoji('📌')
       );
@@ -516,22 +516,22 @@ export async function claimTicket(channel, claimer) {
     }
     
     const claimEmbed = createEmbed({
-      title: 'Ticket Claimed',
-      description: `🎉 ${claimer} has claimed this ticket!`,
+      title: 'Ticket pris en charge',
+      description: `🎉 ${claimer} a pris en charge ce ticket !`,
       color: '#2ecc71'
     });
     
     const unclaimRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('ticket_unclaim')
-        .setLabel('Unclaim')
+        .setLabel('Annuler la prise en charge')
         .setStyle(ButtonStyle.Secondary)
         .setEmoji('🔓')
     );
 
     const claimStatusMessage = messages.find(m =>
       m.embeds.length > 0 &&
-      (m.embeds[0].title === 'Ticket Claimed' || m.embeds[0].title === 'Ticket Unclaimed')
+      (m.embeds[0].title === 'Ticket pris en charge' || m.embeds[0].title === 'Ticket non pris en charge')
     );
 
     if (claimStatusMessage) {
@@ -562,7 +562,7 @@ export async function claimTicket(channel, claimer) {
       service: 'ticketService',
       operation: 'claimTicket',
       message: 'Ticket operation failed: claimTicket',
-      userMessage: 'Failed to claim ticket. Please try again in a moment.',
+      userMessage: 'Impossible de prendre en charge le ticket. Veuillez réessayer dans un moment.',
       context: { guildId: channel?.guild?.id, channelId: channel?.id, claimerId: claimer?.id }
     });
     logger.error('Error claiming ticket:', {
@@ -584,13 +584,13 @@ export async function reopenTicket(channel, reopener) {
   try {
     const ticketData = await getTicketData(channel.guild.id, channel.id);
     if (!ticketData) {
-      return { success: false, error: 'This is not a ticket channel' };
+      return { success: false, error: 'Ce salon n\'est pas un ticket' };
     }
     
     if (ticketData.status !== 'closed') {
-      return { 
-        success: false, 
-        error: 'This ticket is not currently closed' 
+      return {
+        success: false,
+        error: 'Ce ticket n\'est pas actuellement fermé'
       };
     }
 
@@ -646,27 +646,27 @@ export async function reopenTicket(channel, reopener) {
     
     if (ticketMessage) {
       const embed = ticketMessage.embeds[0];
-      const statusField = embed.fields?.find(f => f.name === 'Status');
-      
+      const statusField = embed.fields?.find(f => f.name === 'Statut');
+
       if (statusField) {
-        statusField.value = '🟢 Open';
+        statusField.value = '🟢 Ouvert';
       }
-      
+
       const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId('ticket_close')
-          .setLabel('Close Ticket')
+          .setLabel('Fermer le ticket')
           .setStyle(ButtonStyle.Danger)
           .setEmoji('🔒'),
         new ButtonBuilder()
           .setCustomId('ticket_claim')
-          .setLabel(ticketData.claimedBy ? 'Claimed' : 'Claim')
+          .setLabel(ticketData.claimedBy ? 'Pris en charge' : 'Prendre en charge')
           .setStyle(ticketData.claimedBy ? ButtonStyle.Secondary : ButtonStyle.Primary)
           .setEmoji('🙋')
           .setDisabled(!!ticketData.claimedBy),
         new ButtonBuilder()
           .setCustomId('ticket_pin')
-          .setLabel('Pin')
+          .setLabel('Épingler')
           .setStyle(ButtonStyle.Secondary)
           .setEmoji('📌')
       );
@@ -678,14 +678,14 @@ export async function reopenTicket(channel, reopener) {
     }
     
     const reopenEmbed = createEmbed({
-      title: 'Ticket Reopened',
-      description: `🔓 ${reopener} has reopened this ticket!`,
+      title: 'Ticket rouvert',
+      description: `🔓 ${reopener} a rouvert ce ticket !`,
       color: '#2ecc71'
     });
 
     const closeStatusMessage = messages.find(m =>
       m.embeds.length > 0 &&
-      m.embeds[0].title === 'Ticket Closed' &&
+      m.embeds[0].title === 'Ticket fermé' &&
       m.components.length > 0 &&
       m.components[0].components.some(c => c.customId === 'ticket_reopen')
     );
@@ -708,7 +708,7 @@ export async function reopenTicket(channel, reopener) {
       service: 'ticketService',
       operation: 'reopenTicket',
       message: 'Ticket operation failed: reopenTicket',
-      userMessage: 'Failed to reopen ticket. Please try again in a moment.',
+      userMessage: 'Impossible de rouvrir le ticket. Veuillez réessayer dans un moment.',
       context: { guildId: channel?.guild?.id, channelId: channel?.id, reopenerId: reopener?.id }
     });
     logger.error('Error reopening ticket:', {
@@ -776,7 +776,7 @@ async function generateTranscript(channel) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Transcript – #${escape(channel.name)}</title>
+<title>Transcription – #${escape(channel.name)}</title>
 <style>
 body{font-family:sans-serif;background:#36393f;color:#dcddde;margin:0;padding:16px}
 h1{color:#fff;font-size:1.2rem;margin-bottom:8px}
@@ -789,10 +789,10 @@ td{padding:4px 8px;border-bottom:1px solid #40444b;vertical-align:top}
 </style>
 </head>
 <body>
-<h1>📜 Transcript – #${escape(channel.name)}</h1>
-<p style="color:#72767d">${messages.length} message(s) exported on ${new Date().toUTCString()}</p>
+<h1>📜 Transcription – #${escape(channel.name)}</h1>
+<p style="color:#72767d">${messages.length} message(s) exporté(s) le ${new Date().toUTCString()}</p>
 <table>
-<thead><tr><th>Timestamp (UTC)</th><th>Author</th><th>Message</th></tr></thead>
+<thead><tr><th>Horodatage (UTC)</th><th>Auteur</th><th>Message</th></tr></thead>
 <tbody>
 ${rows}
 </tbody>
@@ -827,14 +827,14 @@ export async function deleteTicket(channel, deleter) {
   try {
     const ticketData = await getTicketData(channel.guild.id, channel.id);
     if (!ticketData) {
-      return { success: false, error: 'This is not a ticket channel' };
+      return { success: false, error: 'Ce salon n\'est pas un ticket' };
     }
     
     const deleteEmbed = createEmbed({
-      title: 'Ticket Deleted',
-      description: `🗑️ This ticket will be permanently deleted in ${TICKET_DELETE_DELAY_SECONDS} seconds.`,
+      title: 'Ticket supprimé',
+      description: `🗑️ Ce ticket sera définitivement supprimé dans ${TICKET_DELETE_DELAY_SECONDS} secondes.`,
       color: '#e74c3c',
-      footer: { text: `Ticket ID: ${ticketData.id}` }
+      footer: { text: `ID du ticket : ${ticketData.id}` }
     });
     
     await channel.send({ embeds: [deleteEmbed] });
@@ -910,19 +910,19 @@ export async function deleteTicket(channel, deleter) {
               } else {
                 // Send transcript with embed
                 const transcriptEmbed = new EmbedBuilder()
-                  .setTitle('📜 Ticket Transcript')
-                  .setDescription(`Transcript for ticket #${ticketData.id}`)
+                  .setTitle('📜 Transcription du ticket')
+                  .setDescription(`Transcription du ticket #${ticketData.id}`)
                   .setColor('#3498db')
                   .addFields(
-                    { name: 'Ticket ID', value: `\`${ticketData.id}\``, inline: true },
-                    { name: 'Channel', value: `#${channel.name}`, inline: true },
-                    { name: 'Generated', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false }
+                    { name: 'ID du ticket', value: `\`${ticketData.id}\``, inline: true },
+                    { name: 'Salon', value: `#${channel.name}`, inline: true },
+                    { name: 'Généré le', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false }
                   );
 
                 if (deleter?.username) {
-                  transcriptEmbed.setFooter({ 
-                    text: `Deleted by: ${deleter.username}`, 
-                    iconURL: deleter.displayAvatarURL?.() 
+                  transcriptEmbed.setFooter({
+                    text: `Supprimé par : ${deleter.username}`,
+                    iconURL: deleter.displayAvatarURL?.()
                   });
                 }
 
@@ -949,7 +949,7 @@ export async function deleteTicket(channel, deleter) {
 
         // Delete the channel (regardless of transcript success)
         try {
-          await channel.delete('Ticket deleted permanently');
+          await channel.delete('Ticket supprimé définitivement');
           logger.info('✅ Channel deleted', {
             channelId: channel.id,
             channelName: channel.name,
@@ -984,7 +984,7 @@ export async function deleteTicket(channel, deleter) {
       service: 'ticketService',
       operation: 'deleteTicket',
       message: 'Ticket operation failed: deleteTicket',
-      userMessage: 'Failed to delete ticket. Please try again in a moment.',
+      userMessage: 'Impossible de supprimer le ticket. Veuillez réessayer dans un moment.',
       context: { guildId: channel?.guild?.id, channelId: channel?.id, deleterId: deleter?.id }
     });
     logger.error('Error deleting ticket:', {
@@ -1006,20 +1006,20 @@ export async function unclaimTicket(channel, unclaimer) {
   try {
     const ticketData = await getTicketData(channel.guild.id, channel.id);
     if (!ticketData) {
-      return { success: false, error: 'This is not a ticket channel' };
+      return { success: false, error: 'Ce salon n\'est pas un ticket' };
     }
     
     if (!ticketData.claimedBy) {
-      return { 
-        success: false, 
-        error: 'This ticket is not currently claimed' 
+      return {
+        success: false,
+        error: 'Ce ticket n\'est pas actuellement pris en charge'
       };
     }
-    
+
     if (ticketData.claimedBy !== unclaimer.id && !unclaimer.permissions.has(PermissionFlagsBits.ManageChannels)) {
-      return { 
-        success: false, 
-        error: 'You can only unclaim your own tickets or need Manage Channels permission.' 
+      return {
+        success: false,
+        error: 'Vous ne pouvez annuler la prise en charge que de vos propres tickets ou avec la permission Gérer les salons.'
       };
     }
     
@@ -1037,26 +1037,26 @@ export async function unclaimTicket(channel, unclaimer) {
     
     if (ticketMessage) {
       const embed = ticketMessage.embeds[0];
-      const claimedField = embed.fields?.find(f => f.name === 'Claimed By');
-      
+      const claimedField = embed.fields?.find(f => f.name === 'Pris en charge par');
+
       if (claimedField) {
-        claimedField.value = 'Not claimed';
+        claimedField.value = 'Non pris en charge';
       }
-      
+
       const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId('ticket_close')
-          .setLabel('Close Ticket')
+          .setLabel('Fermer le ticket')
           .setStyle(ButtonStyle.Danger)
           .setEmoji('🔒'),
         new ButtonBuilder()
           .setCustomId('ticket_claim')
-          .setLabel('Claim')
+          .setLabel('Prendre en charge')
           .setStyle(ButtonStyle.Primary)
           .setEmoji('🙋'),
         new ButtonBuilder()
           .setCustomId('ticket_pin')
-          .setLabel('Pin')
+          .setLabel('Épingler')
           .setStyle(ButtonStyle.Secondary)
           .setEmoji('📌')
       );
@@ -1067,26 +1067,26 @@ export async function unclaimTicket(channel, unclaimer) {
       });
     }
     
-    const claimMessage = messages.find(m => 
-      m.embeds.length > 0 && 
-      (m.embeds[0].title === 'Ticket Claimed' || m.embeds[0].title === 'Ticket Unclaimed')
+    const claimMessage = messages.find(m =>
+      m.embeds.length > 0 &&
+      (m.embeds[0].title === 'Ticket pris en charge' || m.embeds[0].title === 'Ticket non pris en charge')
     );
-    
+
     if (claimMessage) {
       const unclaimEmbed = createEmbed({
-        title: 'Ticket Unclaimed',
-        description: `🔓 ${unclaimer} has unclaimed this ticket!`,
+        title: 'Ticket non pris en charge',
+        description: `🔓 ${unclaimer} a annulé la prise en charge de ce ticket !`,
         color: '#f39c12'
       });
-      
-      await claimMessage.edit({ 
+
+      await claimMessage.edit({
         embeds: [unclaimEmbed],
         components: []
       });
     } else {
       const unclaimEmbed = createEmbed({
-        title: 'Ticket Unclaimed',
-        description: `🔓 ${unclaimer} has unclaimed this ticket!`,
+        title: 'Ticket non pris en charge',
+        description: `🔓 ${unclaimer} a annulé la prise en charge de ce ticket !`,
         color: '#f39c12'
       });
       
@@ -1115,7 +1115,7 @@ export async function unclaimTicket(channel, unclaimer) {
       service: 'ticketService',
       operation: 'unclaimTicket',
       message: 'Ticket operation failed: unclaimTicket',
-      userMessage: 'Failed to unclaim ticket. Please try again in a moment.',
+      userMessage: 'Impossible d\'annuler la prise en charge du ticket. Veuillez réessayer dans un moment.',
       context: { guildId: channel?.guild?.id, channelId: channel?.id, unclaimerId: unclaimer?.id }
     });
     logger.error('Error unclaiming ticket:', {
@@ -1141,12 +1141,12 @@ export async function updateTicketPriority(channel, priority, updater) {
   try {
     const ticketData = await getTicketData(channel.guild.id, channel.id);
     if (!ticketData) {
-      return { success: false, error: 'This is not a ticket channel' };
+      return { success: false, error: 'Ce salon n\'est pas un ticket' };
     }
     
     const priorityInfo = PRIORITY_MAP[priority];
     if (!priorityInfo) {
-      return { success: false, error: 'Invalid priority level' };
+      return { success: false, error: 'Niveau de priorité invalide' };
     }
     
     ticketData.priority = priority;
@@ -1182,7 +1182,7 @@ export async function updateTicketPriority(channel, priority, updater) {
       
       const updatedEmbed = createEmbed({
         title: embed.title || 'Ticket',
-        description: embed.description?.split('\n**Priority:**')[0] + `\n**Priority:** ${priorityInfo.emoji} ${priorityInfo.label}`,
+        description: embed.description?.split('\n**Priorité :**')[0] + `\n**Priorité :** ${priorityInfo.emoji} ${priorityInfo.label}`,
         color: priorityInfo.color,
         fields: embed.fields || [],
         footer: embed.footer
@@ -1192,8 +1192,8 @@ export async function updateTicketPriority(channel, priority, updater) {
     }
     
     const updateEmbed = createEmbed({
-      title: 'Priority Updated',
-      description: `📊 Ticket priority updated to **${priorityInfo.emoji} ${priorityInfo.label}** by ${updater}`,
+      title: 'Priorité mise à jour',
+      description: `📊 Priorité du ticket mise à jour : **${priorityInfo.emoji} ${priorityInfo.label}** par ${updater}`,
       color: priorityInfo.color
     });
     
@@ -1223,7 +1223,7 @@ export async function updateTicketPriority(channel, priority, updater) {
       service: 'ticketService',
       operation: 'updateTicketPriority',
       message: 'Ticket operation failed: updateTicketPriority',
-      userMessage: 'Failed to update ticket priority. Please try again in a moment.',
+      userMessage: 'Impossible de mettre à jour la priorité du ticket. Veuillez réessayer dans un moment.',
       context: { guildId: channel?.guild?.id, channelId: channel?.id, updaterId: updater?.id, priority }
     });
     logger.error('Error updating ticket priority:', {

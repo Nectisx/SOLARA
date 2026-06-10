@@ -9,11 +9,11 @@ const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
 export default {
     data: new SlashCommandBuilder()
         .setName("weather")
-        .setDescription("Get real-time weather information for a location")
+        .setDescription("Obtenir des informations météo en temps réel pour un lieu")
         .addStringOption((option) =>
             option
                 .setName("city")
-                .setDescription("The city name, e.g., 'London' or 'Tokyo'")
+                .setDescription("Le nom de la ville, ex. 'Paris' ou 'Lyon'")
                 .setRequired(true),
         ),
 
@@ -45,8 +45,8 @@ export default {
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "City Not Found",
-                            `Could not find a location for **${city}**. Please check the spelling.`,
+                            "Ville introuvable",
+                            `Impossible de trouver un lieu pour **${city}**. Vérifiez l'orthographe.`,
                         ),
                     ],
                 });
@@ -71,8 +71,8 @@ export default {
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "API Error",
-                            "A weather service error occurred.",
+                            "Erreur API",
+                            "Une erreur du service météo s'est produite.",
                         ),
                     ],
                 });
@@ -87,26 +87,26 @@ export default {
 
             const condition = getWeatherDescription(weatherCode);
 
-            const embed = createEmbed({ title: `🌎 Weather in ${cityDisplay}, ${country}`, description: condition.description })
+            const embed = createEmbed({ title: `🌎 Météo à ${cityDisplay}, ${country}`, description: condition.description })
                 .addFields(
                     {
-                        name: "🌡️ Temperature",
+                        name: "🌡️ Température",
                         value: `${temperature}°C`,
                         inline: true,
                     },
                     {
-                        name: "💧 Humidity",
+                        name: "💧 Humidité",
                         value: `${humidity}%`,
                         inline: true,
                     },
                     {
-                        name: "💨 Wind Speed",
+                        name: "💨 Vitesse du vent",
                         value: `${windSpeed} km/h`,
                         inline: true,
                     },
                 )
                 .setFooter({
-                    text: `Latitude: ${latitude.toFixed(2)} | Longitude: ${longitude.toFixed(2)}`,
+                    text: `Latitude : ${latitude.toFixed(2)} | Longitude : ${longitude.toFixed(2)}`,
                 });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
@@ -139,19 +139,19 @@ export default {
 
 function getWeatherDescription(code) {
     if (code >= 0 && code <= 3) {
-        return { description: "Clear sky / Partly cloudy ☀️", emoji: "☀️" };
+        return { description: "Ciel dégagé / Partiellement nuageux ☀️", emoji: "☀️" };
     } else if (code >= 45 && code <= 48) {
-        return { description: "Fog and Rime fog 🌫️", emoji: "🌫️" };
+        return { description: "Brouillard et brouillard givrant 🌫️", emoji: "🌫️" };
     } else if (code >= 51 && code <= 67) {
-        return { description: "Drizzle or Rain 🌧️", emoji: "🌧️" };
+        return { description: "Bruine ou pluie 🌧️", emoji: "🌧️" };
     } else if (code >= 71 && code <= 75) {
-        return { description: "Snow fall ❄️", emoji: "❄️" };
+        return { description: "Chutes de neige ❄️", emoji: "❄️" };
     } else if (code >= 80 && code <= 86) {
-        return { description: "Showers (Rain/Snow) 🌨️", emoji: "🌨️" };
+        return { description: "Averses (pluie/neige) 🌨️", emoji: "🌨️" };
     } else if (code >= 95 && code <= 99) {
-        return { description: "Thunderstorm ⛈️", emoji: "⛈️" };
+        return { description: "Orage ⛈️", emoji: "⛈️" };
     }
-    return { description: "Unknown conditions.", emoji: "" };
+    return { description: "Conditions inconnues.", emoji: "" };
 }
 
 

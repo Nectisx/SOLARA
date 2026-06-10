@@ -52,7 +52,7 @@ export default {
               throw createError(
                 `No command matching ${interaction.commandName} was found.`,
                 ErrorTypes.CONFIGURATION,
-                'Sorry, that command does not exist.',
+                'Désolé, cette commande n\'existe pas.',
                 withTraceContext({ commandName: interaction.commandName }, interactionTraceContext)
               );
             }
@@ -63,7 +63,7 @@ export default {
               throw createError(
                 `Risky command cooldown active for ${interaction.commandName}`,
                 ErrorTypes.RATE_LIMIT,
-                `This command is on cooldown. Please wait ${formattedCooldown} before trying again.`,
+                `Cette commande est en cours de recharge. Veuillez attendre ${formattedCooldown} avant de réessayer.`,
                 withTraceContext({
                   commandName: interaction.commandName,
                   subtype: 'command_cooldown',
@@ -82,7 +82,7 @@ export default {
                 throw createError(
                   `Command ${interaction.commandName} is disabled in this guild`,
                   ErrorTypes.CONFIGURATION,
-                  'This command has been disabled for this server.',
+                  'Cette commande a été désactivée pour ce serveur.',
                   withTraceContext({ commandName: interaction.commandName, guildId: interaction.guild.id }, interactionTraceContext)
                 );
               }
@@ -243,7 +243,7 @@ export default {
               throw createError(
                 `No button handler found for ${buttonType}`,
                 ErrorTypes.CONFIGURATION,
-                'This button is not available.',
+                'Ce bouton n\'est pas disponible.',
                 withTraceContext({ buttonType }, interactionTraceContext)
               );
             }
@@ -261,7 +261,7 @@ export default {
             throw createError(
               `No button handler found for ${customId}`,
               ErrorTypes.CONFIGURATION,
-              'This button is not available.',
+              'Ce bouton n\'est pas disponible.',
               withTraceContext({ customId }, interactionTraceContext)
             );
           }
@@ -290,7 +290,7 @@ export default {
             throw createError(
               `No select menu handler found for ${customId}`,
               ErrorTypes.CONFIGURATION,
-              'This select menu is not available.',
+              'Ce menu de sélection n\'est pas disponible.',
               withTraceContext({ customId }, interactionTraceContext)
             );
           }
@@ -351,7 +351,7 @@ export default {
             throw createError(
               `No modal handler found for ${customId}`,
               ErrorTypes.CONFIGURATION,
-              'This form is not available.',
+              'Ce formulaire n\'est pas disponible.',
               withTraceContext({ customId }, interactionTraceContext)
             );
           }

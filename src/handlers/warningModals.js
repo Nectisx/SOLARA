@@ -9,7 +9,7 @@ async function warningDeleteModalHandler(interaction, client) {
     
     if (interaction.user.id !== originalModeratorId) {
       return await interaction.reply({
-        embeds: [errorEmbed('❌ Permission Denied', 'Only the original moderator can delete warnings.')],
+        embeds: [errorEmbed('❌ Permission refusée', 'Seul le modérateur d\'origine peut supprimer les avertissements.')],
         flags: ['Ephemeral']
       });
     }
@@ -19,7 +19,7 @@ async function warningDeleteModalHandler(interaction, client) {
 
     if (isNaN(warningNumber) || warningNumber < 1) {
       return await interaction.reply({
-        embeds: [errorEmbed('❌ Invalid Input', 'Please enter a valid warning number (e.g., 1, 2, 3).')],
+        embeds: [errorEmbed('❌ Saisie invalide', 'Veuillez entrer un numéro d\'avertissement valide (ex. : 1, 2, 3).')],
         flags: ['Ephemeral']
       });
     }
@@ -32,7 +32,7 @@ async function warningDeleteModalHandler(interaction, client) {
 
     if (warningNumber > warnings.length) {
       return await interaction.editReply({
-        embeds: [errorEmbed('❌ Warning Not Found', `Warning #${warningNumber} does not exist. This user only has ${warnings.length} warning(s).`)]
+        embeds: [errorEmbed('❌ Avertissement introuvable', `L'avertissement #${warningNumber} n'existe pas. Cet utilisateur n'a que ${warnings.length} avertissement(s).`)]
       });
     }
 
@@ -53,12 +53,12 @@ async function warningDeleteModalHandler(interaction, client) {
     });
 
     await interaction.editReply({
-      embeds: [successEmbed('✅ Warning Deleted', `Warning #${warningNumber} for **${targetName}** has been deleted.\n\n**Reason was:** ${warningToDelete.reason.substring(0, 100)}`)]
+      embeds: [successEmbed('✅ Avertissement supprimé', `L'avertissement #${warningNumber} de **${targetName}** a été supprimé.\n\n**Raison :** ${warningToDelete.reason.substring(0, 100)}`)]
     });
   } catch (error) {
     logger.error('Warning delete modal handler error:', error);
     await interaction.editReply({
-      embeds: [errorEmbed('❌ Error', 'Failed to delete warning.')]
+      embeds: [errorEmbed('❌ Erreur', 'Impossible de supprimer l\'avertissement.')]
     });
   }
 }
@@ -69,7 +69,7 @@ async function warningClearConfirmModalHandler(interaction, client) {
     
     if (interaction.user.id !== originalModeratorId) {
       return await interaction.reply({
-        embeds: [errorEmbed('❌ Permission Denied', 'Only the original moderator can clear warnings.')],
+        embeds: [errorEmbed('❌ Permission refusée', 'Seul le modérateur d\'origine peut effacer les avertissements.')],
         flags: ['Ephemeral']
       });
     }
@@ -78,7 +78,7 @@ async function warningClearConfirmModalHandler(interaction, client) {
 
     if (confirmation !== 'DELETE') {
       return await interaction.reply({
-        embeds: [errorEmbed('❌ Incorrect Confirmation', 'You must type "DELETE" exactly to confirm clearing all warnings.')],
+        embeds: [errorEmbed('❌ Confirmation incorrecte', 'Vous devez taper exactement "DELETE" pour confirmer la suppression de tous les avertissements.')],
         flags: ['Ephemeral']
       });
     }
@@ -98,13 +98,13 @@ async function warningClearConfirmModalHandler(interaction, client) {
     logger.info(`[MODERATION] All warnings cleared for ${targetUserId} in ${guildId} by ${interaction.user.id}`);
 
     await interaction.editReply({
-      embeds: [successEmbed('✅ Warnings Cleared', `All warnings for **${targetName}** have been cleared. **${result.count}** warning(s) removed.`)]
+      embeds: [successEmbed('✅ Avertissements effacés', `Tous les avertissements de **${targetName}** ont été effacés. **${result.count}** avertissement(s) supprimé(s).`)]
     });
   } catch (error) {
     logger.error('Warning clear confirm modal handler error:', error);
     if (!interaction.replied && !interaction.deferred) {
       await interaction.reply({
-        embeds: [errorEmbed('❌ Error', 'Failed to clear warnings.')],
+        embeds: [errorEmbed('❌ Erreur', 'Impossible d\'effacer les avertissements.')],
         flags: ['Ephemeral']
       });
     } else {
